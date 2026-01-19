@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/Nik-Le/bitburg/issues"
   },
-  "homepage": "https://github.com/Nik-Le/bitburg#readme"
+  "homepage": "https://github.com/Nik-Le/bitburg#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "pug": "^3.0.3"
+  }
 }
