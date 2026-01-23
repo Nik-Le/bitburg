@@ -128,6 +128,16 @@ a {
 
 /* --- Hero Section --- */
 .hero {
+    background-image: url('../../images/hintergrund_homepage2.jpg');
+
+    /* 2. Skalierung: 'cover' sorgt dafür, dass das Bild immer den ganzen Bereich füllt, ohne verzerrt zu werden */
+    background-size: cover;
+
+    /* 3. Positionierung: Der wichtigste Teil des Bildes (die Mitte) bleibt sichtbar */
+    background-position: center;
+
+    /* 4. Wiederholung verhindern (falls das Bild zu klein wäre) */
+    background-repeat: no-repeat;
     padding: 100px 0;
     background-color: var(--light-bg);
     text-align: center;
@@ -141,7 +151,7 @@ a {
 
 .hero-subtext {
     font-size: 1.2rem;
-    color: #666;
+    color: #f3eded;
     max-width: 700px;
     margin: 0 auto 40px auto;
 }
