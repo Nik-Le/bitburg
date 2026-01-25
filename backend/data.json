@@ -1,0 +1,4 @@
+{"users": [{"username": "admin", "email": "philipp.schaude@gmx.de", "password_hash": "hashed_password_1"}, 
+{"username": "Jakob", "email": "jakob@example.com", "password_hash": "hashed_password_2"}],
+"ratings": [5, 4, 3, 5, 4]
+}
