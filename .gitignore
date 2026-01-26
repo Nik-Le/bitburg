@@ -6,8 +6,7 @@ node_modules/
 .env.*
 
 # Sensitive data (Password Manager!)
-data/users.json
-data/passwords.json
+data/*.json
 
 # Logs
 *.log
