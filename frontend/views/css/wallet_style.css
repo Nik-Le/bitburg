@@ -1,0 +1,48 @@
+header {
+    display: flex;
+    border: 2px;
+    border-color: black;
+    border-style: solid;
+    align-items: center;
+    justify-content: space-between;
+}
+a {
+    color: black;
+}
+footer {
+    text-align: center;
+}
+li {
+    list-style: none;
+}
+#logo{
+    display: flex;
+    align-items: center;
+}
+.logo-name {
+    color: black;
+}
+.container {
+    display: flex;
+    border: 2px solid greenyellow;
+    margin-top: 5%;
+    justify-content: space-between;
+    height: auto;
+}
+.password-card {
+    height: auto;
+    width: 500px;
+    border: 2px solid;
+    padding: 5px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+.spacer {
+    margin-left: 10px;
+}
+#add-button{
+    width: fit-content;
+    height: fit-content;
+    border: 2px solid;
+    margin-right: 10px;
+}
