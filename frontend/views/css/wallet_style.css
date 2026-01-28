@@ -10,6 +10,7 @@
 header {
     font-family: var(--font-family);
     color: var(--text-color);
+    background-color: var(--primary-color);
     display: flex;
     border: 2px  black;
     border-style: solid;
@@ -44,11 +45,18 @@ footer {
 .spacer {
     margin-left: 10px;
 }
-#add-button{
-    width: fit-content;
-    height: fit-content;
+.add-button:hover {
+    background-color: var(--primary-hover);
+}
+.add-button{
+    background-color: var(--primary-color);
+    width: 70px;
+    height: 40px;
     margin-right: 10px;
     margin-top: 20px;
+    border-radius: var(--border-radius);
+    color: white;
+    border: none;
 }
 #logo-section{
     display: flex;
