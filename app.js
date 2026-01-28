@@ -5,23 +5,23 @@ const app = express();
 const PORT = 3000;
 
 // Set up static files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'frontend')));
 
 // Set view engine
 app.set('view engine', 'pug');
-app.set('views', path.join(__dirname,  'views'));
+app.set('views', path.join(__dirname,  'frontend/views'));
 
 // Lesen von Formulardaten und wandeln in ein Java-Objekt
 app.use(express.urlencoded({extended: true}));
 
+
+// Nur Debugg Noch enfernen <--------------------------------------------------------------------------------------------------------------
 app.use((req, res, next) => {
     console.log('--- DEBUG INFO ---');
     console.log('Methode:', req.method); // Zeigt GET oder POST
     console.log('Formular-Daten (Body):', req.body); // Zeigt deine Eingaben
     console.log('------------------');
-    
-    // WICHTIG: next() sagt dem Server "Mach weiter mit den Routen"
-    // Ohne next() bleibt die Seite ewig laden.
+
     next();
 });
 
