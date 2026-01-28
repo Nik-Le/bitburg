@@ -1,0 +1,80 @@
+doctype html
+html(lang="de")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title | BitBurg – herrlich herb, unknackbar stark
+    link(rel="stylesheet", href="css/style.css")
+
+  body
+    //- HEADER / NAVIGATION
+    header.navbar
+      .container
+        //- Logo
+        a.logo(href="/")
+          img(src="/images/BitBurg_logo.jpg", alt="BitBurg Logo")
+          span.logo-text BitBurg
+
+        //- Navigation Links
+        nav
+          ul.nav-links
+            li
+              a(href="#") Wallet
+            li
+              a(href="#") Passwort-Generator
+
+        //- Buttons rechts
+        .auth-buttons
+          a.login-btn(href="#") Über Uns
+          a.cta-btn(href="#") Konto erstellen
+          a.Profil(href="#")
+            img(src="/images/Profilbild.jpg", alt="Profil", width="60", height="60")
+            span.Profil-text Profil
+
+    //- MAIN CONTENT
+    main
+      
+      //- SECTION 1: Intro / Hero
+      section.hero
+        .container.hero-content
+          h1 BitBurg – herrlich herb, unknackbar stark
+          p.hero-subtext
+            | Speichere, teile und verwalte deine sensiblen Daten mit BitBurg. 
+            | Open Source, Ende-zu-Ende verschlüsselt und überall verfügbar.
+          .hero-actions
+            a.cta-btn.large(href="/register") Kostenlos starten
+            a.secondary-btn(href="#") Organisation kontaktieren
+
+      //- SECTION 2: Bewertungen
+      section.hero
+        .container.hero-content
+          h1 Das sagen unsere Kunden
+          p.hero-subtext Hier sollen Bewertungen von Kunden rein.
+          .hero-actions
+            a.cta-btn.large(href="#") Weitere Bewertungen
+            a.secondary-btn(href="#") BitBurg bewerten
+
+      //- SECTION 3: Features
+      section.features
+        .container
+          h2 Warum BitBurg?
+          .feature-grid
+            //- Feature 1
+            .feature-card
+              h3 Zero-Knowledge
+              p Wir können deine Daten nicht lesen. Nur du hast den Schlüssel.
+            
+            //- Feature 2
+            .feature-card
+              h3 Synchronisierung
+              p Zugriff von jedem Gerät: iOS, Android, Web und Desktop.
+            
+            //- Feature 3
+            .feature-card
+              h3 Open Source
+              p Transparenz schafft Vertrauen. Unser Code ist öffentlich prüfbar.
+
+    //- FOOTER
+    footer
+      .container
+        p &copy; 2026 Bitburg Manager. Alle Rechte vorbehalten.
