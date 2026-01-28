@@ -11,3 +11,10 @@ exports.login = (req, res) => {
         title: 'Login'
     });    
 };
+
+exports.register = (req, res) => {
+
+    res.render('register', {
+        title: 'Register'
+    })
+}

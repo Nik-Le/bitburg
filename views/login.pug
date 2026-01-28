@@ -1,9 +1,9 @@
 extends layout 
 
 block content
-    form(action="/login" methode="post")
+    form(action="/login" method="post" id="frm_login")
       label(for="username") Benutzername
-      input#username(type="text" name="username" placeholder ="Benutzername" required)
+      input#username(type="text" name="username" placeholder="Benutzername" required)
 
       label(for="password") Passwort 
       input#password(type="text" name="password" required)
