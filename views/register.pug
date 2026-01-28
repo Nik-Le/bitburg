@@ -1,0 +1,15 @@
+extends layout 
+
+block content
+    form(action="/register" method="post")
+
+      label(for="username") Benutzername
+      input#username(type="text" name="username" placeholder="Benutzername" required)
+
+      label(for="email") E-Mail
+      input#email(type="text" email="email" placeholder="E-Mail" required)
+
+      label(for="password") Passwort 
+      input#password(type="password" name="password" required)
+
+      button(type="submit") Registrieren 
