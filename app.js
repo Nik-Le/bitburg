@@ -11,28 +11,20 @@ app.use(express.static(path.join(__dirname, 'frontend')));
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname,  'frontend/views'));
 
-// Lesen von Formulardaten und wandeln in ein Java-Objekt
+// Lesen von Formulardaten und wandeln in ein JSON
+app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 
-// Nur Debugg Noch enfernen <--------------------------------------------------------------------------------------------------------------
-app.use((req, res, next) => {
-    console.log('--- DEBUG INFO ---');
-    console.log('Methode:', req.method); // Zeigt GET oder POST
-    console.log('Formular-Daten (Body):', req.body); // Zeigt deine Eingaben
-    console.log('------------------');
-
-    next();
-});
 
 // Routing 
 const indexRoutes = require('./routes/indexRoutes');
-//const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./routes/authRoutes');
 //const vaultRoutes = require('./routes/vaultRoutes');
 
 app.use('/', indexRoutes);
 //app.use('/', vaultRoutes);
-//app.use('/', authRoutes);
+app.use('/', authRoutes);
 
 
 
