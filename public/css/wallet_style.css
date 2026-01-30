@@ -9,6 +9,7 @@
 }
 * {
     box-sizing: border-box;
+    font-family: var(--font-family);
 }
 html {
     margin: 0;
@@ -23,11 +24,9 @@ body {
     margin: 0;
     height: 100%;
     flex-direction: column;
-    font-family: var(--font-family);
 }
 header {
     height: 70px;
-    font-family: var(--font-family);
     font-size: 1.5rem;
     color: white; 
     margin: 10px;
@@ -63,7 +62,6 @@ footer {
     border-radius: 10px;
     padding: 5px;
     margin-bottom: 15px;
-    margin-right: 10px;
     color: white;
     font-size: large;
 
@@ -121,4 +119,23 @@ footer {
     height: 70px;
     width: auto;
     margin-top: 7px;
+}
+
+#popup-form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: fixed;
+    visibility: hidden;
+
+    background-color: rgba(0, 47, 97, 0.8);
+    border: 2px solid lime;
+}
+.inputbox { 
+    width: 400px;
+    height: 30px;
+    margin: 10px;
+
+    background-color: rgba(54, 54, 54, 0.8);
+    border-radius: 5px;
 }

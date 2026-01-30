@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/public/css/wallet_style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+       <script src="/public/js/wallet.js"></script>
     </head>
     <body>
         <header>
@@ -18,6 +19,18 @@
             <i id="user-icon" class="fas fa-user user-icon testi"></i>
         </header>
         <div id="main-container">
+            <form id="popup-form">
+                <label for="name">Name</label>
+                <input id="name" class="inputbox" type="text">
+                <label for="username">Benutzername/Email</label>
+                <input id="username" class="inputbox" type="text">
+                <label for="password">Passwort</label>
+                <input id="password" class="inputbox" type="password">
+                <div id="button-container">
+                    <button id="">Hinzufuegen</button>
+                    <button id="cancel">Abbrechen</button>
+                </div>
+            </form>
             <div class="spacer"></div>
             <ul id="password-container">
                 <li class="password-card">Paypal</li>
@@ -29,12 +42,5 @@
        <footer>
             <p>Bitburg &copy; 2026</p>
        </footer> 
-       <script>
-            const addBtn = document.getElementById("add-button");
-
-            addBtn.addEventListener("click", function () {
-                document.get
-            })
-       </script>
     </body>
 </html>
