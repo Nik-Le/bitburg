@@ -5,7 +5,7 @@ router.post('/register', (req, res) => {
 
     console.log(req.body);
 
-    //res.json({message: 'Alles ok!'});
+    res.json({});
 });
 
 

@@ -5,8 +5,10 @@ const pageController = require('../controllers/pageController');
 
 router.get('/', pageController.home);
 
-router.get('/login', pageController.login)
+router.get('/login', pageController.login);
 
-router.get('/register', pageController.register)
+router.get('/register', pageController.register);
+
+router.get('/wallet',pageController.wallet);
 
 module.exports = router;
