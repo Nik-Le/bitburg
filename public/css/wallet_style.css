@@ -81,6 +81,12 @@ footer {
 .spacer {
     margin-left: 10px;
 }
+.logo {
+    display: flex;           /* Macht Bild und Text nebeneinander */
+    align-items: center;     /* Zentriert sie vertikal */
+    gap: 10px;               /* Abstand zwischen Logo und Text */
+    text-decoration: none; 
+}
 #add-button:hover {
     background-color: var(--primary-hover);
 }
@@ -116,6 +122,11 @@ footer {
     height: 70px;
     width: auto;
     margin-top: 7px;
+}
+#logo-section {
+    display: flex;
+    margin-left: 10px;
+    align-items: center;
 }
 
 #popup-form {
