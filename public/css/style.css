@@ -13,12 +13,17 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-}
-
-body {
     font-family: var(--font-family);
-    color: var(--text-color);
-    line-height: 1.6;
+    color: white;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #08012b;
+}
+#wallet {
+    height: 100vh; 
+    overflow: hidden; 
 }
 header { 
     height: 70px;
@@ -34,10 +39,115 @@ header {
     border-radius: 50px;
     box-shadow: 0 10px 30px rgba(0, 80, 200, 0.3);
 }
+#wallet-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    justify-content: space-between;
+    overflow: hidden;
+}
+#password-container {
+    max-height: 100%;
+    overflow-y: auto;
+    list-style: none;
+}
 #logo-section {
     display: flex;
     margin-left: 10px;
     align-items: center;
+}
+
+.password-card {
+    width: 500px;
+    height: 130px;
+    border: 2px solid;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 15px;
+    font-size: large;
+
+    background: rgba(0, 122, 255, 0.45); 
+    border: 1px solid rgba(0, 122, 255, 0.4); 
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 80, 200, 0.3);
+}
+.password-back {
+    width: 500px;
+    height: 130px;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 15px;
+    margin-right: 10px;
+    border: 2px limegreen solid;
+
+}
+.spacer {
+    margin-left: 10px;
+}
+
+#add-button:hover {
+    background-color: var(--primary-hover);
+}
+#add-button{
+    background-color: var(--primary-color);
+    width: 80px;
+    height: 80px;
+    font-size: x-large;
+    margin-top: auto;
+    margin-right: 20px;
+
+    background: rgba(0, 122, 255, 0.45); 
+    border-radius: 100%; 
+    border: 1px solid rgba(0, 122, 255, 0.4); 
+    box-shadow: 0 5px 10px rgba(0, 80, 200, 0.3);
+}
+
+#popup-form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: absolute;
+    visibility: hidden;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: rgba(54, 54, 54, 1);
+    border-radius: 5px;
+    border: 1px solid rgba(54, 54, 54, 0.4); 
+    box-shadow: 0 5px 10px rgba(0, 80, 200, 0.3);
+
+}
+.inputbox { 
+    width: 400px;
+    height: 30px;
+    margin: 10px;
+    padding: 20px;
+    font-size: large;
+
+    background-color: rgba(0, 21, 43, 0.4);
+    border: 1px solid rgba(1, 33, 66, 0.4); 
+    box-shadow: 0 5px 10px rgba(6, 28, 61, 0.3);
+    border-radius: 5px;
+}
+#button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+#add-password-button {
+   color: black; 
+   margin-left: 15px;
+}
+#cancel-button {
+    color: black;
+}
+#password {
+    display: flex;
+    flex-direction: row;
 }
 /* Hilfsklasse für Breite und Zentrierung */
 .container {
@@ -147,7 +257,6 @@ a {
 
 /* --- Hero Section --- */
 .hero {
-    background-image: url('/public/images/hintergrund_homepage2.jpg');
 
     /* 2. Skalierung: 'cover' sorgt dafür, dass das Bild immer den ganzen Bereich füllt, ohne verzerrt zu werden */
     background-size: cover;
@@ -213,7 +322,7 @@ a {
 footer {
     background-color: #1a1a1a;
     color: white;
-    padding: 40px 0;
+    padding: 20px 0;
     text-align: center;
 }
 
