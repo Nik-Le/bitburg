@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Bitburg - Password Wallet</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/public/css/wallet_style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+       <script src="/public/js/wallet.js"></script>
+    </head>
+    <body>
+        <header>
+            <div id="logo-section">
+                <img id="logo-img" src="/public/images/BitBurg_logo-removebg-preview.png" alt="BitBurg Logo">
+                <a id="logo-name">BitBurg - Wallet</a>
+            </div>
+            <i id="user-icon" class="fas fa-user user-icon testi"></i>
+        </header>
+        <div id="main-container">
+            <form id="popup-form">
+                <label for="name">Name</label>
+                <input id="name" class="inputbox" type="text">
+                <label for="username">Benutzername/Email</label>
+                <input id="username" class="inputbox" type="text">
+                <label for="password">Passwort</label>
+                <input id="password" class="inputbox" type="password">
+                <div id="button-container">
+                    <button id="">Hinzufuegen</button>
+                    <button id="cancel">Abbrechen</button>
+                </div>
+            </form>
+            <div class="spacer"></div>
+            <ul id="password-container">
+                <li class="password-card">Paypal</li>
+                <li class="password-card">Anki</li>
+                <li class="password-card">Pornhub</li>
+            </ul>
+            <button id="add-button" class="fa-solid fa-plus"></button>
+        </div>
+       <footer>
+            <p>Bitburg &copy; 2026</p>
+       </footer> 
+    </body>
+</html>

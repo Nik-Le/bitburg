@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> | BitBurg – herrlich herb, unknackbar stark</title>
+    <link rel="stylesheet" href="/frontend/css/style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container">
+            <a class="logo" href="/">
+                <img src="/images/BitBurg_logo.jpg" alt="BitBurg Logo">
+                <span class="logo-text">BitBurg</span>
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#">Wallet</a></li>
+                    <li><a href="#">Passwort-Generator</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <a class="login-btn" href="#">Über Uns</a>
+                <a class="cta-btn" href="#">Konto erstellen</a>
+                <a class="Profil" href="#">
+                    <img src="/images/Profilbild.jpg" alt="Profil" width="60" height="60">
+                    <span class="Profil-text">Profil</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <form action="/login" method="post" id="frm_login">
+            
+            <label for="username">Benutzername</label>
+            <input id="username" type="text" name="username" placeholder="Benutzername" required>
+
+            <label for="password">Passwort</label>
+            <input id="password" type="password" name="password" required>
+
+            <button type="submit">Einloggen</button>
+        
+        </form>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Bitburg Manager. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
