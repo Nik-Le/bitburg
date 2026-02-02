@@ -1,80 +1,94 @@
-doctype html
-html(lang="de")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title | BitBurg – herrlich herb, unknackbar stark
-    link(rel="stylesheet", href="css/style.css")
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitBurg – herrlich herb, unknackbar stark</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-  body
-    //- HEADER / NAVIGATION
-    header.navbar
-      .container
-        //- Logo
-        a.logo(href="/")
-          img(src="/images/BitBurg_logo.jpg", alt="BitBurg Logo")
-          span.logo-text BitBurg
+    <header class="navbar">
+        <div class="container">
+            <a class="logo" href="/">
+                <img src="/images/BitBurg_logo.jpg" alt="BitBurg Logo">
+                <span class="logo-text">BitBurg</span>
+            </a>
 
-        //- Navigation Links
-        nav
-          ul.nav-links
-            li
-              a(href="#") Wallet
-            li
-              a(href="#") Passwort-Generator
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/wallet">Wallet</a></li>
+                    <li><a href="#">Passwort-Generator</a></li>
+                </ul>
+            </nav>
 
-        //- Buttons rechts
-        .auth-buttons
-          a.login-btn(href="#") Über Uns
-          a.cta-btn(href="#") Konto erstellen
-          a.Profil(href="#")
-            img(src="/images/Profilbild.jpg", alt="Profil", width="60", height="60")
-            span.Profil-text Profil
+            <div class="auth-buttons">
+                <a class="login-btn" href="#">Über Uns</a>
+                <a class="cta-btn" href="#">Konto erstellen</a>
+                <a class="Profil" href="#">
+                    <img src="/images/Profilbild.jpg" alt="Profil" width="60" height="60">
+                    <span class="Profil-text">Profil</span>
+                </a>
+            </div>
+        </div>
+    </header>
 
-    //- MAIN CONTENT
-    main
-      
-      //- SECTION 1: Intro / Hero
-      section.hero
-        .container.hero-content
-          h1 BitBurg – herrlich herb, unknackbar stark
-          p.hero-subtext
-            | Speichere, teile und verwalte deine sensiblen Daten mit BitBurg. 
-            | Open Source, Ende-zu-Ende verschlüsselt und überall verfügbar.
-          .hero-actions
-            a.cta-btn.large(href="/register") Kostenlos starten
-            a.secondary-btn(href="#") Organisation kontaktieren
+    <main>
+        
+        <section class="hero">
+            <div class="container hero-content">
+                <h1>BitBurg – herrlich herb, unknackbar stark</h1>
+                <p class="hero-subtext">
+                    Speichere, teile und verwalte deine sensiblen Daten mit BitBurg. 
+                    Open Source, Ende-zu-Ende verschlüsselt und überall verfügbar.
+                </p>
+                <div class="hero-actions">
+                    <a class="cta-btn large" href="/register">Kostenlos starten</a>
+                    <a class="secondary-btn" href="#">Organisation kontaktieren</a>
+                </div>
+            </div>
+        </section>
 
-      //- SECTION 2: Bewertungen
-      section.hero
-        .container.hero-content
-          h1 Das sagen unsere Kunden
-          p.hero-subtext Hier sollen Bewertungen von Kunden rein.
-          .hero-actions
-            a.cta-btn.large(href="#") Weitere Bewertungen
-            a.secondary-btn(href="#") BitBurg bewerten
+        <section class="hero">
+            <div class="container hero-content">
+                <h1>Das sagen unsere Kunden</h1>
+                <p class="hero-subtext">Hier sollen Bewertungen von Kunden rein.</p>
+                <div class="hero-actions">
+                    <a class="cta-btn large" href="#">Weitere Bewertungen</a>
+                    <a class="secondary-btn" href="#">BitBurg bewerten</a>
+                </div>
+            </div>
+        </section>
 
-      //- SECTION 3: Features
-      section.features
-        .container
-          h2 Warum BitBurg?
-          .feature-grid
-            //- Feature 1
-            .feature-card
-              h3 Zero-Knowledge
-              p Wir können deine Daten nicht lesen. Nur du hast den Schlüssel.
-            
-            //- Feature 2
-            .feature-card
-              h3 Synchronisierung
-              p Zugriff von jedem Gerät: iOS, Android, Web und Desktop.
-            
-            //- Feature 3
-            .feature-card
-              h3 Open Source
-              p Transparenz schafft Vertrauen. Unser Code ist öffentlich prüfbar.
+        <section class="features">
+            <div class="container">
+                <h2>Warum BitBurg?</h2>
+                <div class="feature-grid">
+                    <article class="feature-card">
+                        <h3>Zero-Knowledge</h3>
+                        <p>Wir können deine Daten nicht lesen. Nur du hast den Schlüssel.</p>
+                    </article>
+                    
+                    <article class="feature-card">
+                        <h3>Synchronisierung</h3>
+                        <p>Zugriff von jedem Gerät: iOS, Android, Web und Desktop.</p>
+                    </article>
+                    
+                    <article class="feature-card">
+                        <h3>Open Source</h3>
+                        <p>Transparenz schafft Vertrauen. Unser Code ist öffentlich prüfbar.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-    //- FOOTER
-    footer
-      .container
-        p &copy; 2026 Bitburg Manager. Alle Rechte vorbehalten.
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Bitburg Manager. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

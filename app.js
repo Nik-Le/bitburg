@@ -1,38 +1,41 @@
 const express = require('express');
 const path = require('path');
+const mongoose = require('mongoose');
 const app = express();
 
 const PORT = 3000;
 
 // Set up static files
-app.use(express.static(path.join(__dirname, 'frontend')));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Set view engine
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname,  'frontend/views'));
-
-// Lesen von Formulardaten und wandeln in ein Java-Objekt
+// HTML-Dateien mit dem EJS-Renderer verknüpfen
+/*app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+app.set('views', path.join(__dirname, 'views'));
+*/
+// Lesen von Formulardaten und wandeln in ein JSON
+app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+// In app.js
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'views'))); // Füge dies hinzu
 
+//Verbindung mit MongoDB
+mongoose.connect('mongodb://localhost:27017/bitburgDB')
+    .then(() => console.log('Mongoose verbunden!'))
+    .catch(err => console.error('Datenbankfehler:', err));
 
-// Nur Debugg Noch enfernen <--------------------------------------------------------------------------------------------------------------
-app.use((req, res, next) => {
-    console.log('--- DEBUG INFO ---');
-    console.log('Methode:', req.method); // Zeigt GET oder POST
-    console.log('Formular-Daten (Body):', req.body); // Zeigt deine Eingaben
-    console.log('------------------');
-
-    next();
-});
-
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 // Routing 
 const indexRoutes = require('./routes/indexRoutes');
-//const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./routes/authRoutes');
 //const vaultRoutes = require('./routes/vaultRoutes');
 
 app.use('/', indexRoutes);
 //app.use('/', vaultRoutes);
-//app.use('/', authRoutes);
+app.use('/', authRoutes);
+
 
 
 

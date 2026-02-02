@@ -17,4 +17,11 @@ exports.register = (req, res) => {
     res.render('register', {
         title: 'Register'
     })
-}
+};
+
+exports.wallet = (req, res) => {
+
+    res.render('wallet', {
+        title: 'wallet'
+    })
+};

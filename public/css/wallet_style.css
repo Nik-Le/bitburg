@@ -10,6 +10,7 @@
 * {
     box-sizing: border-box;
     font-family: var(--font-family);
+    color: white;
 }
 html {
     margin: 0;
@@ -28,7 +29,6 @@ body {
 header {
     height: 70px;
     font-size: 1.5rem;
-    color: white; 
     margin: 10px;
     background-color: var(--primary-color);
     display: flex;
@@ -42,7 +42,6 @@ header {
 }
 footer {
     text-align: center;
-    color: white;
 }
 #main-container {
     display: flex;
@@ -62,7 +61,6 @@ footer {
     border-radius: 10px;
     padding: 5px;
     margin-bottom: 15px;
-    color: white;
     font-size: large;
 
     background: rgba(0, 122, 255, 0.45); 
@@ -83,6 +81,12 @@ footer {
 .spacer {
     margin-left: 10px;
 }
+.logo {
+    display: flex;           /* Macht Bild und Text nebeneinander */
+    align-items: center;     /* Zentriert sie vertikal */
+    gap: 10px;               /* Abstand zwischen Logo und Text */
+    text-decoration: none; 
+}
 #add-button:hover {
     background-color: var(--primary-hover);
 }
@@ -91,7 +95,6 @@ footer {
     width: 80px;
     height: 80px;
     font-size: x-large;
-    color: white;
     margin-top: auto;
     margin-right: 20px;
 
@@ -120,22 +123,54 @@ footer {
     width: auto;
     margin-top: 7px;
 }
+#logo-section {
+    display: flex;
+    margin-left: 10px;
+    align-items: center;
+}
 
 #popup-form {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    position: fixed;
+    position: absolute;
     visibility: hidden;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-    background-color: rgba(0, 47, 97, 0.8);
-    border: 2px solid lime;
+    background-color: rgba(54, 54, 54, 1);
+    border-radius: 5px;
+    border: 1px solid rgba(54, 54, 54, 0.4); 
+    box-shadow: 0 5px 10px rgba(0, 80, 200, 0.3);
+
 }
 .inputbox { 
     width: 400px;
     height: 30px;
     margin: 10px;
+    padding: 20px;
+    font-size: large;
 
-    background-color: rgba(54, 54, 54, 0.8);
+    background-color: rgba(0, 21, 43, 0.4);
+    border: 1px solid rgba(1, 33, 66, 0.4); 
+    box-shadow: 0 5px 10px rgba(6, 28, 61, 0.3);
     border-radius: 5px;
+}
+#button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+#add-password-button {
+   color: black; 
+   margin-left: 15px;
+}
+#cancel-button {
+    color: black;
+}
+#password {
+    display: flex;
+    flex-direction: row;
 }

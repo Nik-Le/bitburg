@@ -6,7 +6,8 @@ html(lang="de")
     //- Der Title kann nun dynamisch vom Controller übergeben werden via #{title}
     title #{title} | BitBurg – herrlich herb, unknackbar stark
     //- Pfade in Express starten meist absolut vom public-Ordner (daher /css...)
-    link(rel="stylesheet", href="css/style.css")
+    link(rel="stylesheet", href="/public/css/style.css")
+    script(src="/public/js/main.js") <!-- Einbinder der js-File -->
     
   body
     //- --- HEADER / NAVBAR (Global) ---
@@ -14,7 +15,7 @@ html(lang="de")
       .container
         a.logo(href="/")
           //- Pfade für Bilder auch absolut setzen
-          img(src="/images/BitBurg_logo.jpg", alt="BitBurg Logo")
+          img(src="/public/images/BitBurg_logo.png", alt="BitBurg Logo")
           span.logo-text BitBurg
         nav
           ul.nav-links
@@ -26,7 +27,7 @@ html(lang="de")
           a.login-btn(href="#") Über Uns
           a.cta-btn(href="#") Konto erstellen
           a.Profil(href="#")
-            img(src="/images/Profilbild.jpg", alt="Profil", width="60", height="60")
+            img(src="/public/images/Profilbild.jpg", alt="Profil", width="60", height="60")
             span.Profil-text Profil
 
     //- --- DYNAMISCHER INHALT ---

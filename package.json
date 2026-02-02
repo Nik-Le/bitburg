@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/Nik-Le/bitburg#readme",
   "dependencies": {
-    "dotenv": "^17.2.3",
+    "bcryptjs": "^3.0.3",
+    "ejs": "^4.0.1",
     "express": "^5.2.1",
     "mongoose": "^9.1.5",
     "pug": "^3.0.3"
