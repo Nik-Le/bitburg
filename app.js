@@ -2,14 +2,18 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const app = express();
-
+const session = require('express-session');
 const PORT = 3000;
 
 // HTML-Dateien mit dem EJS-Renderer verknüpfen
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('views', path.join(__dirname, 'views'));
-
+app.use(session({
+  secret: 'geheimes-wort', // Kann irgendwas sein
+  resave: false,
+  saveUninitialized: false
+}));
 // Lesen von Formulardaten und wandeln in ein JSON
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
