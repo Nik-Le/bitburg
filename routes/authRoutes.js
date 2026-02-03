@@ -26,10 +26,10 @@ router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        // 1. User in der Datenbank suchen
+        // sucht user in DB
         const user = await User.findOne({ username: username });
 
-        // 2. Prüfen: Gibt es den User? Stimmt das Passwort?
+        // existiert user
         if (user && user.password === password) {
 
             // Login erfolgreich: Session setzen
