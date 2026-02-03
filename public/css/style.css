@@ -90,6 +90,11 @@ header {
 #add-button:hover {
     background-color: var(--primary-hover);
 }
+button {
+    background: rgba(0, 122, 255, 0.45); 
+    border: 1px solid rgba(0, 122, 255, 0.4); 
+    box-shadow: 0 5px 10px rgba(0, 80, 200, 0.3);
+}
 #add-button{
     background-color: var(--primary-color);
     width: 80px;
@@ -97,13 +102,8 @@ header {
     font-size: x-large;
     margin-top: auto;
     margin-right: 20px;
-
-    background: rgba(0, 122, 255, 0.45); 
     border-radius: 100%; 
-    border: 1px solid rgba(0, 122, 255, 0.4); 
-    box-shadow: 0 5px 10px rgba(0, 80, 200, 0.3);
 }
-
 #popup-form {
     display: flex;
     flex-direction: column;
@@ -145,9 +145,16 @@ header {
 #cancel-button {
     color: black;
 }
-#password {
+#password-group {
     display: flex;
     flex-direction: row;
+}
+#password-input {
+    display: flex;
+    flex-direction: row;
+}
+#password-generator {
+    width: 100px;
 }
 /* Hilfsklasse für Breite und Zentrierung */
 .container {
