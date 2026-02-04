@@ -2,7 +2,7 @@
 :root {
     --primary-color: #175DDC; /* Bitwarden-ähnliches Blau */
     --primary-hover: #1046a8;
-    --text-color: #333333;
+    --text-color: white;
     --bg-color: #ffffff;
     --light-bg: #f8f9fa;
     --border-radius: 4px;
@@ -172,7 +172,6 @@ a {
 /* --- Buttons --- */
 .cta-btn {
     background-color: var(--primary-color);
-    color: white;
     padding: 10px 20px;
     border-radius: var(--border-radius);
     transition: background 0.3s;
@@ -224,7 +223,7 @@ a {
 .logo-text {
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--primary-color);
+    padding-bottom: 10px;
 }
 
 .profil {
@@ -246,9 +245,6 @@ a {
     color: var(--primary-color); 
 }
 
-
-
-
 .nav-links {
     list-style: none;
     display: flex;
@@ -264,24 +260,13 @@ a {
 
 /* --- Hero Section --- */
 .hero {
-
-    /* 2. Skalierung: 'cover' sorgt dafür, dass das Bild immer den ganzen Bereich füllt, ohne verzerrt zu werden */
-    background-size: cover;
-
-    /* 3. Positionierung: Der wichtigste Teil des Bildes (die Mitte) bleibt sichtbar */
-    background-position: center;
-
-    /* 4. Wiederholung verhindern (falls das Bild zu klein wäre) */
-    background-repeat: no-repeat;
     padding: 100px 0;
-    background-color: var(--light-bg);
     text-align: center;
 }
 
 .hero h1 {
     font-size: 3rem;
     margin-bottom: 20px;
-    color: #1a1a1a;
 }
 
 .hero-subtext {
