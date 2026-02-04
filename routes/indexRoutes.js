@@ -9,6 +9,6 @@ router.get('/login', pageController.login);
 
 router.get('/register', pageController.register);
 
-router.get('/wallet',pageController.wallet);
+router.get('/wallet', pageController.wallet);
 
 module.exports = router;

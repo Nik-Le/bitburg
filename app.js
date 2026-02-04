@@ -14,12 +14,15 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+
 // Lesen von Formulardaten und wandeln in ein JSON
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
 // In app.js
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'views'))); // Füge dies hinzu
+//app.use(express.static(path.join(__dirname, 'views'))); // Füge dies hinzu
+
 
 //Verbindung mit MongoDB
 mongoose.connect('mongodb://localhost:27017/bitburgDB')
