@@ -9,7 +9,9 @@ exports.registerUser = async (req, res) => {
         const existingUser = await User.findOne({ username: username });
         if (existingUser) {
              // Wichtig: return nutzen, damit der Code hier stoppt
+            console.log("User already exist");
             return res.status(400).json({error: 'User existiert bereits'})
+
         }
 
         const newUser = new User({ username, email, password });
@@ -28,7 +30,7 @@ exports.registerUser = async (req, res) => {
 // POST Logic für Login
 exports.loginUser = async (req, res) => {
     try {
-        const { username, password, email } = req.body;
+        const { username, password} = req.body;
         const user = await User.findOne({ username: username }); // Email oft optional beim Login
 
         if (user && user.password === password) {

@@ -34,11 +34,13 @@ app.use(express.json());
 // Routing 
 const indexRoutes = require('./routes/indexRoutes');
 const authRoutes = require('./routes/authRoutes');
+const walletRoutes = require('./routes/walletRoutes');
 //const vaultRoutes = require('./routes/vaultRoutes');
 
 app.use('/', indexRoutes);
 //app.use('/', vaultRoutes);
 app.use('/', authRoutes);
+app.use('/', walletRoutes);
 
 
 
