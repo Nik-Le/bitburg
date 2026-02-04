@@ -12,6 +12,7 @@ function setupFormSubmit(formId, url, redirectedUrl){
     if (!form) return;
 
     form.addEventListener('submit', async(e) =>{
+        
         e.preventDefault();                         // verhindert neuladen der Wesbite
 
         const data = Object.fromEntries(new FormData(form));
