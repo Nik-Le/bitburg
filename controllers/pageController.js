@@ -22,6 +22,6 @@ exports.register = (req, res) => {
 exports.wallet = (req, res) => {
 
     res.render('wallet', {
-        title: 'wallet'
+        title: 'Wallet'
     })
 };
