@@ -43,5 +43,5 @@ document.addEventListener('DOMContentLoaded', () =>{
 
     setupFormSubmit('frm_register', '/register', '/login');
 
-    setupFormSubmit('frm_login', '/login', '/dashboard');
+    setupFormSubmit('frm_login', '/login', '/wallet');
 });

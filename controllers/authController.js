@@ -9,14 +9,16 @@ exports.registerUser = async (req, res) => {
         const existingUser = await User.findOne({ username: username });
         if (existingUser) {
              // Wichtig: return nutzen, damit der Code hier stoppt
-            return res.render('register', { title: 'Register', error: 'User existiert bereits!' });
+            return res.status(400).json({error: 'User existiert bereits'})
         }
 
         const newUser = new User({ username, email, password });
         await newUser.save();
         
-        console.log('User angelegt!');
-        res.redirect('/login'); // Nach Registrierung zum Login
+        return res.status(200).json({
+            message: 'Erfolgreich',
+            redirectUrl: '/login'
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send("Server Fehler beim Registrieren");
@@ -32,9 +34,12 @@ exports.loginUser = async (req, res) => {
         if (user && user.password === password) {
             req.session.userId = user._id;
             console.log("Login erfolgreich");
-            res.redirect('/wallet'); 
+            res.status(200).json({
+                message: 'Erfolgreich',
+                redirectUrl: '/wallet'
+            });
         } else {
-            res.render('login', { title: 'Login', error: 'Falsche Daten!' });
+            res.status(400).json({error: 'Falsches Passwort'})
         }
     } catch (error) {
         console.error(error);
@@ -42,7 +47,7 @@ exports.loginUser = async (req, res) => {
     }
 };
 
-// Logout (Bonus)
+// Logout
 exports.logoutUser = (req, res) => {
     req.session.destroy(() => {
         res.redirect('/');
