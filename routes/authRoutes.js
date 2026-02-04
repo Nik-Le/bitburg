@@ -1,13 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+
+
 router.get('/register', (req, res) => {
     res.sendFile('register.html', { root: './views' });
 });
+
+
 router.post('/register', async(req, res) => {
     try {
+        const { username, password } = req.body;
         const existingUser = await User.findOne({username: username});
-        if (!existingUser) {
+        if (existingUser) {
             return res.status(400).send("Dieser Benutzername ist schon vergeben{}");
         }
         const newUser = new User({
@@ -19,9 +24,11 @@ router.post('/register', async(req, res) => {
     res.redirect('/login');}
     catch(error) {
         console.error(error);
-        res.stats(500).send('Fehler bei Registrierung');
+        res.status(500).send('Fehler bei Registrierung');
     }
     });
+
+
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -49,10 +56,6 @@ router.post('/login', async (req, res) => {
 });
 
 
-/*   console.log(req.body);
-
-    res.json({});
-});*/
 
 
 module.exports = router;
