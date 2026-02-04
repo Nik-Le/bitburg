@@ -5,9 +5,8 @@ const app = express();
 const session = require('express-session');
 const PORT = 3000;
 
-// HTML-Dateien mit dem EJS-Renderer verknüpfen
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
+// Pug als view Engine 
+app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 app.use(session({
   secret: 'geheimes-wort', // Kann irgendwas sein
