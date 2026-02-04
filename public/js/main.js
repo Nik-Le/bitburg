@@ -42,7 +42,9 @@ function setupFormSubmit(formId, url, redirectedUrl){
 // Aufruf sobald die Seite geladen hat 
 document.addEventListener('DOMContentLoaded', () =>{
 
-    setupFormSubmit('frm_register', '/register', '/login');
+    setupFormSubmit('frmRegister', '/register', '/login');
 
-    setupFormSubmit('frm_login', '/login', '/wallet');
+    setupFormSubmit('frmLogin', '/login', '/wallet');
+
+    setupFormSubmit('frmPopupForm', '/wallet', '/wallet');
 });

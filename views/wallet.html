@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <script src="/js/wallet.js"></script>
+        <script src="/js/main.js"><!-- Einbinder der js-File --></script>
         <script src="/js/password-manager.js"></script>
     </head>
     <body id="wallet">
@@ -21,19 +22,19 @@
         </header>
         <div id="wallet-container">
 
-            <form id="popup-form" action="./addPassword" method="POST">
+            <form id="frmPopupForm" >
                 <label for="name-input">Name:</label>
-                <input id="name-input" class="inputbox" type="text">
+                <input id="name-input" name="siteName" class="inputbox" type="text">
                 <label for="username-input">Benutzername/Email:</label>
-                <input id="username-input" class="inputbox" type="text">
+                <input id="username-input" name="username" class="inputbox" type="text">
                 <label for="password-input">Passwort:</label>
                 <div id="password-group">
-                    <input id="password-input" class="inputbox" type="password">
+                    <input id="password-input" class="inputbox" name="password" type="password">
                     <button type="button" id="password-generator"><i class="fa-solid fa-shuffle"></i></button>
                 </div>
                 <div id="button-container">
                     <button id="cancel-button">Abbrechen</button>
-                    <button id="add-password-button">Hinzufuegen</button>
+                    <button id="add-password-button" type="submit" >Hinzufuegen</button>
                 </div>
             </form>
 
@@ -43,6 +44,8 @@
                 <li class="password-card">Anki</li>
                 <li class="password-card">Anki</li>
                 <li class="password-card">Anki</li>
+
+
 
             </ul>
             <button id="add-button" class="fa-solid fa-plus"></button>

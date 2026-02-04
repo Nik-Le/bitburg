@@ -10,10 +10,10 @@ document.addEventListener("DOMContentLoaded", function() {
 })
 
 function showForm() {
-    document.getElementById("popup-form").style.visibility = "visible";
+    document.getElementById("frmPopupForm").style.visibility = "visible";
     form_visible = true
 }
 function removeForm() {
-    document.getElementById("popup-form").style.visibility = "hidden";
+    document.getElementById("frmPopupForm").style.visibility = "hidden";
     form_visible = false;
 }
