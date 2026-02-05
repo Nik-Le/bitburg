@@ -1,32 +1,61 @@
 extends layout
 
-block scripts
+//- Hier setzen wir die ID für den Body dieser speziellen Seite
+block vars
+  - var pageId = 'wallet';
+
+block scripts 
   script(src="/js/wallet.js" defer)
-  script(src="/js/password-manager.js" defer)
 
 block content
   #wallet-container
-    form#frmPopupForm
-      label(for="name-input") Name:
-      input#name-input.inputbox(name="siteName" type="text")
-      
-      label(for="username-input") Benutzername/Email:
-      input#username-input.inputbox(name="username" type="text")
-      
-      label(for="password-input") Passwort:
-      #password-group
-        input#password-input.inputbox(name="password" type="password")
-        button#password-generator(type="button")
-          i.fa-solid.fa-shuffle
-      
-      #button-container
-        button#cancel-button(type="button") Abbrechen
-        button#add-password-button(type="submit") Hinzufügen
-
     .spacer
     ul#password-container
       li.password-card Paypal
       li.password-card Anki
-      // Dynamische Inhalte folgen hier
-      
+      li.password-card Anki
+      li.password-card Anki
+    
     button#add-button.fa-solid.fa-plus
+
+  form#frmPopupForm(action="./addPassword", method="POST")
+    label(for="name-input") Name:
+    input#name-input.inputbox(name="siteName" type="text")
+    
+    label(for="username-input") Benutzername/Email:
+    input#username-input.inputbox(name="username" type="text")
+    
+    label(for="password-input") Passwort:
+    #password-group
+      input#password-input.inputbox(name="password" type="password")
+      button#password-generator(type="button")
+        i.fa-solid.fa-shuffle
+    
+    #button-container
+      button#cancel-button(type="button") Abbrechen
+      button#add-password-button(type="submit") Hinzufuegen
+
+  //- Formular: Generator
+  form#generator
+    input#generated-password.inputbox(type="text", readonly)
+    
+    .generator-options
+      .option-row
+        label(for="pw-length") Length
+        input#pw-length(type="number")
+        p#length-error Länge muss mindestens 8 Zeichen lang sein.
+      
+      .option-row
+        label(for="up-case") A-Z
+        input#up-case(type="checkbox")
+      
+      .option-row
+        label(for="low-case") a-z
+        input#low-case(type="checkbox")
+      
+      .option-row
+        label(for="numbers") 0-9
+        input#numbers(type="checkbox")
+    
+    button#generate-btn(type="button") Passwort generieren
+    button#apply-btn(type="button") Passwort übernehmen
