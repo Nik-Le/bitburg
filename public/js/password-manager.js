@@ -1,8 +1,3 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const generatePasswordBtn = document.getElementById("password-generator");
-
-    generatePasswordBtn.addEventListener("click", generatePassword);
-})
 
 function generatePassword () {
     let password = "";
