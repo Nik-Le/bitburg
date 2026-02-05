@@ -1,0 +1,36 @@
+doctype html
+html(lang="de")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title #{title} | BitBurg – herrlich herb, unknackbar stark
+    link(rel="stylesheet" href="/css/style.css")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css")
+    script(src="/js/main.js" defer)
+    block scripts
+  body
+    header.navbar
+      div.container
+        #logo-section
+          a.logo(href="/")
+            img(src="/images/BitBurg_logo.png" alt="BitBurg Logo")
+            span.logo-text BitBurg
+        
+        nav
+          ul.nav-links
+            li: a(href="/wallet") Wallet
+            li: a(href="#") Passwort-Generator
+
+        div.auth-buttons
+          a.login-btn(href="#") Über Uns
+          a.cta-btn(href="/register") Konto erstellen
+          a.profil(href="/login")
+            i#user-icon.fas.fa-user.user-icon
+            span.profile-text Profil
+
+    main
+      block content
+
+    footer
+      div.container
+        p &copy; 2026 Bitburg Manager. Alle Rechte vorbehalten.

@@ -1,0 +1,32 @@
+extends layout
+
+block scripts
+  script(src="/js/wallet.js" defer)
+  script(src="/js/password-manager.js" defer)
+
+block content
+  #wallet-container
+    form#frmPopupForm
+      label(for="name-input") Name:
+      input#name-input.inputbox(name="siteName" type="text")
+      
+      label(for="username-input") Benutzername/Email:
+      input#username-input.inputbox(name="username" type="text")
+      
+      label(for="password-input") Passwort:
+      #password-group
+        input#password-input.inputbox(name="password" type="password")
+        button#password-generator(type="button")
+          i.fa-solid.fa-shuffle
+      
+      #button-container
+        button#cancel-button(type="button") Abbrechen
+        button#add-password-button(type="submit") Hinzufügen
+
+    .spacer
+    ul#password-container
+      li.password-card Paypal
+      li.password-card Anki
+      // Dynamische Inhalte folgen hier
+      
+    button#add-button.fa-solid.fa-plus

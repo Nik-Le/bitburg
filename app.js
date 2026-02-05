@@ -5,21 +5,23 @@ const app = express();
 const session = require('express-session');
 const PORT = 3000;
 
-// HTML-Dateien mit dem EJS-Renderer verknüpfen
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
+// Pug als view Engine 
+app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 app.use(session({
   secret: 'geheimes-wort', // Kann irgendwas sein
   resave: false,
   saveUninitialized: false
 }));
+
 // Lesen von Formulardaten und wandeln in ein JSON
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
 // In app.js
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'views'))); // Füge dies hinzu
+//app.use(express.static(path.join(__dirname, 'views'))); // Füge dies hinzu
+
 
 //Verbindung mit MongoDB
 mongoose.connect('mongodb://localhost:27017/bitburgDB')
@@ -31,11 +33,13 @@ app.use(express.json());
 // Routing 
 const indexRoutes = require('./routes/indexRoutes');
 const authRoutes = require('./routes/authRoutes');
+const walletRoutes = require('./routes/walletRoutes');
 //const vaultRoutes = require('./routes/vaultRoutes');
 
 app.use('/', indexRoutes);
 //app.use('/', vaultRoutes);
 app.use('/', authRoutes);
+app.use('/', walletRoutes);
 
 
 

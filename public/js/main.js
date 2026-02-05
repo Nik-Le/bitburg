@@ -12,6 +12,7 @@ function setupFormSubmit(formId, url, redirectedUrl){
     if (!form) return;
 
     form.addEventListener('submit', async(e) =>{
+        
         e.preventDefault();                         // verhindert neuladen der Wesbite
 
         const data = Object.fromEntries(new FormData(form));
@@ -41,7 +42,9 @@ function setupFormSubmit(formId, url, redirectedUrl){
 // Aufruf sobald die Seite geladen hat 
 document.addEventListener('DOMContentLoaded', () =>{
 
-    setupFormSubmit('frm_register', '/register', '/login');
+    setupFormSubmit('frmRegister', '/register', '/login');
 
-    setupFormSubmit('frm_login', '/login', '/dashboard');
+    setupFormSubmit('frmLogin', '/login', '/wallet');
+
+    setupFormSubmit('frmPopupForm', '/wallet', '/wallet');
 });
