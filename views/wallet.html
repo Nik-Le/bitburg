@@ -9,8 +9,9 @@
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <script src="/js/wallet.js"></script>
-        <script src="/js/password-manager.js"></script>
     </head>
+
+
     <body id="wallet">
         <header>
             <div id="logo-section">
@@ -19,24 +20,8 @@
             </div>
             <a><i id="user-icon" class="fas fa-user user-icon profil"></i></a>
         </header>
+
         <div id="wallet-container">
-
-            <form id="popup-form" action="./addPassword" method="POST">
-                <label for="name-input">Name:</label>
-                <input id="name-input" class="inputbox" type="text">
-                <label for="username-input">Benutzername/Email:</label>
-                <input id="username-input" class="inputbox" type="text">
-                <label for="password-input">Passwort:</label>
-                <div id="password-group">
-                    <input id="password-input" class="inputbox" type="password">
-                    <button type="button" id="password-generator"><i class="fa-solid fa-shuffle"></i></button>
-                </div>
-                <div id="button-container">
-                    <button id="cancel-button">Abbrechen</button>
-                    <button id="add-password-button">Hinzufuegen</button>
-                </div>
-            </form>
-
             <div class="spacer"></div>
             <ul id="password-container">
                 <li class="password-card">Paypal</li>
@@ -51,4 +36,46 @@
             <p>&copy; 2026 Bitburg Manager</p>
        </footer> 
     </body>
+
+        <form id="password-form" action="./addPassword" method="POST">
+            <label for="name-input">Name:</label>
+            <input id="name-input" class="inputbox" type="text">
+            <label for="username-input">Benutzername/Email:</label>
+            <input id="username-input" class="inputbox" type="text">
+            <label for="password-input">Passwort:</label>
+            <div id="password-group">
+                <input id="password-input" class="inputbox" type="password">
+                <button type="button" id="password-generator"><i class="fa-solid fa-shuffle"></i></button>
+            </div>
+            <div id="button-container">
+                <button id="cancel-button">Abbrechen</button>
+                <button id="add-password-button">Hinzufuegen</button>
+            </div>
+        </form>
+
+        <form id="generator">
+            <input class="inputbox" id="generated-password" type="text" readonly>
+    
+            <div class="generator-options">
+                <div class="option-row">
+                    <label for="pw-length">Length</label>
+                    <input type="number" id="pw-length">
+                    <p id="length-error">Länge muss mindestens 8 Zeichen lang sein.</p>
+                </div>
+                <div class="option-row">
+                    <label for="up-case">A-Z</label>
+                    <input type="checkbox" id="up-case">
+                </div>
+                <div class="option-row">
+                    <label for="low-case">a-z</label>
+                    <input type="checkbox" id="low-case">
+                </div>
+                <div class="option-row">
+                    <label for="numbers">0-9</label>
+                    <input type="checkbox" id="numbers">
+                </div>
+            </div>
+            <button type="button" id="generate-btn">Passwort generieren</button>
+            <button type="button" id="apply-btn">Passwort übernehmen</button>
+        </form>
 </html>
