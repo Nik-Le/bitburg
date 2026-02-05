@@ -19,21 +19,12 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 })
 
-<<<<<<< HEAD
 function showForm(form) {
     document.getElementById(form).style.visibility = "visible";
     form_visible = true;
 }
 function removeForm(form) {
     document.getElementById(form).style.visibility = "hidden";
-=======
-function showForm() {
-    document.getElementById("frmPopupForm").style.visibility = "visible";
-    form_visible = true
-}
-function removeForm() {
-    document.getElementById("frmPopupForm").style.visibility = "hidden";
->>>>>>> main
     form_visible = false;
 }
 
