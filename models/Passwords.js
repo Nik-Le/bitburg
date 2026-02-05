@@ -8,7 +8,6 @@ const passwordVorlage = new mongoose.Schema({
     siteName:{
         type: String,
         required: true,
-        unique: true,
     },
     password: {
         type: String,
