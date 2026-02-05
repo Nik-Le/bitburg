@@ -11,4 +11,4 @@ router.get('/register', pageController.register);
 
 router.get('/wallet', pageController.wallet);
 
-module.exports = router;
+module.exports = router;     
