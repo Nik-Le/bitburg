@@ -18,12 +18,21 @@
 }
 body {
     display: flex;
-    flex-direction: column;
     background-color: #08012b;
+    flex-direction: column;
 }
-#wallet {
+#walletBody {
+    display: flex;
+    flex-direction: column;
     height: 100vh; 
     overflow: hidden; 
+}
+#walletMain {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; 
+    width: 100%;
 }
 header { 
     height: 70px;
@@ -40,18 +49,18 @@ header {
     box-shadow: 0 10px 30px rgba(0, 80, 200, 0.3);
 }
 #wallet-container {
-    height: 100vh;
-    width: 100vw;
     display: flex;
     flex: 1;
-    overflow: hidden;
     justify-content: space-between;
-    overflow: hidden;
+    overflow: hidden;    /* Wichtig: Hält den Inhalt im Zaum */
+    height: 100%;        /* Stellt sicher, dass es vertikal voll da ist */
 }
 #password-container {
-    max-height: 100%;
     overflow-y: auto;
     list-style: none;
+    padding-right: 10px;
+    scrollbar-width: thin; 
+    scrollbar-color: var(--primary-color) transparent;
 }
 #logo-section {
     display: flex;
@@ -100,14 +109,9 @@ button {
     width: 80px;
     height: 80px;
     font-size: x-large;
-    margin-top: auto;
     margin-right: 20px;
+    margin-top: auto;
     border-radius: 100%; 
-}
-
-#formtest {
-    display: flex;
-    flex-direction: column;
 }
 #frmPopupForm {
     display: flex;

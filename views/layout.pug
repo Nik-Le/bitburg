@@ -1,4 +1,6 @@
 doctype html
+block vars 
+
 html(lang="de")
   head
     meta(charset="UTF-8")
@@ -8,7 +10,7 @@ html(lang="de")
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css")
     script(src="/js/main.js" defer)
     block scripts
-  body
+  body(id=bodyId)
     header.navbar
       div.container
         #logo-section
@@ -28,7 +30,7 @@ html(lang="de")
             i#user-icon.fas.fa-user.user-icon
             span.profile-text Profil
 
-    main
+    main(id=mainId)
       block content                     
 
     footer

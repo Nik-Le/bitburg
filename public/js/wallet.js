@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const generatePasswordBtn = document.getElementById("generate-btn");
 
     addBtn.addEventListener("click", function() {
-        formVisible ? removeForm("password-form") : showForm("password-form");
+        formVisible ? removeForm("frmPopupForm") : showForm("frmPopupForm");
     });
     generatorBtn.addEventListener("click", function() {
         generatorFormVisible ? removeForm("generator") : showForm("generator");
@@ -25,21 +25,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
 })
 
-<<<<<<< HEAD
 function showForm(form) {
     document.getElementById(form).style.visibility = "visible";
     form_visible = true;
 }
 function removeForm(form) {
     document.getElementById(form).style.visibility = "hidden";
-=======
-function showForm() {
-    document.getElementById("frmPopupForm").style.visibility = "visible";
-    form_visible = true
-}
-function removeForm() {
-    document.getElementById("frmPopupForm").style.visibility = "hidden";
->>>>>>> main
     form_visible = false;
 }
 

@@ -2,7 +2,8 @@ extends layout
 
 //- Hier setzen wir die ID für den Body dieser speziellen Seite
 block vars
-  - var pageId = 'wallet';
+  - var bodyId = 'walletBody';
+  - var mainId = 'walletMain';
 
 block scripts 
   script(src="/js/wallet.js" defer)
@@ -11,6 +12,9 @@ block content
     .spacer
     ul#password-container
       li.password-card Paypal
+      li.password-card Anki
+      li.password-card Anki
+      li.password-card Anki
       li.password-card Anki
       li.password-card Anki
       li.password-card Anki
