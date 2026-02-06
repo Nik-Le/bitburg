@@ -17,14 +17,29 @@ document.addEventListener("DOMContentLoaded", function() {
     generatePasswordBtn.addEventListener("click", function() {
         generatePassword();
     });
+
+    cancelBtn.addEventListener("click", function() {
+        form_visible ? removeForm() : showForm();
+    });
+    
+
 })
 
+<<<<<<< HEAD
 function showForm(form) {
     document.getElementById(form).style.visibility = "visible";
     form_visible = true;
 }
 function removeForm(form) {
     document.getElementById(form).style.visibility = "hidden";
+=======
+function showForm() {
+    document.getElementById("frmPopupForm").style.visibility = "visible";
+    form_visible = true
+}
+function removeForm() {
+    document.getElementById("frmPopupForm").style.visibility = "hidden";
+>>>>>>> main
     form_visible = false;
 }
 

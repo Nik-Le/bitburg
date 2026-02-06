@@ -17,7 +17,7 @@ function setupFormSubmit(formId, url, redirectedUrl){
 
         const data = Object.fromEntries(new FormData(form));
 
-        try {
+        try {          
             const response = await fetch(url, {
                method: 'POST',
                headers: { 'Content-Type': 'application/json'},
