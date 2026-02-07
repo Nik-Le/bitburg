@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const addBtn = document.getElementById("add-button");
     const generatorBtn = document.getElementById("password-generator");
     const generatePasswordBtn = document.getElementById("generate-btn");
+    const cancelBtn = document.getElementById("cancel-button");
 
     addBtn.addEventListener("click", function() {
         formVisible ? removeForm("frmPopupForm") : showForm("frmPopupForm");
@@ -19,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     cancelBtn.addEventListener("click", function() {
-        form_visible ? removeForm() : showForm();
+        formVisible ? removeForm("frmPopupForm") : showForm("frmPopupForm");
     });
     
 
@@ -27,11 +28,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function showForm(form) {
     document.getElementById(form).style.visibility = "visible";
-    form_visible = true;
+    formVisible = true;
 }
 function removeForm(form) {
     document.getElementById(form).style.visibility = "hidden";
-    form_visible = false;
+    formVisible = false;
 }
 
 function generatePassword () {

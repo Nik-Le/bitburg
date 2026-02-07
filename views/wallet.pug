@@ -21,11 +21,12 @@ block content
     
     button#add-button.fa-solid.fa-plus
 
-  form#frmPopupForm(action="./addPassword", method="POST")
+  form#frmPopupForm()
     label(for="name-input") Name:
     input#name-input.inputbox(name="siteName" type="text")
     
     label(for="username-input") Benutzername/Email:
+    
     input#username-input.inputbox(name="username" type="text")
     
     label(for="password-input") Passwort:
