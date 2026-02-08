@@ -428,3 +428,113 @@ label.star:before {
   content: '\1F510';
   font-family: FontAwesome;
 }
+
+/* Container bleibt gleich, sorgt für Zentrierung */
+#loginRegistercont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modernere Schriftart */
+}
+
+/* Das Design der Box (Karte) */
+.authDesign {
+    /* Ein schönes, tiefes Dunkelblau statt dem grellen Blau */
+    background-color: #102a43; 
+    color: #ffffff; /* WICHTIG: Weiße Schrift für alles in der Box */
+    
+    padding: 2.5rem;
+    border-radius: 16px; /* Rundere Ecken */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Weicherer Schatten */
+    
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px; /* Abstand zwischen allen Elementen */
+}
+
+/* Die Überschrift */
+.authDesign legend {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ffffff;
+    width: 100%; /* Damit text-align center funktioniert */
+}
+
+/* Labels (Beschriftungen) */
+.authDesign label {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 2px; /* Kleiner Abstand zum Input */
+    color: #d9e2ec; /* Leichtes Grau-Weiß, sieht edel aus */
+    padding-left: 5px;
+}
+
+/* Eingabefelder */
+.authDesign input {
+    width: 100%;
+    padding-top: 8px; 
+    padding-bottom: 8px;
+    padding-left: 5px;
+    border-radius: 8px; /* Leicht abgerundet */
+    border: 1px solid #243b53; /* Dunkler Rand */
+    background-color: #f0f4f8; /* Helles Grau, augenfreundlicher als reines Weiß */
+    color: #102a43; /* Dunkle Schrift im Input */
+    font-size: 1.15rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+    margin-bottom: 17px;
+}
+
+/* Effekt, wenn man ins Feld klickt */
+.authDesign input:focus {
+    outline: none;
+    border-color: #4cc9f0; 
+    box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.2);
+}
+
+
+.authDesign button {
+    width: 100%; 
+    padding: 14px;
+    margin-top: 10px;
+    
+    background-color: rgb(23,93,220);
+    color: white; 
+    font-weight: bold;
+    font-size: 1rem;
+    
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.3s;
+}
+
+
+.authDesign button:hover {
+     background-color: var(--primary-hover);
+}
+
+.authDesign button:active {
+    transform: scale(0.98); /* Drück-Effekt */
+}
+
+@media (max-width: 600px) {
+    .authDesign {
+        width: 90%;       /* Nicht ganz an den Rand kleben (lässt links/rechts 5% Platz) */
+        padding: 1.5rem;  /* Weniger Innenabstand, damit mehr Platz für Text ist */
+        gap: 10px;        /* Abstände zwischen den Feldern etwas kleiner */
+    }
+
+    .authDesign legend {
+        font-size: 1.5rem; /* Überschrift etwas kleiner auf dem Handy */
+    }
+    
+    #loginRegistercont {
+        min-height: 90vh; /* Auf Handys etwas mehr Höhe nutzen */
+    }
+}
