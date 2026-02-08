@@ -25,3 +25,10 @@ exports.wallet = (req, res) => {
         title: 'Wallet'
     })
 };
+
+exports.aboutUs = (req, res) => {
+
+    res.render('aboutUs', {
+        title: 'aboutUs'
+    })
+};

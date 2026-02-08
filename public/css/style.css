@@ -17,6 +17,7 @@
     color: white;
 }
 body {
+    min-height: 100vh;
     display: flex;
     background-color: #08012b;
     flex-direction: column;
@@ -392,6 +393,7 @@ footer {
     color: white;
     padding: 20px 0;
     text-align: center;
+    margin-top: auto;
 }
 
 div.stars {
@@ -429,7 +431,11 @@ label.star:before {
   font-family: FontAwesome;
 }
 
-/* Container bleibt gleich, sorgt für Zentrierung */
+
+
+
+
+
 #loginRegistercont {
     display: flex;
     justify-content: center;
@@ -536,5 +542,120 @@ label.star:before {
     
     #loginRegistercont {
         min-height: 90vh; /* Auf Handys etwas mehr Höhe nutzen */
+    }
+}
+
+
+
+
+
+/* About US Design*/
+
+
+.about-us {
+    background-color: #08012b; /* Sehr dunkler Hintergrund für Kontrast */
+    color: #fff;
+    padding: 4rem 0;
+}
+
+.about-grid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4rem; /* Abstand zwischen Text und Bild */
+}
+
+.about-content {
+    flex: 1; /* Nimmt 50% Platz */
+}
+
+.about-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #4cc9f0; /* Akzentfarbe (Cyan) */
+}
+
+.about-content .mission-subtitle {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: #d9e2ec;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.about-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    color: #bcccdc;
+}
+
+.about-content .text-link {
+    color: #4cc9f0;
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.about-content .text-link:hover {
+    border-bottom: 2px solid #4cc9f0;
+}
+
+/* --- Visueller Teil (Rechts) --- */
+.about-visual {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Der Kreis-Container */
+.icon-circle {
+    /* Größe (wie vorher besprochen) */
+    width: 150px;
+    height: 150px;
+    
+    margin-top: 10%;
+    /* Design */
+    background: rgba(76, 201, 240, 0.1); /* Leichter blauer Hintergrund */
+    border: 2px solid #4cc9f0;            /* Blauer Rand */
+    border-radius: 50%;                   /* Macht es rund */
+    box-shadow: 0 0 50px rgba(76, 201, 240, 0.2); /* Der Leucht-Effekt */
+    
+    /* Zentrierung */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* WICHTIG: Schneidet alles ab, was über den Kreis hinausragt */
+    overflow: hidden; 
+}
+
+/* Das Bild im Kreis */
+.icon-circle img {
+    width: 100%;
+    height: 100%;
+    
+    /* WICHTIG: 'cover' füllt den Kreis komplett aus, ohne das Bild zu verzerren */
+    object-fit: cover; 
+}
+
+/* --- Responsive Design (Handy) --- */
+@media (max-width: 768px) {
+    .about-grid {
+        flex-direction: column; /* Untereinander statt nebeneinander */
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .about-content h2 {
+        font-size: 2rem;
+    }
+    
+    .icon-circle {
+        width: 150px;
+        height: 150px;
+        font-size: 4rem;
     }
 }

@@ -1,0 +1,29 @@
+extends layout 
+
+block content 
+
+    section.about-us
+    div.container
+        div.about-grid
+        //- Linke Seite: Der Text
+        div.about-content
+            h2 Unsere Mission: Deine digitale Festung
+            h3.mission-subtitle Sicherheit, die schmeckt.
+            
+            p
+            | In einer immer komplexer werdenden digitalen Welt ist dein Passwort 
+            | der Schlüssel zu deiner Identität. BitBurg wurde mit einem einfachen 
+            | Ziel gegründet: **Sicherheit so stark wie eine Burg und so klar wie ein gutes Pils.**
+            
+            p
+            | Wir glauben, dass Privatsphäre ein Grundrecht ist. Deshalb setzen wir auf 
+            | "Zero-Knowledge": Wir wissen nicht, was du speicherst, und wir wollen es auch 
+            | gar nicht wissen. Deine Daten gehören dir – und nur dir.
+            
+            //- Optional: Ein kleiner Vertrauens-Button oder Link
+            a.text-link(href="/security")  Mehr über unsere Verschlüsselung erfahren →
+
+        //- Rechte Seite: Ein visuelles Element (Icon oder Bild)
+        div.about-visual
+            div.icon-circle
+                img(src="/images/BitBurg_logo.png" alt="BitBurg Logo")
