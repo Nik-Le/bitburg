@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const cancleGenerationBtn = document.getElementById("cancel-generation-btn");
     const applyGeneratedPwBtn = document.getElementById("apply-btn"); 
     const cards = document.querySelectorAll('.password-card');
+    const copyPassword = document.getElementById("copy-password");
 
     addBtn.addEventListener("click", function() {
         formVisible ? removeForm("frmPopupForm") : showForm("frmPopupForm");
@@ -34,6 +35,10 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("password-input").value =  password;
         generatorFormVisible = false;
         document.getElementById("generator").style.visibility = "hidden";
+    });
+    copyPassword.addEventListener("click", function() {
+        let password = document.getElementById("generated-password");
+        navigator.clipboard.writeText(password.value);
     });
     
     cards.forEach(card => {

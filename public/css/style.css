@@ -139,7 +139,7 @@ button {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 100;
+    z-index: 1;
 
     background-color: rgba(54, 54, 54, 1);
     border-radius: 5px;
@@ -157,7 +157,7 @@ button {
     transform: translate(-50%, -50%);
     height: 400px;
     width: 600px;
-    z-index: 200;
+    z-index: 2;
 
     background-color: rgba(54, 54, 54, 1);
     border-radius: 5px;
