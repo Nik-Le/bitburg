@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const generatorBtn = document.getElementById("password-generator");
     const generatePasswordBtn = document.getElementById("generate-btn");
     const cancelBtn = document.getElementById("cancel-button");
+    const cancleGenerationBtn = document.getElementById("cancel-generation-btn");
+    const applyGeneratedPwBtn = document.getElementById("apply-btn"); 
+    const cards = document.querySelectorAll('.password-card');
 
     addBtn.addEventListener("click", function() {
         formVisible ? removeForm("frmPopupForm") : showForm("frmPopupForm");
@@ -22,8 +25,22 @@ document.addEventListener("DOMContentLoaded", function() {
     cancelBtn.addEventListener("click", function() {
         formVisible ? removeForm("frmPopupForm") : showForm("frmPopupForm");
     });
+    cancleGenerationBtn.addEventListener("click", function() {
+        generatorFormVisible = false;
+        document.getElementById("generator").style.visibility = "hidden";
+    });
+    applyGeneratedPwBtn.addEventListener("click", function() {
+        let password = document.getElementById("generated-password").value;
+        document.getElementById("password-input").value =  password;
+        generatorFormVisible = false;
+        document.getElementById("generator").style.visibility = "hidden";
+    });
     
-
+    cards.forEach(card => {
+    card.addEventListener('click', () => {
+        card.classList.toggle('is-flipped');
+    });
+    });
 })
 
 function showForm(form) {
