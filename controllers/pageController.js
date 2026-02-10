@@ -1,3 +1,5 @@
+const  passwordEntry = require('../models/Passwords')
+
 exports.home = (req, res) => {
 
     res.render('index', {
@@ -19,10 +21,14 @@ exports.register = (req, res) => {
     })
 };
 
-exports.wallet = (req, res) => {
-
+exports.wallet = async (req, res) => {
+    const owner = req.session.userId;
+    const data = await passwordEntry.find({
+        owner: owner
+    });
     res.render('wallet', {
-        title: 'Wallet'
+        title: 'Wallet',
+        passwordList: data
     })
 };
 

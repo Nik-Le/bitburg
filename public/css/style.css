@@ -72,26 +72,42 @@ header {
 .password-card {
     width: 500px;
     height: 130px;
-    border: 2px solid;
-    border-radius: 10px;
     padding: 5px;
     margin-bottom: 15px;
     font-size: large;
+    perspective: 1000px;
+    cursor: pointer;
+
+}
+.inner-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
 
     background: rgba(0, 122, 255, 0.45); 
     border: 1px solid rgba(0, 122, 255, 0.4); 
     border-radius: 10px;
     box-shadow: 0 5px 10px rgba(0, 80, 200, 0.3);
 }
-.password-back {
-    width: 500px;
-    height: 130px;
-    border-radius: 10px;
-    padding: 5px;
-    margin-bottom: 15px;
-    margin-right: 10px;
-    border: 2px limegreen solid;
 
+.password-card.is-flipped .inner-card {
+    transform: rotateX(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    backface-visibility: hidden;
+}
+.card-front {
+    transform: rotateX(0deg);
+}
+.card-back {
+    transform: rotateX(180deg);
 }
 .spacer {
     margin-left: 10px;
@@ -149,6 +165,7 @@ button {
     border: 1px solid rgba(54, 54, 54, 0.4); 
     box-shadow: 0 5px 10px rgba(0, 80, 200, 0.3);
     justify-content: center;
+    justify-content: space-between;
 }
 #generated-password {
     width: 100%;
@@ -176,12 +193,29 @@ button {
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
-    margin-top: 30px;
     transition: background 0.3s;
 }
 
 #apply-btn:hover {
     background-color: #27ae60;
+}
+#generate-btn{
+    font-weight: bold;
+    height: 50px;
+    border-radius: 4px;
+}
+#generate-btn:hover {
+    background-color: #27ae60;
+}
+#cancel-generation-btn {
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+#cancel-generation-btn:hover {
+    background-color: rgb(144, 5, 5);
 }
 #pw-length {
     color: white;
@@ -231,7 +265,10 @@ button {
     flex-direction: row;
 }
 #password-generator {
-    width: 100px;
+    width: 50px;
+    height: 40px;
+    border-radius: 4px;
+    margin-top: auto-5px;
 }
 /* Hilfsklasse für Breite und Zentrierung */
 .container {
