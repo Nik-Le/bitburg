@@ -101,3 +101,31 @@ function randomUpCase(){
 function randomLowCase(){
     return String.fromCharCode(Math.floor(Math.random() * 26 + 97));
 }
+
+
+// Logout Btn Event Listener 
+
+document.getElementById('logout-btn').addEventListener('click', async (e) => {
+
+    event.preventDefault();
+
+    try{
+        const response = await fetch('/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' 
+        },
+    });
+
+    const result = await response.json();
+
+    if(response.ok){
+        console.log("erfolgreich ausgellogt");
+        window.location.href = "/";
+    }
+
+    } catch(error){
+        console.log("Fehler beim auslogen", error);
+    }
+
+});

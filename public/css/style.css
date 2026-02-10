@@ -303,6 +303,12 @@ a {
     margin-left: 10px;
 }
 
+
+.logout-btn{
+    background-color: #08012b;
+    color:red; 
+}
+
 /* --- Navigation --- */
 .navbar {
     background: var(--bg-color);
