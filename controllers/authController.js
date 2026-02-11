@@ -57,7 +57,14 @@ exports.loginUser = async (req, res) => {
 
 // Logout
 exports.logoutUser = (req, res) => {
-    req.session.destroy(() => {
-        res.redirect('/');
+    req.session.destroy((err) => {
+        if(err){
+            return res.status(500).json({error: "Logout fehlgeschlagen"})
+        }
+        
+        res.clearCookie('connect.sid');
+        res.status(200).json({success: true});
+
     });
+    
 };
