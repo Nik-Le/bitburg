@@ -249,25 +249,44 @@ button {
     margin-top: 10px;
 }
 #add-password-button {
-   color: black; 
+    width: 90px;
+    height: 30px;
+    border-radius: 4px;
    margin-left: 15px;
+}#add-password-button:hover {
+    background-color: limegreen;
 }
 #cancel-button {
-    color: black;
+    width: 90px;
+    height: 30px;
+    border-radius: 4px;
+}
+#cancel-button:hover {
+    background-color: red;
 }
 #password-group {
     display: flex;
     flex-direction: row;
-}
-#password-input {
-    display: flex;
-    flex-direction: row;
+    align-items: baseline;
 }
 #password-generator {
-    width: 50px;
-    height: 40px;
+    width: 40px;
+    height: 30px;
     border-radius: 4px;
-    margin-top: auto-5px;
+    margin-left: 5px;
+}
+#copy-password {
+    width: 40px;
+    height: 30px;
+    border-radius: 4px;
+}
+#password-generator:hover {
+    background-color: grey;
+    border-color: grey;
+}
+#copy-password:hover {
+    background-color: grey;
+    border-color: grey;
 }
 /* Hilfsklasse für Breite und Zentrierung */
 .container {
