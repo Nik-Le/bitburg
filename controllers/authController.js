@@ -4,7 +4,7 @@ const  passwordEntry = require('../models/Passwords');
 // POST Logic für Registrierung
 exports.registerUser = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, premiumuser } = req.body;
         
         // Prüfen ob User existiert
         const existingUser = await User.findOne({ username: username });
@@ -15,7 +15,7 @@ exports.registerUser = async (req, res) => {
 
         }
 
-        const newUser = new User({ username, email, password });
+        const newUser = new User({ username, email, password, premiumuser });
         await newUser.save();
         
         return res.status(200).json({
