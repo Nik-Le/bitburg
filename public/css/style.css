@@ -17,6 +17,7 @@
     color: white;
 }
 body {
+    min-height: 100vh;
     display: flex;
     background-color: #08012b;
     flex-direction: column;
@@ -321,6 +322,12 @@ a {
     margin-left: 10px;
 }
 
+
+.logout-btn{
+    background-color: #08012b;
+    color:red; 
+}
+
 /* --- Navigation --- */
 .navbar {
     background: var(--bg-color);
@@ -448,6 +455,7 @@ footer {
     color: white;
     padding: 20px 0;
     text-align: center;
+    margin-top: auto;
 }
 
 div.stars {
@@ -483,4 +491,234 @@ label.star:hover { transform: rotate(-15deg) scale(1.3); }
 label.star:before {
   content: '\1F510';
   font-family: FontAwesome;
+}
+
+
+
+
+
+
+#loginRegistercont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modernere Schriftart */
+}
+
+/* Das Design der Box (Karte) */
+.authDesign {
+    /* Ein schönes, tiefes Dunkelblau statt dem grellen Blau */
+    background-color: #102a43; 
+    color: #ffffff; /* WICHTIG: Weiße Schrift für alles in der Box */
+    
+    padding: 2.5rem;
+    border-radius: 16px; /* Rundere Ecken */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Weicherer Schatten */
+    
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px; /* Abstand zwischen allen Elementen */
+}
+
+/* Die Überschrift */
+.authDesign legend {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ffffff;
+    width: 100%; /* Damit text-align center funktioniert */
+}
+
+/* Labels (Beschriftungen) */
+.authDesign label {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 2px; /* Kleiner Abstand zum Input */
+    color: #d9e2ec; /* Leichtes Grau-Weiß, sieht edel aus */
+    padding-left: 5px;
+}
+
+/* Eingabefelder */
+.authDesign input {
+    width: 100%;
+    padding-top: 8px; 
+    padding-bottom: 8px;
+    padding-left: 5px;
+    border-radius: 8px; /* Leicht abgerundet */
+    border: 1px solid #243b53; /* Dunkler Rand */
+    background-color: #f0f4f8; /* Helles Grau, augenfreundlicher als reines Weiß */
+    color: #102a43; /* Dunkle Schrift im Input */
+    font-size: 1.15rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+    margin-bottom: 17px;
+}
+
+/* Effekt, wenn man ins Feld klickt */
+.authDesign input:focus {
+    outline: none;
+    border-color: limegreen; 
+    box-shadow: 0 0 0 1px rgba(76, 201, 240, 0.2);
+    
+}
+
+
+.authDesign button {
+    width: 100%; 
+    padding: 14px;
+    margin-top: 10px;
+    
+    background-color: rgb(23,93,220);
+    color: white; 
+    font-weight: bold;
+    font-size: 1rem;
+    
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.3s;
+}
+
+
+.authDesign button:hover {
+     background-color: var(--primary-hover);
+}
+
+.authDesign button:active {
+    transform: scale(0.98); /* Drück-Effekt */
+}
+
+@media (max-width: 600px) {
+    .authDesign {
+        width: 90%;       /* Nicht ganz an den Rand kleben (lässt links/rechts 5% Platz) */
+        padding: 1.5rem;  /* Weniger Innenabstand, damit mehr Platz für Text ist */
+        gap: 10px;        /* Abstände zwischen den Feldern etwas kleiner */
+    }
+
+    .authDesign legend {
+        font-size: 1.5rem; /* Überschrift etwas kleiner auf dem Handy */
+    }
+    
+    #loginRegistercont {
+        min-height: 90vh; /* Auf Handys etwas mehr Höhe nutzen */
+    }
+}
+
+
+
+
+
+/* About US Design*/
+
+
+.about-us {
+    background-color: #08012b; /* Sehr dunkler Hintergrund für Kontrast */
+    color: #fff;
+    padding: 4rem 0;
+}
+
+.about-grid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4rem; /* Abstand zwischen Text und Bild */
+}
+
+.about-content {
+    flex: 1; /* Nimmt 50% Platz */
+}
+
+.about-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #4cc9f0; /* Akzentfarbe (Cyan) */
+}
+
+.about-content .mission-subtitle {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: #d9e2ec;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.about-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    color: #bcccdc;
+}
+
+.about-content .text-link {
+    color: #4cc9f0;
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.about-content .text-link:hover {
+    border-bottom: 2px solid #4cc9f0;
+}
+
+/* --- Visueller Teil (Rechts) --- */
+.about-visual {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Der Kreis-Container */
+.icon-circle {
+    /* Größe (wie vorher besprochen) */
+    width: 150px;
+    height: 150px;
+    
+    margin-top: 10%;
+    /* Design */
+    background: rgba(76, 201, 240, 0.1); /* Leichter blauer Hintergrund */
+    border: 2px solid #4cc9f0;            /* Blauer Rand */
+    border-radius: 50%;                   /* Macht es rund */
+    box-shadow: 0 0 50px rgba(76, 201, 240, 0.2); /* Der Leucht-Effekt */
+    
+    /* Zentrierung */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* WICHTIG: Schneidet alles ab, was über den Kreis hinausragt */
+    overflow: hidden; 
+}
+
+/* Das Bild im Kreis */
+.icon-circle img {
+    width: 100%;
+    height: 100%;
+    
+    /* WICHTIG: 'cover' füllt den Kreis komplett aus, ohne das Bild zu verzerren */
+    object-fit: cover; 
+}
+
+/* --- Responsive Design (Handy) --- */
+@media (max-width: 768px) {
+    .about-grid {
+        flex-direction: column; /* Untereinander statt nebeneinander */
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .about-content h2 {
+        font-size: 2rem;
+    }
+    
+    .icon-circle {
+        width: 150px;
+        height: 150px;
+        font-size: 4rem;
+    }
 }

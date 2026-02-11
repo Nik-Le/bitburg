@@ -11,4 +11,6 @@ router.get('/register', pageController.register);
 
 router.get('/wallet', pageController.wallet);
 
+router.get('/aboutUs', pageController.aboutUs);
+
 module.exports = router;     

@@ -31,3 +31,10 @@ exports.wallet = async (req, res) => {
         passwordList: data
     })
 };
+
+exports.aboutUs = (req, res) => {
+
+    res.render('aboutUs', {
+        title: 'aboutUs'
+    })
+};

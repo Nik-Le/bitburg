@@ -7,6 +7,11 @@ block vars
 
 block scripts 
   script(src="/js/wallet.js" defer)
+
+block append nav-actions 
+  a#logout-btn.logout-btn(href="/#") Logout
+    
+
 block content
   #wallet-container
     .spacer
