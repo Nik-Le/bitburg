@@ -15,7 +15,7 @@ exports.registerUser = async (req, res) => {
 
         }
 
-        const newUser = new User({ username, email, password, premiumuser });
+        const newUser = new User({ username, email, password, premiumuser: premiumuser === 'on' });
         await newUser.save();
         
         return res.status(200).json({

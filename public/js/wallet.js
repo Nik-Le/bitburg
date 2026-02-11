@@ -1,6 +1,6 @@
 let formVisible = false;
 let generatorFormVisible = false;
-
+const  User = require('../../models/User');
 // Funktion dient dazu, dass die Events erst gehoert werden wenn HTML DOM Fertig gebaut ist
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -19,7 +19,9 @@ document.addEventListener("DOMContentLoaded", function() {
         generatorFormVisible ? removeForm("generator") : showForm("generator");
     });
     generatePasswordBtn.addEventListener("click", function() {
+        if(getPremiumUserValue()){
         generatePassword();
+        }
     });
 
     cancelBtn.addEventListener("click", function() {
@@ -52,6 +54,17 @@ function removeForm(form) {
     formVisible = false;
 }
 
+function getPremiumUserValue(){
+    user._id = req.session.userId;
+    const user = User.findOne({id: user._id});
+    if (user && user.premiumuser) {
+        return true;
+    }
+    else{
+        alert("Requires premium version")
+        return false;
+    }
+}
 function generatePassword () {
     let length = document.getElementById("pw-length").value;
     let numbers = document.getElementById("numbers").checked;
