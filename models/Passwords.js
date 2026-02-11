@@ -1,14 +1,13 @@
 const mongoose = require('mongoose');
 
 const passwordVorlage = new mongoose.Schema({
-    username: {
+    userName: {
         type: String,
         required: true,
     },
     siteName:{
         type: String,
         required: true,
-        unique: true,
     },
     password: {
         type: String,
@@ -17,6 +16,7 @@ const passwordVorlage = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        required: true
     }
 });
 

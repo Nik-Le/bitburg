@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  .container#loginRegistercont
+    
+    form#frmRegister.authDesign
+      Legend  Registriere Dich
+      label(for="username") Benutzername
+      input#username(type="text" name="username" placeholder="Benutzername" required)
+      
+      label(for="email") E-Mail
+      input#email(type="email" name="email" placeholder="E-Mail" required)
+      
+      label(for="password") Passwort 
+      input#password(type="password" name="password" required placeholder="Passwort")
+      
+      button(type="submit") Registrieren

@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  .container#loginRegistercont
+    form#frmLogin.authDesign
+      Legend Login
+      label(for="username") Benutzername
+      input#username(type="text" name="username" placeholder="Benutzername" required)
+
+      label(for="password") Passwort
+      input#password(type="password" name="password" required placeholder="Passwort")
+
+      button(type="submit") Einloggen

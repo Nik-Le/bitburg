@@ -1,51 +1,52 @@
 const express = require('express');
-const path = require('path');
-const mongoose = require('mongoose');
-const app = express();
 const session = require('express-session');
+const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo').default; // to save Session data in DB an not in Memory-Story
+const path = require('path');
+
+
+const app = express();
 const PORT = 3000;
 
-// HTML-Dateien mit dem EJS-Renderer verknüpfen
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
-app.set('views', path.join(__dirname, 'views'));
-app.use(session({
-  secret: 'geheimes-wort', // Kann irgendwas sein
-  resave: false,
-  saveUninitialized: false
-}));
+// 1. Datenbank Verbindung (Nur EINE Verbindung für alles)
+const dbUrl = 'mongodb://localhost:27017/bitburgDB';           
 
-// Lesen von Formulardaten und wandeln in ein JSON
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-
-// In app.js
-app.use(express.static(path.join(__dirname, 'public')));
-//app.use(express.static(path.join(__dirname, 'views'))); // Füge dies hinzu
-
-
-//Verbindung mit MongoDB
-mongoose.connect('mongodb://localhost:27017/bitburgDB')
+mongoose.connect(dbUrl)
     .then(() => console.log('Mongoose verbunden!'))
     .catch(err => console.error('Datenbankfehler:', err));
+         
+// View Engine        
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 
-app.use(express.urlencoded({ extended: true }));
+// Middleware für Body Parsing (Nur einmal nötig!)
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// 2. Session Konfiguration
+// Wir speichern die Sessions einfach in der gleichen DB in der Collection 'sessions'
+app.use(session({
+  secret: 'geheimes-wort', 
+  resave: false,     
+  saveUninitialized: false, // WICHTIG: Erstellt Session erst, wenn Daten (Login) da sind
+  store: MongoStore.create({
+    mongoUrl: dbUrl, // Nutzt die gleiche URL wie Mongoose
+    collectionName: 'sessions', // Name der Collection in MongoDB
+    ttl: 12 * 60 * 60 // Session läuft nach 12 Stunden in der DB ab
+  }),
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 12,
+    httpOnly: true // Sicherheit: Client-JS kann Cookie nicht lesen
+  }            
+}));
+
 // Routing 
-const indexRoutes = require('./routes/indexRoutes');
-const authRoutes = require('./routes/authRoutes');
-const walletRoutes = require('./routes/walletRoutes');
-//const vaultRoutes = require('./routes/vaultRoutes');
 
-app.use('/', indexRoutes);
-//app.use('/', vaultRoutes);
-app.use('/', authRoutes);
-app.use('/', walletRoutes);
+app.use(require('./routes'));
 
 
 
-
-// Start server
 app.listen(PORT, () => {
   console.log(`Server läuft auf http://localhost:${PORT}`);
-});
+});      

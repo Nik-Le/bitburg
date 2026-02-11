@@ -1,4 +1,5 @@
-const  User = require('../models/User') 
+const  User = require('../models/User');
+const  passwordEntry = require('../models/Passwords');
 
 // POST Logic für Registrierung
 exports.registerUser = async (req, res) => {
@@ -32,6 +33,7 @@ exports.loginUser = async (req, res) => {
     try {
         const { username, password} = req.body;
         const user = await User.findOne({ username: username }); // Email oft optional beim Login
+        
 
         if (user && user.password === password) {
             req.session.userId = user._id;
@@ -40,18 +42,29 @@ exports.loginUser = async (req, res) => {
                 message: 'Erfolgreich',
                 redirectUrl: '/wallet'
             });
+
+            const allEntrys = await passwordEntry.find({owner: user._id});
+            console.log(allEntrys);
+
         } else {
             res.status(400).json({error: 'Falsches Passwort'})
         }
     } catch (error) {
         console.error(error);
         res.status(500).send("Login Fehler.");
-    }
+    }           
 };
 
 // Logout
 exports.logoutUser = (req, res) => {
-    req.session.destroy(() => {
-        res.redirect('/');
+    req.session.destroy((err) => {
+        if(err){
+            return res.status(500).json({error: "Logout fehlgeschlagen"})
+        }
+        
+        res.clearCookie('connect.sid');
+        res.status(200).json({success: true});
+
     });
+    
 };

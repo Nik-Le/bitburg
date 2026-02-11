@@ -1,0 +1,70 @@
+extends layout
+
+//- Hier setzen wir die ID für den Body dieser speziellen Seite
+block vars
+  - var bodyId = 'walletBody';
+  - var mainId = 'walletMain';
+
+block scripts 
+  script(src="/js/wallet.js" defer)
+
+block append nav-actions 
+  a#logout-btn.logout-btn(href="/#") Logout
+    
+
+block content
+  #wallet-container
+    .spacer
+    ul#password-container
+      each entry in passwordList
+        li.password-card
+          div.inner-card
+            div.card-front <strong>#{entry.siteName}</strong>
+            div.card-back <p><strong>Eintrags-name:</strong> #{entry.siteName} </p><strong>Benutzername/E-Mail: </strong>#{entry.userName} </p><p><strong>Passwort: </strong>#{entry.password}</p>
+      else
+        li.password-card Keine Einträge vorhanden!   
+    button#add-button.fa-solid.fa-plus
+
+  form#frmPopupForm()
+    label(for="name-input") Name:
+    input#name-input.inputbox(name="siteName" type="text")
+    
+    label(for="username-input") Benutzername/Email:
+    
+    input#username-input.inputbox(name="userName" type="text")
+    
+    label(for="password-input") Passwort:
+    #password-group
+      input#password-input.inputbox(name="password" type="password")
+      button#password-generator(type="button")
+        i.fa-solid.fa-shuffle
+    
+    #button-container
+      button#cancel-button(type="button") Abbrechen
+      button#add-password-button(type="submit") Hinzufuegen
+
+  //- Formular: Generator
+  form#generator
+    input#generated-password.inputbox(type="text", readonly)
+    
+    .generator-options
+      .option-row
+        label(for="pw-length") Length
+        input#pw-length(type="number" min=8 max=20 value=8) 
+        p#length-error Länge muss mindestens 8 Zeichen lang sein.
+      
+      .option-row
+        label(for="up-case" ) A-Z
+        input#up-case(type="checkbox" checked="true")
+      
+      .option-row
+        label(for="low-case") a-z
+        input#low-case(type="checkbox" checked="true")
+      
+      .option-row
+        label(for="numbers") 0-9
+        input#numbers(type="checkbox" checked="true")
+    
+    button#generate-btn(type="button") Passwort generieren
+    button#apply-btn(type="button") Passwort übernehmen
+    button#cancel-generation-btn(type="button") Abbrechen
