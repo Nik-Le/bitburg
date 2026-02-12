@@ -1,3 +1,5 @@
+import { detectActivity } from './utils.js';
+
 let formVisible = false;
 let generatorFormVisible = false;
 
@@ -41,7 +43,28 @@ document.addEventListener("DOMContentLoaded", function() {
         card.classList.toggle('is-flipped');
     });
     });
-})
+
+    //console.log("Starte Activity Tracker für Wallet...");
+    
+    const ActivityTracker = detectActivity( 
+        () => console.log("User ist aktiv"), 
+        () => {
+             console.log("User ist inaktiv -> Logout wird eingeleitet");
+             // Hier den Logout-Prozess starten:
+             fetch('/logout', { method: 'POST' })
+                .then(() => window.location.href = '/login');
+        }, 
+        10000 // 5 Minuten (300.000 ms)
+    );
+
+    setInterval(() =>{
+        const restZeitMs = ActivityTracker.remainingTimeToLogout();
+        const restZeiInsek = Math.ceil(restZeitMs /1000);
+
+        document.getElementById("logoutCountdown").innerText = `Auto-Logout in ${restZeiInsek} s`
+    }, 1000);
+
+});
 
 function showForm(form) {
     document.getElementById(form).style.visibility = "visible";
@@ -104,10 +127,9 @@ function randomLowCase(){
 
 
 // Logout Btn Event Listener 
+document.getElementById('logout-img').addEventListener('click', async (e) => {
 
-document.getElementById('logout-btn').addEventListener('click', async (e) => {
-
-    event.preventDefault();
+    e.preventDefault();
 
     try{
         const response = await fetch('/logout', {
@@ -129,3 +151,5 @@ document.getElementById('logout-btn').addEventListener('click', async (e) => {
     }
 
 });
+
+

@@ -4,12 +4,17 @@ extends layout
 block vars
   - var bodyId = 'walletBody';
   - var mainId = 'walletMain';
+  - var showLogNav = false
 
 block scripts 
-  script(src="/js/wallet.js" defer)
+  script(src="/js/wallet.js" defer type="module")
 
 block append nav-actions 
-  a#logout-btn.logout-btn(href="/#") Logout
+  a#logout-img.logout(href="/#")
+    img(src="/images/logout.jpg" alt="logout")
+  label#logoutCountdown.logoutCntdwnLbl Logout in
+  
+
     
 
 block content
@@ -68,3 +73,4 @@ block content
     button#generate-btn(type="button") Passwort generieren
     button#apply-btn(type="button") Passwort übernehmen
     button#cancel-generation-btn(type="button") Abbrechen
+
