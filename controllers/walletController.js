@@ -11,10 +11,10 @@ exports.addPassword = async (req, res) => {
             owner: owner
         });
 
-        /** if (usageExist){
+        if (usageExist){
             console.log("User hat diesen Eintrag bereits");
             return res.status(400).json({ error: 'Du hast bereits ein Passwort für diese Seite gespeichert.' });
-        }*/
+        };
 
         const newPasswort = new passwordEntry({password, userName, siteName, owner});
         const savedEntry = await newPasswort.save();
@@ -33,4 +33,20 @@ exports.addPassword = async (req, res) => {
             console.error(error);
             res.status(500).send("Server Fehler beim Registrieren");
         }
+};
+
+exports.removePassword = async (req, res) => {
+    try {
+        const id = req.params.id;
+        await passwordEntry.findByIdAndDelete(id);
+
+        return res.status(200).json({
+            message: 'Erfolgreich',
+            redirectUrl: '/wallet'
+        });
+    }
+    catch(error) {
+        console.error("Fehler beim Löschen:", error);
+        res.status(500).send("Fehler beim Löschen des Eintrags.");
+    }
 };

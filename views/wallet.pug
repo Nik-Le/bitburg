@@ -20,40 +20,45 @@ block content
         li.password-card
           div.inner-card
             div.card-front <strong>#{entry.siteName}</strong>
+              button.setting-btn.fa-solid.fa-edit(type="Button" )
+              div.dropdown.is-hidden
+                button.delete-entry-btn(type="Button" data-id=entry._id) Löschen
+                button.edit-entry-btn Bearbeiten
             div.card-back <p><strong>Eintrags-name:</strong> #{entry.siteName} </p><strong>Benutzername/E-Mail: </strong>#{entry.userName} </p><p><strong>Passwort: </strong>#{entry.password}</p>
       else
         li.password-card Keine Einträge vorhanden!   
     button#add-button.fa-solid.fa-plus
-
-  form#frmPopupForm()
+  form#frmPopup.is-hidden()
     label(for="name-input") Name:
-    input#name-input.inputbox(name="siteName" type="text")
+    input#name-input.inputbox(name="siteName" type="text" placeholder="google.com")
+    span#name-error.error-txt.is-hidden Länge muss mindestens 8 Zeichen lang sein.
     
     label(for="username-input") Benutzername/Email:
-    
-    input#username-input.inputbox(name="userName" type="text")
+    input#username-input.inputbox(name="userName" type="text" placeholder="MaxMustermann@mail.de")
+    span#username-error.error-txt.is-hidden Länge muss mindestens 8 Zeichen lang sein.
     
     label(for="password-input") Passwort:
     #password-group
-      input#password-input.inputbox(name="password" type="password")
+      input#password-input.inputbox(name="password" type="password" placeholder="12345678")
       button#copy-password(type="button")
-        i.fa-solid.fa-copy
+        i.fa-solid.fa-clone
       button#password-generator(type="button")
-        i.fa-solid.fa-shuffle
+        i.fa-solid.fa-wand-magic-sparkles
+    span#password-error.error-txt.is-hidden Länge muss mindestens 8 Zeichen lang sein.
     
     #button-container
       button#cancel-button(type="button") Abbrechen
-      button#add-password-button(type="submit") Hinzufuegen
+      button#submit-entry-button(type="submit") Hinzufuegen
 
   //- Formular: Generator
-  form#generator
+  form#generator.is-hidden
     input#generated-password.inputbox(type="text", readonly)
     
     .generator-options
       .option-row
         label(for="pw-length") Length
-        input#pw-length(type="number" min=8 max=20 value=8) 
-        p#length-error Länge muss mindestens 8 Zeichen lang sein.
+        input#pw-length(type="number" min=8 max=20 value=8 ) 
+        span#length-error.error-txt.is-hidden Länge muss mindestens 8 Zeichen lang sein.
       
       .option-row
         label(for="up-case" ) A-Z
@@ -66,6 +71,10 @@ block content
       .option-row
         label(for="numbers") 0-9
         input#numbers(type="checkbox" checked="true")
+
+      .option-row
+        label(for="symbols") $!?
+        input#symbols(type="checkbox" checked="true")
     
     button#generate-btn(type="button") Passwort generieren
     button#apply-btn(type="button") Passwort übernehmen
