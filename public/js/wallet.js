@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
         addNewEntryBtn: document.getElementById("add-button"), //Opens up the Entryform
         submitEntryBtn: document.getElementById("submit-entry-button"), //Submits new Entry
         cancelEntryBtn: document.getElementById("cancel-button"),
-        editEntryBtn: document.querySelectorAll(".setting-btn"),
         deleteEntryBtn: document.querySelectorAll(".delete-entry-btn"),
 
         openGeneratorBtn: document.getElementById("password-generator"),
@@ -41,48 +40,39 @@ document.addEventListener("DOMContentLoaded", () => {
         card.addEventListener("click", () => {
             card.classList.toggle("is-flipped");
         });
-    elements.openGeneratorBtn.addEventListener("click", function() {
-        console.log("Hallo1")
+        elements.openGeneratorBtn.addEventListener("click", function () {
+            console.log("Hallo1")
 
-        if (feedBackElement) feedBackElement.textContent = "";
-        if(isPremiumUser){
-        generatePassword();
-        }
-        else{
-            console.log("Hallo")
-            feedBackElement.textContent = "Premium wird benötigt";
-        }
-    });
-
-    elements.editEntryBtn.forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            e.stopPropagation(); //Prevents card flip
-            const dropDown = btn.nextElementSibling;
-            dropDown.classList.toggle("is-hidden");
-        });
-    });
-
-
-    elements.deleteEntryBtn.forEach(btn => {
-        btn.addEventListener("click", async (e) => {
-            e.stopPropagation();
-            const btnId = btn.getAttribute("data-id");
-
-            try {
-                const response = await fetch(`/wallet/delete/${btnId}`, {
-                    method: 'POST',
-                });
-                if (response.ok) {
-                    window.location.reload();
-                } else {
-                    console.error("Löschen fehlgeschlagen");
-                }
-
-            } catch(error) {
-                console.log("ror")
+            if (feedBackElement) feedBackElement.textContent = "";
+            if (isPremiumUser) {
+                generatePassword();
+            }
+            else {
+                console.log("Hallo")
+                feedBackElement.textContent = "Premium wird benötigt";
             }
         });
-    });
+
+        elements.deleteEntryBtn.forEach(btn => {
+            btn.addEventListener("click", async (e) => {
+                e.stopPropagation();
+                const btnId = btn.getAttribute("data-id");
+
+                try {
+                    const response = await fetch(`/wallet/delete/${btnId}`, {
+                        method: 'POST',
+                    });
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        console.error("Löschen fehlgeschlagen");
+                    }
+
+                } catch (error) {
+                    console.log("ror")
+                }
+            });
+        });
     });
 
     function toggleForm(form) {

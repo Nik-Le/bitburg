@@ -21,9 +21,8 @@ block content
         li.password-card
           div.inner-card
             div.card-front <strong>#{entry.siteName}</strong>
-              button.setting-btn.fa-solid.fa-edit(type="Button" )
-              div.dropdown.is-hidden
-                button.delete-entry-btn(type="Button" data-id=entry._id) Löschen
+              button.delete-entry-btn(type="Button" data-id=entry._id)
+                i.fa-solid.fa-trash
             div.card-back <p><strong>Eintrags-name:</strong> #{entry.siteName} </p><strong>Benutzername/E-Mail: </strong>#{entry.userName} </p><p><strong>Passwort: </strong>#{entry.password}</p>
       else
         li.password-card Keine Einträge vorhanden!   
