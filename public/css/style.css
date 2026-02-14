@@ -17,7 +17,7 @@
     color: white;
 }
 body {
-    max-height: 100vh;
+    height: 100vh;
     display: flex;
     background-color: rgb(30, 30, 30);
     flex-direction: column;
