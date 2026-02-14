@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         card.addEventListener("click", () => {
             card.classList.toggle("is-flipped");
         });
-    generatePasswordBtn.addEventListener("click", function() {
+    elements.openGeneratorBtn.addEventListener("click", function() {
         console.log("Hallo1")
 
         if (feedBackElement) feedBackElement.textContent = "";
@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("ror")
             }
         });
+    });
     });
 
     function toggleForm(form) {
@@ -139,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.getElementById('logout-btn').addEventListener('click', async (e) => {
 
-    event.preventDefault();
+    e.preventDefault();
 
     try {
         const response = await fetch('/logout', {
