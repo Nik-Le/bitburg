@@ -18,14 +18,11 @@ document.addEventListener("DOMContentLoaded", function() {
         generatorFormVisible ? removeForm("generator") : showForm("generator");
     });
     generatePasswordBtn.addEventListener("click", function() {
-        console.log("Hallo1")
-
         if (feedBackElement) feedBackElement.textContent = "";
         if(isPremiumUser){
         generatePassword();
         }
         else{
-            console.log("Hallo")
             feedBackElement.textContent = "Premium wird benötigt";
         }
     });

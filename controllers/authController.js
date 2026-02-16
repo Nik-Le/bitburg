@@ -31,6 +31,8 @@ exports.registerUser = async (req, res) => {
 // POST Logic für Login
 exports.loginUser = async (req, res) => {
     try {
+        const passwordFeedbackLogin = document.getElementById('password-feedback-login');
+        passwordFeedbackLogin.textContent = '';
         const { username, password} = req.body;
         const user = await User.findOne({ username: username }); // Email oft optional beim Login
         
@@ -47,7 +49,10 @@ exports.loginUser = async (req, res) => {
             console.log(allEntrys);
 
         } else {
-            res.status(400).json({error: 'Falsches Passwort'})
+            passwordFeedbackLogin.textContent = 'Login fehlgeschlagen';
+            return res.status(401).json({error: 'Falsches Passwort',
+                                    success: false,
+                                    message: 'Login Fehlgeschlagen'})
         }
     } catch (error) {
         console.error(error);
