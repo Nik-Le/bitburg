@@ -1,5 +1,5 @@
 const  passwordEntry = require('../models/Passwords')
-
+const User = require('../models/User'); // <--- DIESE ZEILE HINZUFÜGEN
 exports.home = (req, res) => {
 
     res.render('index', {
@@ -22,14 +22,28 @@ exports.register = (req, res) => {
 };
 
 exports.wallet = async (req, res) => {
-    const owner = req.session.userId;
-    const data = await passwordEntry.find({
-        owner: owner
-    });
-    res.render('wallet', {
-        title: 'Wallet',
-        passwordList: data
-    })
+    try {
+        const owner = req.session.userId;
+
+        // 1. Passwörter holen (Ihr Code)
+        const data = await passwordEntry.find({
+            owner: owner
+        });
+
+        // 2. Benutzer-Infos (inkl. Premium-Status) holen (NEU)
+        const currentUser = await User.findById(owner);
+
+        // 3. Alles an die View senden (Wichtig: 'user' hinzufügen)
+        res.render('wallet', {
+            title: 'Wallet',
+            passwordList: data,
+            user: currentUser  // <--- DAS HAT GEFEHLT!
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Ein Fehler ist aufgetreten");
+    }
 };
 
 exports.aboutUs = (req, res) => {

@@ -1,6 +1,5 @@
 let formVisible = false;
 let generatorFormVisible = false;
-const  User = require('../../models/User');
 // Funktion dient dazu, dass die Events erst gehoert werden wenn HTML DOM Fertig gebaut ist
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -11,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const cancleGenerationBtn = document.getElementById("cancel-generation-btn");
     const applyGeneratedPwBtn = document.getElementById("apply-btn"); 
     const cards = document.querySelectorAll('.password-card');
-
+    const feedBackElement = document.getElementById("premium-feedback");
     addBtn.addEventListener("click", function() {
         formVisible ? removeForm("frmPopupForm") : showForm("frmPopupForm");
     });
@@ -19,8 +18,15 @@ document.addEventListener("DOMContentLoaded", function() {
         generatorFormVisible ? removeForm("generator") : showForm("generator");
     });
     generatePasswordBtn.addEventListener("click", function() {
-        if(getPremiumUserValue()){
+        console.log("Hallo1")
+
+        if (feedBackElement) feedBackElement.textContent = "";
+        if(isPremiumUser){
         generatePassword();
+        }
+        else{
+            console.log("Hallo")
+            feedBackElement.textContent = "Premium wird benötigt";
         }
     });
 
