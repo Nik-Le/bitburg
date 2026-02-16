@@ -54,14 +54,16 @@ document.addEventListener("DOMContentLoaded", function() {
              fetch('/logout', { method: 'POST' })
                 .then(() => window.location.href = '/login');
         }, 
-        10000 // 5 Minuten (300.000 ms)
+        70000 // 5 Minuten (300.000 ms)
     );
 
     setInterval(() =>{
         const restZeitMs = ActivityTracker.remainingTimeToLogout();
-        const restZeiInsek = Math.ceil(restZeitMs /1000);
+        const restZeitsek = Math.ceil(restZeitMs /1000)%60;
+        const restZeitMin = Math.floor(restZeitMs /60000);
 
-        document.getElementById("logoutCountdown").innerText = `Auto-Logout in ${restZeiInsek} s`
+
+        document.getElementById("logoutCountdown").innerText = `Auto-Logout in ${restZeitMin}:${restZeitsek} s`
     }, 1000);
 
 });
