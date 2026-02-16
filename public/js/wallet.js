@@ -1,6 +1,5 @@
 let formVisible = false;
 let generatorFormVisible = false;
-
 // Funktion dient dazu, dass die Events erst gehoert werden wenn HTML DOM Fertig gebaut ist
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -11,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const cancleGenerationBtn = document.getElementById("cancel-generation-btn");
     const applyGeneratedPwBtn = document.getElementById("apply-btn"); 
     const cards = document.querySelectorAll('.password-card');
-
+    const feedBackElement = document.getElementById("premium-feedback");
     addBtn.addEventListener("click", function() {
         formVisible ? removeForm("frmPopupForm") : showForm("frmPopupForm");
     });
@@ -19,7 +18,16 @@ document.addEventListener("DOMContentLoaded", function() {
         generatorFormVisible ? removeForm("generator") : showForm("generator");
     });
     generatePasswordBtn.addEventListener("click", function() {
+        console.log("Hallo1")
+
+        if (feedBackElement) feedBackElement.textContent = "";
+        if(isPremiumUser){
         generatePassword();
+        }
+        else{
+            console.log("Hallo")
+            feedBackElement.textContent = "Premium wird benötigt";
+        }
     });
 
     cancelBtn.addEventListener("click", function() {
@@ -52,6 +60,17 @@ function removeForm(form) {
     formVisible = false;
 }
 
+function getPremiumUserValue(){
+    user._id = req.session.userId;
+    const user = User.findOne({id: user._id});
+    if (user && user.premiumuser) {
+        return true;
+    }
+    else{
+        alert("Requires premium version")
+        return false;
+    }
+}
 function generatePassword () {
     let length = document.getElementById("pw-length").value;
     let numbers = document.getElementById("numbers").checked;
