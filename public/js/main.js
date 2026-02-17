@@ -5,6 +5,7 @@
  * @param {string} redirectedUrl
  */
 
+
 function setupFormSubmit(formId, url, redirectedUrl){
 
     const form = document.getElementById(formId); // Form über erhalten Id ziehen
@@ -47,4 +48,5 @@ document.addEventListener('DOMContentLoaded', () =>{
     setupFormSubmit('frmLogin', '/login', '/wallet');
 
     setupFormSubmit('frmPopupForm', '/wallet', '/wallet');
+    
 });

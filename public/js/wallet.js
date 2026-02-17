@@ -1,3 +1,5 @@
+import { detectActivity } from './utils.js';
+
 let formVisible = false;
 let generatorFormVisible = false;
 // Funktion dient dazu, dass die Events erst gehoert werden wenn HTML DOM Fertig gebaut ist
@@ -49,7 +51,30 @@ document.addEventListener("DOMContentLoaded", function() {
         card.classList.toggle('is-flipped');
     });
     });
-})
+
+    //console.log("Starte Activity Tracker für Wallet...");
+    
+    const ActivityTracker = detectActivity( 
+        () => console.log("User ist aktiv"), 
+        () => {
+             console.log("User ist inaktiv -> Logout wird eingeleitet");
+             // Hier den Logout-Prozess starten:
+             fetch('/logout', { method: 'POST' })
+                .then(() => window.location.href = '/login');
+        }, 
+        70000 // 5 Minuten (300.000 ms)
+    );
+
+    setInterval(() =>{
+        const restZeitMs = ActivityTracker.remainingTimeToLogout();
+        const restZeitsek = Math.ceil(restZeitMs /1000)%60;
+        const restZeitMin = Math.floor(restZeitMs /60000);
+
+
+        document.getElementById("logoutCountdown").innerText = `Auto-Logout in ${restZeitMin}:${restZeitsek} s`
+    }, 1000);
+
+});
 
 function showForm(form) {
     document.getElementById(form).style.visibility = "visible";
@@ -123,9 +148,11 @@ function randomLowCase(){
 
 
 // Logout Btn Event Listener 
+document.getElementById('logout-img').addEventListener('click', async (e) => {
 
-document.getElementById('logout-btn').addEventListener('click', async (e) => {
 
+
+    e.preventDefault();
     e.preventDefault();
 
     try{

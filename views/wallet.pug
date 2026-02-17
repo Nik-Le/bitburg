@@ -7,10 +7,14 @@ block vars
 block scripts
   script.
     const isPremiumUser = !{user && user.premiumuser ? 'true' : 'false'};
-  script(src="/js/wallet.js" defer)
+  script(src="/js/wallet.js" defer type="module")
 
 block append nav-actions 
-  a#logout-btn.logout-btn(href="/#") Logout
+  a#logout-img.logout(href="/#")
+    img(src="/images/logout.jpg" alt="logout")
+  label#logoutCountdown.logoutCntdwnLbl Logout in
+  
+
     
 
 block content
