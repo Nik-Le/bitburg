@@ -126,7 +126,7 @@ function randomLowCase(){
 
 document.getElementById('logout-btn').addEventListener('click', async (e) => {
 
-    event.preventDefault();
+    e.preventDefault();
 
     try{
         const response = await fetch('/logout', {
