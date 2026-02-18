@@ -8,15 +8,18 @@
 function setupFormSubmit(formId, url, redirectedUrl){
 
     const form = document.getElementById(formId); // Form über erhalten Id ziehen
-
+    const errorMsgDiv = document.getElementById('error-message');
+    if(errorMsgDiv){
+        console.log("errorMsgDiv erstellt");
+    }
     if (!form) return;
 
     form.addEventListener('submit', async(e) =>{
         
         e.preventDefault();                         // verhindert neuladen der Wesbite
-
         const data = Object.fromEntries(new FormData(form));
-
+        const fromData = new FormData(form);
+        console.log("1")
         try {          
             const response = await fetch(url, {
                method: 'POST',
@@ -29,12 +32,20 @@ function setupFormSubmit(formId, url, redirectedUrl){
             if (response.ok) {
                 window.location.href = redirectedUrl;
             } else{
-                console.error('Server Fehler' , result);
+                if(errorMsgDiv){
+                    errorMsgDiv.innerText = result.message || 'Ein Fehler ist aufgetreten';
+                    errorMsgDiv.style.display = 'block';
+                }else {
+                    alert(result.message);
+                }
             }
 
         } catch (error) {
-            console.error(error);
             alert('Netzwerkfehler')
+            if (errorMsgDiv) {
+                errorMsgDiv.innerText = 'Netzwerkfehler: Server nicht erreichbar.';
+                errorMsgDiv.style.display = 'block';
+            }
         }
     });
 }

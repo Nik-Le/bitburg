@@ -11,7 +11,9 @@ exports.registerUser = async (req, res) => {
         if (existingUser) {
              // Wichtig: return nutzen, damit der Code hier stoppt
             console.log("User already exist");
-            return res.status(400).json({error: 'User existiert bereits'})
+            return res.status(400).json({error: 'User already in database',
+                                            message: "Benutzername existiert bereits",
+                                            success: false})
 
         }
 
@@ -31,11 +33,8 @@ exports.registerUser = async (req, res) => {
 // POST Logic für Login
 exports.loginUser = async (req, res) => {
     try {
-        const passwordFeedbackLogin = document.getElementById('password-feedback-login');
-        passwordFeedbackLogin.textContent = '';
         const { username, password} = req.body;
         const user = await User.findOne({ username: username }); // Email oft optional beim Login
-        
 
         if (user && user.password === password) {
             req.session.userId = user._id;
@@ -46,13 +45,11 @@ exports.loginUser = async (req, res) => {
             });
 
             const allEntrys = await passwordEntry.find({owner: user._id});
-            console.log(allEntrys);
 
         } else {
-            passwordFeedbackLogin.textContent = 'Login fehlgeschlagen';
-            return res.status(401).json({error: 'Falsches Passwort',
+            return res.status(401).json({error: 'user with password not found in database',
                                     success: false,
-                                    message: 'Login Fehlgeschlagen'})
+                                    message: 'Login Fehlgeschlagen, Passwort oder Benutzername falsch'})
         }
     } catch (error) {
         console.error(error);
