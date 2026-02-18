@@ -1,22 +1,46 @@
-let formVisible = false;
-let generatorFormVisible = false;
-// Funktion dient dazu, dass die Events erst gehoert werden wenn HTML DOM Fertig gebaut ist
+document.addEventListener("DOMContentLoaded", () => {
+    const elements = {
+        addNewEntryBtn: document.getElementById("add-button"), //Opens up the Entryform
+        submitEntryBtn: document.getElementById("submit-entry-button"), //Submits new Entry
+        cancelEntryBtn: document.getElementById("cancel-button"),
+        editEntryBtn: document.querySelectorAll(".setting-btn"),
+        deleteEntryBtn: document.querySelectorAll(".delete-entry-btn"),
 
-document.addEventListener("DOMContentLoaded", function() {
-    const addBtn = document.getElementById("add-button");
-    const generatorBtn = document.getElementById("password-generator");
-    const generatePasswordBtn = document.getElementById("generate-btn");
-    const cancelBtn = document.getElementById("cancel-button");
-    const cancleGenerationBtn = document.getElementById("cancel-generation-btn");
-    const applyGeneratedPwBtn = document.getElementById("apply-btn"); 
-    const cards = document.querySelectorAll('.password-card');
-    const feedBackElement = document.getElementById("premium-feedback");
-    addBtn.addEventListener("click", function() {
-        formVisible ? removeForm("frmPopupForm") : showForm("frmPopupForm");
+        openGeneratorBtn: document.getElementById("password-generator"),
+        generatePasswordBtn: document.getElementById("generate-btn"),
+        cancleGenerationBtn: document.getElementById("cancel-generation-btn"),
+        applyGeneratedPwBtn: document.getElementById("apply-btn"),
+
+        cards: document.querySelectorAll('.password-card'),
+        copyPassword: document.getElementById("copy-password"),
+
+        lengthInput: document.getElementById("pw-length"),
+        numbersInput: document.getElementById("numbers"),
+        upCaseInput: document.getElementById("up-case"),
+        lowCaseInput: document.getElementById("low-case"),
+        symbolsInput: document.getElementById("symbols"),
+
+        logoutBtn: document.getElementById("logout-btn"),
+    };
+    elements.addNewEntryBtn.addEventListener("click", () => toggleForm("frmPopup"));
+    elements.cancelEntryBtn.addEventListener("click", () => toggleForm("frmPopup"));
+    elements.openGeneratorBtn.addEventListener("click", () => toggleForm("generator"));
+    elements.cancleGenerationBtn.addEventListener("click", () => toggleForm("generator"));
+    elements.generatePasswordBtn.addEventListener("click", () => (
+        document.getElementById("generated-password").value = generatePassword()));
+    elements.applyGeneratedPwBtn.addEventListener("click", function () {
+        let password = document.getElementById("generated-password").value;
+        document.getElementById("password-input").value = password;
+        toggleForm("generator");
     });
-    generatorBtn.addEventListener("click", function() {
-        generatorFormVisible ? removeForm("generator") : showForm("generator");
+    elements.copyPassword.addEventListener("click", function () {
+        let password = document.getElementById("generated-password");
+        navigator.clipboard.writeText(password.value);
     });
+    elements.cards.forEach(card => {
+        card.addEventListener("click", () => {
+            card.classList.toggle("is-flipped");
+        });
     generatePasswordBtn.addEventListener("click", function() {
         console.log("Hallo1")
 
@@ -30,120 +54,109 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    cancelBtn.addEventListener("click", function() {
-        formVisible ? removeForm("frmPopupForm") : showForm("frmPopupForm");
+    elements.editEntryBtn.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation(); //Prevents card flip
+            const dropDown = btn.nextElementSibling;
+            dropDown.classList.toggle("is-hidden");
+        });
     });
-    cancleGenerationBtn.addEventListener("click", function() {
-        generatorFormVisible = false;
-        document.getElementById("generator").style.visibility = "hidden";
-    });
-    applyGeneratedPwBtn.addEventListener("click", function() {
-        let password = document.getElementById("generated-password").value;
-        document.getElementById("password-input").value =  password;
-        generatorFormVisible = false;
-        document.getElementById("generator").style.visibility = "hidden";
-    });
-    
-    cards.forEach(card => {
-    card.addEventListener('click', () => {
-        card.classList.toggle('is-flipped');
-    });
-    });
-})
 
-function showForm(form) {
-    document.getElementById(form).style.visibility = "visible";
-    formVisible = true;
-}
-function removeForm(form) {
-    document.getElementById(form).style.visibility = "hidden";
-    formVisible = false;
-}
 
-function getPremiumUserValue(){
-    user._id = req.session.userId;
-    const user = User.findOne({id: user._id});
-    if (user && user.premiumuser) {
-        return true;
+    elements.deleteEntryBtn.forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            const btnId = btn.getAttribute("data-id");
+
+            try {
+                const response = await fetch(`/wallet/delete/${btnId}`, {
+                    method: 'POST',
+                });
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    console.error("Löschen fehlgeschlagen");
+                }
+
+            } catch(error) {
+                console.log("ror")
+            }
+        });
+    });
+
+    function toggleForm(form) {
+        let element = document.getElementById(form);
+        element.classList.toggle("is-hidden");
     }
-    else{
-        alert("Requires premium version")
-        return false;
-    }
-}
-function generatePassword () {
-    let length = document.getElementById("pw-length").value;
-    let numbers = document.getElementById("numbers").checked;
-    let upCase = document.getElementById("up-case").checked;
-    let lowCase = document.getElementById("low-case").checked;
-    let selection = []; 
-    let password = "";
+    function generatePassword() {
+        let selection = [];
+        let password = "";
+        let length = elements.lengthInput.value
 
-
-    if (length <= 7) {
-        console.log("Passwort länge mind 8");
-        document.getElementById("length-error").style.visibility = "visible";
-        return null;
-    }else {
-        document.getElementById("length-error").style.visibility = "hidden";
-    }
-
-    numbers ? selection.push("number") : null;
-    upCase ? selection.push("upCase") : null;
-    lowCase ? selection.push("lowCase") : null;
-
-
-    for (let i = 0; i < length; i++) {
-        let  index = Math.floor(Math.random() * selection.length);
-        let rndm;
-        if (selection.at(index) == "number") {
-           rndm = randomNumber(); 
-        } else if(selection.at(index) == "upCase") {
-           rndm = randomUpCase(); 
-        }else if(selection.at(index) == "lowCase") {
-           rndm = randomLowCase(); 
-        }else {
-            console.log("Nothing selected");
+        if (length <= 7) {
+            console.log("Passwort länge mind 8");
+            document.getElementById("length-error").classList.remove("is-hidden");
+            return null;
+        } else {
+            document.getElementById("length-error").classList.add("is-hidden");
         }
-        if(rndm != null) {
-            password = password + rndm;
+
+        elements.numbersInput.checked ? selection.push("number") : null;
+        elements.upCaseInput.checked ? selection.push("upCase") : null;
+        elements.lowCaseInput.checked ? selection.push("lowCase") : null;
+
+
+        for (let i = 0; i < length; i++) {
+            let index = Math.floor(Math.random() * selection.length);
+            let rndm;
+            if (selection.at(index) == "number") {
+                rndm = randomNumber();
+            } else if (selection.at(index) == "upCase") {
+                rndm = randomUpCase();
+            } else if (selection.at(index) == "lowCase") {
+                rndm = randomLowCase();
+            } else {
+                console.log("Nothing selected");
+            }
+            if (rndm != null) {
+                password = password + rndm;
+            }
         }
+        return password;
     }
-    document.getElementById("generated-password").value = password;
-}
-function randomNumber(){
-    return String.fromCharCode(Math.floor(Math.random() * 10 + 48));
-}
-function randomUpCase(){
-    return String.fromCharCode(Math.floor(Math.random() * 26 + 65));
-}
-function randomLowCase(){
-    return String.fromCharCode(Math.floor(Math.random() * 26 + 97));
-}
+    function randomNumber() {
+        return String.fromCharCode(Math.floor(Math.random() * 10 + 48));
+    }
+    function randomUpCase() {
+        return String.fromCharCode(Math.floor(Math.random() * 26 + 65));
+    }
+    function randomLowCase() {
+        return String.fromCharCode(Math.floor(Math.random() * 26 + 97));
+    }
 
-
+});
 // Logout Btn Event Listener 
 
 document.getElementById('logout-btn').addEventListener('click', async (e) => {
 
     event.preventDefault();
 
-    try{
+    try {
         const response = await fetch('/logout', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json' 
-        },
-    });
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
 
-    const result = await response.json();
+        const result = await response.json();
 
-    if(response.ok){
-        console.log("erfolgreich ausgellogt");
-        window.location.href = "/";
-    }
+        if (response.ok) {
+            console.log("erfolgreich ausgellogt");
+            window.location.href = "/";
+        }
 
-    } catch(error){
+    } catch (error) {
         console.log("Fehler beim auslogen", error);
     }
 
