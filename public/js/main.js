@@ -1,3 +1,5 @@
+import { deriveMasterKey, generateSalt, createAuthHash } from './crypto.js';
+
 /**
  * Forms Daten per fetch an Server
  * @param {string} formId - HTML ID des Forms
@@ -17,6 +19,30 @@ function setupFormSubmit(formId, url, redirectedUrl){
         e.preventDefault();                         // verhindert neuladen der Wesbite
 
         const data = Object.fromEntries(new FormData(form));
+
+        switch(formId){
+            case 'frmRegister':
+                const salt = generateSalt();
+                const masterKey = await deriveMasterKey(data.password, salt);
+                const authHash = await createAuthHash(masterKey)
+                data.salt = salt;
+                data.authHash = authHash;
+                delete data.password;
+                console.log(data);
+                break;
+            case 'frmLogin':
+                const responseSalt = await fetch("/login/fetchSalt",{
+                    method: 'GET',
+                    headers: {'Content-Type': 'application/json'},
+                });
+                break;
+            case 'frmPopupForm':
+                pass;
+                break;
+            default:
+        }
+
+
 
         try {          
             const response = await fetch(url, {

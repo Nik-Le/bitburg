@@ -5,10 +5,6 @@ const userVorlage = new mongoose.Schema({
         required: true,
         unique: true
     },
-    password: {
-        type: String,
-        required: true
-    },
     email: {
         type: String,
         required: true,
@@ -17,6 +13,14 @@ const userVorlage = new mongoose.Schema({
     premiumuser: {
         type: Boolean,
         required: true,
+    },
+    salt: {
+        type: String,
+        required: true
+    },
+    authHash: {
+        type: String,
+        required: true
     }
 });
 

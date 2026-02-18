@@ -4,7 +4,7 @@ const  passwordEntry = require('../models/Passwords');
 // POST Logic für Registrierung
 exports.registerUser = async (req, res) => {
     try {
-        const { username, email, password, premiumuser } = req.body;
+        const { username, email, premiumuser, salt, authHash } = req.body;
         
         // Prüfen ob User existiert
         const existingUser = await User.findOne({ username: username });
@@ -12,11 +12,12 @@ exports.registerUser = async (req, res) => {
              // Wichtig: return nutzen, damit der Code hier stoppt
             console.log("User already exist");
             return res.status(400).json({error: 'User existiert bereits'})
-
         }
 
-        const newUser = new User({ username, email, password, premiumuser: premiumuser === 'on' });
+        const newUser = new User({ username, email, premiumuser: premiumuser === 'on', salt, authHash });
         await newUser.save();
+        
+        console.log(newUser);
         
         return res.status(200).json({
             message: 'Erfolgreich',
@@ -24,7 +25,7 @@ exports.registerUser = async (req, res) => {
         });
     } catch (error) {
         console.error(error);
-        res.status(500).send("Server Fehler beim Registrieren");
+        res.status(500).json({error: 'Server Fehler beim Registrieren'});
     }
 };
 

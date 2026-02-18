@@ -66,7 +66,7 @@ export async function deriveMasterKey(password, saltHex) {
             hash: CONFIG.hash
         },
         keyMaterial,
-        { name: "AES-GCM", lenght:256},
+        { name: "AES-GCM", length:256},
         true,
         ["encrypt", "decrypt"]
     );
@@ -78,4 +78,13 @@ export async function deriveMasterKey(password, saltHex) {
 export function generateSalt(){
     const randomBuffer = window.crypto.getRandomValues(new Uint8Array(16));
     return bufferToHex(randomBuffer);
+}
+
+export async function createAuthHash(masterKey){
+
+    const rawKey = await window.crypto.subtle.exportKey("raw", masterKey);
+    
+    const hashBuffer = await window.crypto.subtle.digest("SHA-256", rawKey);
+    
+    return bufferToHex(hashBuffer);
 }
