@@ -33,10 +33,18 @@ function setupFormSubmit(formId, url, redirectedUrl){
                 console.log(data);
                 break;
             case 'frmLogin':
-                const responseSalt = await fetch("/login/fetchSalt",{
-                    method: 'GET',
+                const responseSalt = await fetch("/fetchSalt",{
+                    method: 'POST',
                     headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username: data.username})
                 });
+                const resultSalt = await responseSalt.json();
+                
+                if(responseSalt.ok){
+                    console.log(resultSalt);
+                }else{
+                    console.error("Salt nciht angekommen");
+                }
                 break;
             case 'frmPopup':
                 pass;

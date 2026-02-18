@@ -43,7 +43,7 @@ exports.loginUser = async (req, res) => {
                 redirectUrl: '/wallet'
             });
 
-            const allEntrys = await passwordEntry.find({owner: user._id});
+            //const allEntrys = await passwordEntry.find({owner: user._id});
 
         } else {
             res.status(400).json({error: 'Falsches Passwort'})
@@ -53,6 +53,49 @@ exports.loginUser = async (req, res) => {
         res.status(500).send("Login Fehler.");
     }           
 };
+
+
+exports.getUserSalt = async (req, res) => {
+    try{
+        const {username} = req.body;
+        const user = await User.findOne({username: username});
+
+        if(!user){
+            res.status(400).json("Dieser Nutzer existiert nicht");
+        } else {
+            const salt = user.salt;
+            console.log(salt);
+            res.status(200).json({
+                message: 'Salt übermittelt',
+                salt: salt
+            });
+
+        }
+    }catch(error){
+        console.error(error);
+        res.status(500).send("Salt nicht gefunden");
+    }
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Logout
 exports.logoutUser = (req, res) => {
