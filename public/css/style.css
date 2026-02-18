@@ -68,8 +68,49 @@ header {
     margin-left: 10px;
     align-items: center;
 }
-
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.setting-btn{
+    position: absolute;
+    left: 96%;
+    cursor: pointer;
+    border: none;
+    box-shadow: none;
+    z-index: 5;
+}
+.setting-btn:hover{
+    color: grey;
+    transform: scale(1.1);
+}
+.dropdown{
+    left: 80%;
+    top: 25%;
+    position: absolute;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    height: 40%;
+}
+.delete-entry-btn, .edit-entry-btn{
+    cursor: pointer;
+    border-radius: 7%;
+}
+.edit-entry-btn:hover{
+    background-color: grey;
+}
+.delete-entry-btn:hover{
+    background-color: red;
+}
 .password-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
     width: 500px;
     height: 130px;
     padding: 5px;
@@ -80,6 +121,7 @@ header {
 
 }
 .inner-card {
+    display: flex;
     width: 100%;
     height: 100%;
     position: relative;
@@ -104,6 +146,8 @@ header {
     backface-visibility: hidden;
 }
 .card-front {
+    display: flex;
+    justify-content: space-between;
     transform: rotateX(0deg);
 }
 .card-back {
@@ -112,7 +156,13 @@ header {
 .spacer {
     margin-left: 10px;
 }
-
+.card-setting{
+    width: 20px;
+    height: 20px;
+    font-size: large;
+    background: rgba(0, 0, 0, 0.00); 
+    border: none;
+}
 #add-button:hover {
     background-color: var(--primary-hover);
 }
@@ -131,34 +181,35 @@ button {
     margin-bottom: 10px;
     border-radius: 100%; 
 }
-#frmPopupForm {
+#frmPopup{
     display: flex;
     flex-direction: column;
     padding: 20px;
     position: absolute;
-    visibility: hidden;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 100;
+    z-index: 1;
 
     background-color: rgba(54, 54, 54, 1);
     border-radius: 5px;
     border: 1px solid rgba(54, 54, 54, 0.4); 
     box-shadow: 0 5px 10px rgba(0, 80, 200, 0.3);
 }
+.is-hidden{
+    visibility: hidden;
+}
 #generator {
     display: flex;
     flex-direction: column;
     padding: 20px;
     position: absolute;
-    visibility: hidden;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     height: 400px;
     width: 600px;
-    z-index: 200;
+    z-index: 2;
 
     background-color: rgba(54, 54, 54, 1);
     border-radius: 5px;
@@ -230,10 +281,9 @@ button {
     width: 70px;
     padding: 7px;
 }
-#length-error {
+.error-txt{
     color: red;
     font-weight: bold;
-    visibility: hidden;
 }
 .inputbox { 
     width: 400px;
@@ -253,26 +303,45 @@ button {
     justify-content: flex-end;
     margin-top: 10px;
 }
-#add-password-button {
-   color: black; 
+#submit-entry-button {
+    width: 90px;
+    height: 30px;
+    border-radius: 4px;
    margin-left: 15px;
+}#submit-entry-button:hover {
+    background-color: limegreen;
 }
 #cancel-button {
-    color: black;
+    width: 90px;
+    height: 30px;
+    border-radius: 4px;
+}
+#cancel-button:hover {
+    background-color: red;
 }
 #password-group {
     display: flex;
     flex-direction: row;
-}
-#password-input {
-    display: flex;
-    flex-direction: row;
+    align-items: baseline;
 }
 #password-generator {
-    width: 50px;
-    height: 40px;
+    width: 40px;
+    height: 30px;
     border-radius: 4px;
-    margin-top: auto-5px;
+    margin-left: 5px;
+}
+#copy-password {
+    width: 40px;
+    height: 30px;
+    border-radius: 4px;
+}
+#password-generator:hover {
+    background-color: grey;
+    border-color: grey;
+}
+#copy-password:hover {
+    background-color: grey;
+    border-color: grey;
 }
 /* Hilfsklasse für Breite und Zentrierung */
 .container {
@@ -590,6 +659,9 @@ label.star:before {
     transform: scale(0.98); /* Drück-Effekt */
 }
 
+#password-feedback-login:empty {
+    display: none;
+}
 @media (max-width: 600px) {
     .authDesign {
         width: 90%;       /* Nicht ganz an den Rand kleben (lässt links/rechts 5% Platz) */

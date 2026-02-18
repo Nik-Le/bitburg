@@ -17,8 +17,6 @@ exports.registerUser = async (req, res) => {
         const newUser = new User({ username, email, premiumuser: premiumuser === 'on', salt, authHash });
         await newUser.save();
         
-        console.log(newUser);
-        
         return res.status(200).json({
             message: 'Erfolgreich',
             redirectUrl: '/login'
@@ -45,7 +43,6 @@ exports.loginUser = async (req, res) => {
             });
 
             const allEntrys = await passwordEntry.find({owner: user._id});
-            console.log(allEntrys);
 
         } else {
             res.status(400).json({error: 'Falsches Passwort'})

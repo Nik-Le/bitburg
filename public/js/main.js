@@ -11,13 +11,15 @@ import { deriveMasterKey, generateSalt, createAuthHash } from './crypto.js';
 function setupFormSubmit(formId, url, redirectedUrl){
 
     const form = document.getElementById(formId); // Form über erhalten Id ziehen
-
+    const errorMsgDiv = document.getElementById('error-message');
+    if(errorMsgDiv){
+        console.log("errorMsgDiv erstellt");
+    }
     if (!form) return;
 
     form.addEventListener('submit', async(e) =>{
         
         e.preventDefault();                         // verhindert neuladen der Wesbite
-
         const data = Object.fromEntries(new FormData(form));
 
         switch(formId){
@@ -56,12 +58,20 @@ function setupFormSubmit(formId, url, redirectedUrl){
             if (response.ok) {
                 window.location.href = redirectedUrl;
             } else{
-                console.error('Server Fehler' , result);
+                if(errorMsgDiv){
+                    errorMsgDiv.innerText = result.message || 'Ein Fehler ist aufgetreten';
+                    errorMsgDiv.style.display = 'block';
+                }else {
+                    alert(result.message);
+                }
             }
 
         } catch (error) {
-            console.error(error);
             alert('Netzwerkfehler')
+            if (errorMsgDiv) {
+                errorMsgDiv.innerText = 'Netzwerkfehler: Server nicht erreichbar.';
+                errorMsgDiv.style.display = 'block';
+            }
         }
     });
 }
@@ -73,6 +83,5 @@ document.addEventListener('DOMContentLoaded', () =>{
 
     setupFormSubmit('frmLogin', '/login', '/wallet');
 
-    setupFormSubmit('frmPopupForm', '/wallet', '/wallet');
-    
+    setupFormSubmit('frmPopup', '/wallet', '/wallet');
 });
