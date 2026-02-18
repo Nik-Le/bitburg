@@ -13,7 +13,7 @@ function setupFormSubmit(formId, url, redirectedUrl){
     const form = document.getElementById(formId); // Form über erhalten Id ziehen
     const errorMsgDiv = document.getElementById('error-message');
     if(errorMsgDiv){
-        console.log("errorMsgDiv erstellt");
+        //console.log("errorMsgDiv erstellt");
     }
     if (!form) return;
 
@@ -38,7 +38,7 @@ function setupFormSubmit(formId, url, redirectedUrl){
                     headers: {'Content-Type': 'application/json'},
                 });
                 break;
-            case 'frmPopupForm':
+            case 'frmPopup':
                 pass;
                 break;
             default:

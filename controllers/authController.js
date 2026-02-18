@@ -15,6 +15,7 @@ exports.registerUser = async (req, res) => {
         }
 
         const newUser = new User({ username, email, premiumuser: premiumuser === 'on', salt, authHash });
+        console.log(newUser);
         await newUser.save();
         
         return res.status(200).json({
