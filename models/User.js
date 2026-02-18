@@ -13,6 +13,10 @@ const userVorlage = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
+    },
+    premiumuser: {
+        type: Boolean,
+        required: true,
     }
 });
 

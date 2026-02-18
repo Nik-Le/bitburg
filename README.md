@@ -12,5 +12,8 @@
 - Dummy Seite Über uns --> Jakob
 - Login Button bearbeiten da man die Session destroyed (low effort solution: zusätliches Bild/button mit Logout zeichen und auf diesen  Press dan ausloggen?)
 - Nutzer in wallet mit Login begrüßen
+- (Bewertungen auf Startseite einbauen --> Philipp)
+- Eingabe Feedback an Frontend --> Philipp
+- Premiumuser --> Philipp
 
 # UND NATÜRLICH DOKUMENTATION AUF OVERLEAF

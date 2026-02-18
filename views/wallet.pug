@@ -4,8 +4,9 @@ extends layout
 block vars
   - var bodyId = 'walletBody';
   - var mainId = 'walletMain';
-
-block scripts 
+block scripts
+  script.
+    const isPremiumUser = !{user && user.premiumuser ? 'true' : 'false'};
   script(src="/js/wallet.js" defer)
 
 block append nav-actions 
@@ -77,5 +78,6 @@ block content
         input#symbols(type="checkbox" checked="true")
     
     button#generate-btn(type="button") Passwort generieren
+    p#premium-feedback(style="color: red; margin-top: 5px; font-weight: bold;")
     button#apply-btn(type="button") Passwort übernehmen
     button#cancel-generation-btn(type="button") Abbrechen

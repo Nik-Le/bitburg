@@ -41,6 +41,17 @@ document.addEventListener("DOMContentLoaded", () => {
         card.addEventListener("click", () => {
             card.classList.toggle("is-flipped");
         });
+    generatePasswordBtn.addEventListener("click", function() {
+        console.log("Hallo1")
+
+        if (feedBackElement) feedBackElement.textContent = "";
+        if(isPremiumUser){
+        generatePassword();
+        }
+        else{
+            console.log("Hallo")
+            feedBackElement.textContent = "Premium wird benötigt";
+        }
     });
 
     elements.editEntryBtn.forEach(btn => {

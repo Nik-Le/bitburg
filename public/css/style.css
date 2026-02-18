@@ -255,6 +255,10 @@ button {
     height: 50px;
     border-radius: 4px;
 }
+
+#premium-feedback:empty {
+    display: none;
+}
 #generate-btn:hover {
     background-color: #27ae60;
 }
