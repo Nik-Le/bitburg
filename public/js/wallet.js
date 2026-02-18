@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
         generatePassword();
         }
         else{
-            console.log("Hallo")
             feedBackElement.textContent = "Premium wird benötigt";
         }
     });
