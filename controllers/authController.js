@@ -14,7 +14,6 @@ exports.registerUser = async (req, res) => {
             return res.status(400).json({error: 'User already in database',
                                             message: "Benutzername existiert bereits",
                                             success: false})
-
         }
 
         const newUser = new User({ username, email, password, premiumuser: premiumuser === 'on' });

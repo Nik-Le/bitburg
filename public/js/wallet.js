@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         openGeneratorBtn: document.getElementById("password-generator"),
         generatePasswordBtn: document.getElementById("generate-btn"),
+        feedBackElement: document.getElementById("premium-feedback"),
         cancleGenerationBtn: document.getElementById("cancel-generation-btn"),
         applyGeneratedPwBtn: document.getElementById("apply-btn"),
 
@@ -26,8 +27,14 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.cancelEntryBtn.addEventListener("click", () => toggleForm("frmPopup"));
     elements.openGeneratorBtn.addEventListener("click", () => toggleForm("generator"));
     elements.cancleGenerationBtn.addEventListener("click", () => toggleForm("generator"));
-    elements.generatePasswordBtn.addEventListener("click", () => (
-        document.getElementById("generated-password").value = generatePassword()));
+    elements.generatePasswordBtn.addEventListener("click", () => {
+        if(isPremiumUser){
+        document.getElementById("generated-password").value = generatePassword()}
+        else
+    {
+        elements.feedBackElement.textContent = "Premium wird für diese Funktion benötigt";
+    }
+    });
     elements.applyGeneratedPwBtn.addEventListener("click", function () {
         let password = document.getElementById("generated-password").value;
         document.getElementById("password-input").value = password;
@@ -41,17 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
         card.addEventListener("click", () => {
             card.classList.toggle("is-flipped");
         });
-    elements.openGeneratorBtn.addEventListener("click", function() {
-        console.log("Hallo1")
-
-        if (feedBackElement) feedBackElement.textContent = "";
-        if(isPremiumUser){
-        generatePassword();
-        }
-        else{
-            feedBackElement.textContent = "Premium wird benötigt";
-        }
-    });
 
     elements.editEntryBtn.forEach(btn => {
         btn.addEventListener("click", (e) => {
