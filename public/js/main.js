@@ -57,5 +57,5 @@ document.addEventListener('DOMContentLoaded', () =>{
 
     setupFormSubmit('frmLogin', '/login', '/wallet');
 
-    setupFormSubmit('frmPopupForm', '/wallet', '/wallet');
+    setupFormSubmit('frmPopup', '/wallet', '/wallet');
 });
