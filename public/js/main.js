@@ -17,10 +17,9 @@ function setupFormSubmit(formId, url, redirectedUrl){
     form.addEventListener('submit', async(e) =>{
         
         e.preventDefault();                         // verhindert neuladen der Wesbite
-        const data = Object.fromEntries(new FormData(form));
-        const fromData = new FormData(form);
-        console.log("1")
-        try {          
+
+        try {
+            const data = Object.fromEntries(new FormData(form));
             const response = await fetch(url, {
                method: 'POST',
                headers: { 'Content-Type': 'application/json'},
@@ -44,7 +43,6 @@ function setupFormSubmit(formId, url, redirectedUrl){
             alert('Netzwerkfehler')
             if (errorMsgDiv) {
                 errorMsgDiv.innerText = 'Netzwerkfehler: Server nicht erreichbar.';
-                errorMsgDiv.style.display = 'block';
             }
         }
     });

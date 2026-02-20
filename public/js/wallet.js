@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
         symbolsInput: document.getElementById("symbols"),
 
         logoutBtn: document.getElementById("logout-btn"),
+
+        errorMessage: document.getElementById('error-message')
     };
     elements.addNewEntryBtn.addEventListener("click", () => toggleForm("frmPopup"));
     elements.cancelEntryBtn.addEventListener("click", () => toggleForm("frmPopup"));
@@ -91,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, 2000);
 
             } catch (err) {
-                console.error("Fehler beim Kopieren in die Zwischenablage: ", err);
                 alert("Kopieren fehlgeschlagen!");
             }
         });
