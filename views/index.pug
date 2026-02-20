@@ -1,15 +1,17 @@
 extends layout
 
+block scripts
+  script(src="/js/hacker-effect.js" defer)
+
 block content
   section.hero
     div.container.hero-content
-      h1 BitBurg – herrlich herb, unknackbar stark
+      h1.hacker-effect(data-value="Deine digitale Festung") Deine digitale Festung
       p.hero-subtext
         | Speichere, teile und verwalte deine sensiblen Daten mit BitBurg. 
         | Open Source, Ende-zu-Ende verschlüsselt und überall verfügbar.
       div.hero-actions
         a.cta-btn.large(href="/register") Kostenlos starten
-        a.secondary-btn(href="/aboutUs") Über uns
 
   section.hero
     div.container.hero-content
