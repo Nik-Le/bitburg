@@ -1,3 +1,7 @@
+import { detectActivity } from './utils.js';
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
     const elements = {
         addNewEntryBtn: document.getElementById("add-button"), //Opens up the Entryform
@@ -104,14 +108,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+
+function toggleForm(form) {
+        let element = document.getElementById(form);
+        element.classList.toggle("is-hidden");
+}
+
+
 function showForm(form) {
     document.getElementById(form).style.visibility = "visible";
     formVisible = true;
 }
+
+
 function removeForm(form) {
     document.getElementById(form).style.visibility = "hidden";
     formVisible = false;
 }
+
 
 function getPremiumUserValue(){
     user._id = req.session.userId;
@@ -178,8 +192,6 @@ function generatePassword () {
 
 // Logout Btn Event Listener 
 document.getElementById('logout-img').addEventListener('click', async (e) => {
-
-
 
     e.preventDefault();
 

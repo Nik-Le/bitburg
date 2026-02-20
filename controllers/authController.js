@@ -1,112 +1,93 @@
-const  User = require('../models/User');
-const  passwordEntry = require('../models/Passwords');
+const User          = require('../models/User');
+const passwordEntry = require('../models/Passwords');
+const bcrypt        = require('bcrypt');
 
-// POST Logic für Registrierung
+// ─── Registrierung ───────────────────────────────────────────────────────────
+
 exports.registerUser = async (req, res) => {
     try {
         const { username, email, premiumuser, salt, authHash } = req.body;
-        
-        // Prüfen ob User existiert
-        const existingUser = await User.findOne({ username: username });
+
+        const existingUser = await User.findOne({ username });
         if (existingUser) {
-             // Wichtig: return nutzen, damit der Code hier stoppt
-            console.log("User already exist");
-            return res.status(400).json({error: 'User existiert bereits'})
+            return res.status(400).json({ message: 'Benutzername ist bereits vergeben.' });
         }
 
-        const newUser = new User({ username, email, premiumuser: premiumuser === 'on', salt, authHash });
-        console.log(newUser);
-        await newUser.save();
-        
-        return res.status(200).json({
-            message: 'Erfolgreich',
-            redirectUrl: '/login'
+        // authHash aus dem Frontend nochmals hashen (Defense in Depth)
+        const doubleHash = await bcrypt.hash(authHash, 10);
+
+        const newUser = new User({
+            username,
+            email,
+            premiumuser: premiumuser === 'on',
+            salt,
+            authHash: doubleHash,
         });
+
+        await newUser.save();
+
+        return res.status(200).json({ message: 'Registrierung erfolgreich.' });
+
     } catch (error) {
-        console.error(error);
-        res.status(500).json({error: 'Server Fehler beim Registrieren'});
+        console.error('Fehler bei der Registrierung:', error);
+        return res.status(500).json({ message: 'Serverfehler bei der Registrierung.' });
     }
 };
 
-// POST Logic für Login
+// ─── Login ────────────────────────────────────────────────────────────────────
+
 exports.loginUser = async (req, res) => {
     try {
-        const { username, password} = req.body;
-        const user = await User.findOne({ username: username }); // Email oft optional beim Login
-        
+        const { authHash } = req.body;
 
-        if (user && user.password === password) {
-            req.session.userId = user._id;
-            console.log("Login erfolgreich");
-            res.status(200).json({
-                message: 'Erfolgreich',
-                redirectUrl: '/wallet'
-            });
-
-            //const allEntrys = await passwordEntry.find({owner: user._id});
-
-        } else {
-            res.status(400).json({error: 'Falsches Passwort'})
+        // Username muss in der Session oder im Body vorhanden sein
+        const user = await User.findOne({ username: req.body.username });
+        if (!user) {
+            return res.status(400).json({ message: 'Benutzer nicht gefunden.' });
         }
+
+        const isValid = await bcrypt.compare(authHash, user.authHash);
+
+        if (isValid) {
+            return res.status(200).json({ message: 'Login erfolgreich.' });
+        } else {
+            return res.status(401).json({ message: 'Ungültiges Passwort.' });
+        }
+
     } catch (error) {
-        console.error(error);
-        res.status(500).send("Login Fehler.");
-    }           
+        console.error('Fehler beim Login:', error);
+        return res.status(500).json({ message: 'Serverfehler beim Login.' });
+    }
 };
 
+// ─── Salt abrufen ─────────────────────────────────────────────────────────────
 
 exports.getUserSalt = async (req, res) => {
-    try{
-        const {username} = req.body;
-        const user = await User.findOne({username: username});
+    try {
+        const { username } = req.body;
 
-        if(!user){
-            res.status(400).json("Dieser Nutzer existiert nicht");
-        } else {
-            const salt = user.salt;
-            console.log(salt);
-            res.status(200).json({
-                message: 'Salt übermittelt',
-                salt: salt
-            });
-
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: 'Benutzer nicht gefunden.' });
         }
-    }catch(error){
-        console.error(error);
-        res.status(500).send("Salt nicht gefunden");
-    }
 
+        return res.status(200).json({ salt: user.salt });
+
+    } catch (error) {
+        console.error('Fehler beim Abrufen des Salts:', error);
+        return res.status(500).json({ message: 'Serverfehler beim Abrufen des Salts.' });
+    }
 };
 
+// ─── Logout ───────────────────────────────────────────────────────────────────
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Logout
 exports.logoutUser = (req, res) => {
     req.session.destroy((err) => {
-        if(err){
-            return res.status(500).json({error: "Logout fehlgeschlagen"})
+        if (err) {
+            return res.status(500).json({ message: 'Logout fehlgeschlagen.' });
         }
-        
-        res.clearCookie('connect.sid');
-        res.status(200).json({success: true});
 
+        res.clearCookie('connect.sid');
+        return res.status(200).json({ success: true });
     });
-    
-};                              
+};

@@ -7,6 +7,7 @@ router.post('/register', authController.registerUser);
 router.post('/login', authController.loginUser);
 router.post('/fetchSalt', authController.getUserSalt)
 
+
 router.post('/logout', authController.logoutUser);
 
 

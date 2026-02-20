@@ -37,7 +37,7 @@ exports.wallet = async (req, res) => {
         res.render('wallet', {
             title: 'Wallet',
             passwordList: data,
-            user: currentUser  // <--- DAS HAT GEFEHLT!
+            user: currentUser
         });
 
     } catch (error) {

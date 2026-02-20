@@ -3,10 +3,10 @@ const  passwordEntry = require('../models/Passwords')
 //POST für Passwortspeichervorgang
 exports.addPassword = async (req, res) => {
     try {
-        const {userName, siteName, password} = req.body;
+        const {iv, cipherEntry} = req.body;
         const owner = req.session.userId;
 
-        const usageExist = await passwordEntry.findOne({
+        /**const usageExist = await passwordEntry.findOne({
             siteName: siteName,
             owner: owner
         });
@@ -14,9 +14,9 @@ exports.addPassword = async (req, res) => {
         if (usageExist){
             console.log("User hat diesen Eintrag bereits");
             return res.status(400).json({ error: 'Du hast bereits ein Passwort für diese Seite gespeichert.' });
-        };
+        };*/
 
-        const newPasswort = new passwordEntry({password, userName, siteName, owner});
+        const newPasswort = new passwordEntry({iv, cipherEntry, owner});
         const savedEntry = await newPasswort.save();
 
         

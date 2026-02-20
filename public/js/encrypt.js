@@ -18,7 +18,7 @@ export async function encryptEntry(masterKey, unencryptedEntry){
     const dataString = JSON.stringify(unencryptedEntry);
     const dataBytes = encoder.encode(dataString);
 
-    const cipher = window.crypto.subtle.encrypt(
+    const cipher = await window.crypto.subtle.encrypt(
         {name: "AES-GCM",
             iv: iv
         },
