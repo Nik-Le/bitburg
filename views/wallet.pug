@@ -66,7 +66,8 @@ block content
       button#password-generator(type="button")
         i.fa-solid.fa-wand-magic-sparkles
     span#password-error.error-txt.is-hidden Länge muss mindestens 8 Zeichen lang sein.
-    
+    #error-message.alert.alert-danger(style="display: none; color: red; padding: 10px; margin-bottom: 15px;")
+
     #button-container
       button#cancel-button(type="button") Abbrechen
       button#submit-entry-button(type="submit") Hinzufuegen
