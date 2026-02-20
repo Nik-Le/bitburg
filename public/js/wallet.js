@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         cards: document.querySelectorAll('.password-card'),
         copyPassword: document.getElementById("copy-password"),
+        copyButtons: document.querySelectorAll(".copy-button"),
 
         lengthInput: document.getElementById("pw-length"),
         numbersInput: document.getElementById("numbers"),
@@ -27,12 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.openGeneratorBtn.addEventListener("click", () => toggleForm("generator"));
     elements.cancleGenerationBtn.addEventListener("click", () => toggleForm("generator"));
     elements.generatePasswordBtn.addEventListener("click", () => {
-        if(isPremiumUser){
-        document.getElementById("generated-password").value = generatePassword()}
-        else
-    {
-        elements.feedBackElement.textContent = "Premium wird für diese Funktion benötigt";
-    }
+        if (typeof isPremiumUser !== 'undefined' && isPremiumUser) {
+            let pw = generatePassword();
+            if(pw) document.getElementById("generated-password").value = pw;
+        } else {
+            if (elements.feedBackElement) elements.feedBackElement.textContent = "Premium wird für diese Funktion benötigt";
+        }
     });
     elements.applyGeneratedPwBtn.addEventListener("click", function () {
         let password = document.getElementById("generated-password").value;
@@ -47,38 +48,52 @@ document.addEventListener("DOMContentLoaded", () => {
         card.addEventListener("click", () => {
             card.classList.toggle("is-flipped");
         });
-        elements.openGeneratorBtn.addEventListener("click", function () {
-            console.log("Hallo1")
+    });
+    elements.deleteEntryBtn.forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            const btnId = btn.getAttribute("data-id");
 
-            if (feedBackElement) feedBackElement.textContent = "";
-            if (isPremiumUser) {
-                generatePassword();
-            }
-            else {
-                console.log("Hallo")
-                feedBackElement.textContent = "Premium wird benötigt";
+            try {
+                const response = await fetch(`/wallet/delete/${btnId}`, {
+                    method: 'POST',
+                });
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    console.error("Löschen fehlgeschlagen");
+                }
+
+            } catch (error) {
+                console.log("ror")
             }
         });
+    });
+    elements.copyButtons.forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            // Den Text aus dem data-copy Attribut holen
+            const textToCopy = btn.getAttribute("data-copy");
 
-        elements.deleteEntryBtn.forEach(btn => {
-            btn.addEventListener("click", async (e) => {
-                e.stopPropagation();
-                const btnId = btn.getAttribute("data-id");
+            if (!textToCopy) return;
 
-                try {
-                    const response = await fetch(`/wallet/delete/${btnId}`, {
-                        method: 'POST',
-                    });
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        console.error("Löschen fehlgeschlagen");
-                    }
+            try {
+                // Text in die Zwischenablage schreiben
+                await navigator.clipboard.writeText(textToCopy);
 
-                } catch (error) {
-                    console.log("ror")
-                }
-            });
+                // Visuelles Feedback für den Nutzer (Optional, aber empfohlen)
+                const originalText = btn.innerHTML;
+                btn.innerHTML = "✅ Kopiert!";
+
+                // Nach 2 Sekunden den Text wieder zurücksetzen
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+
+            } catch (err) {
+                console.error("Fehler beim Kopieren in die Zwischenablage: ", err);
+                alert("Kopieren fehlgeschlagen!");
+            }
         });
     });
 
@@ -133,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
-// Logout Btn Event Listener 
+// Logout Btn Event Listener
 
 document.getElementById('logout-btn').addEventListener('click', async (e) => {
 

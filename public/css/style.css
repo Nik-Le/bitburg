@@ -109,7 +109,7 @@ header {
     animation: fadeInUp 0.6s ease-out forwards;
     opacity: 0;
     width: 500px;
-    height: 130px;
+    height: 18%;
     padding: 5px;
     margin-bottom: 15px;
     font-size: large;
@@ -155,6 +155,58 @@ header {
 }
 .card-back {
     transform: rotateX(180deg);
+}
+/* --- Styling für die Info-Row --- */
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    min-height: 32px; /* Feste Mindesthöhe, damit Zeilen mit und ohne Button gleich groß sind */
+    width: 100%;
+}
+
+.info-row span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 10px;
+    line-height: 1.2; /* Hält den Text kompakt auf einer Linie */
+}
+
+/* --- Styling für den Kopier-Knopf --- */
+.copy-button {
+    border: none;
+    color: #555;
+    border-radius: 6px; /* Etwas dezentere Ecken */
+
+    /* HIER IST DIE LÖSUNG: Feste Höhe statt dickem Padding */
+    height: 32px;
+    padding: 0 12px;
+
+    font-size: 0.9rem; /* Icon minimal kleiner, passend zur Zeile */
+    cursor: pointer;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: auto;
+    transition: all 0.2s ease-in-out;
+}
+
+/* --- Hover-Effekte bleiben bestehen --- */
+.copy-button:hover {
+    background-color: #e4e6eb;
+    color: #222;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.copy-button:active {
+    background-color: #d8dadf;
+    transform: translateY(0);
+    box-shadow: none;
 }
 .spacer {
     margin-left: 10px;
@@ -345,6 +397,7 @@ button {
     height: 30px;
     border-radius: 4px;
 }
+
 #password-generator:hover {
     background-color: grey;
     border-color: grey;
