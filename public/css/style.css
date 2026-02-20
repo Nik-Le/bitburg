@@ -654,6 +654,9 @@ label.star:before {
     transform: scale(0.98); /* Drück-Effekt */
 }
 
+#password-feedback-login:empty {
+    display: none;
+}
 @media (max-width: 600px) {
     .authDesign {
         width: 90%;       /* Nicht ganz an den Rand kleben (lässt links/rechts 5% Platz) */
