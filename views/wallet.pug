@@ -21,37 +21,8 @@ block content
   #wallet-container
     .spacer
     ul#password-container
-      each entry in passwordList
-        li.password-card
-          div.inner-card
-            div.card-front <strong>#{entry.siteName}</strong>
-              button.delete-entry-btn(type="Button" data-id=entry._id)
-                i.fa-solid.fa-trash
-            div.card-back
-              //- Zeile 1: Name (Ohne Button)
-              div.info-row
-                span
-                  strong Eintrags-name:
-                  | #{entry.siteName}
-
-              //- Zeile 2: Benutzername (Mit Button)
-              div.info-row
-                span
-                  strong Benutzername/E-Mail:
-                  | #{entry.userName}
-                button.copy-button(type="button" data-copy=entry.userName)
-                  i.fa-solid.fa-clone
-
-              //- Zeile 3: Passwort (Mit Button)
-              div.info-row
-                span
-                  strong Passwort:
-                  | #{entry.password}
-                button.copy-button(type="button" data-copy=entry.password)
-                  i.fa-solid.fa-clone
-
-      else
-        li.password-card Keine Einträge vorhanden!   
+    
+      
     button#add-button.fa-solid.fa-plus
   form#frmPopup.is-hidden()
     label(for="name-input") Name:

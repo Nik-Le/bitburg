@@ -158,9 +158,21 @@ async function loadAndRenderEntries() {
                 </div>
             </div>
             <div class="card-back">
-                <p><strong>Eintrags-name:</strong> ${plain.siteName}</p>
-                <p><strong>Benutzername/E-Mail:</strong> ${plain.userName}</p>
-                <p><strong>Passwort:</strong> ${plain.password}</p>
+                <div class="info-row">
+                    <span><strong>Eintrags-name:</strong> ${plain.siteName}</span>
+                </div>
+                <div class="info-row">
+                    <span><strong>Benutzername/E-Mail:</strong> ${plain.userName}</span>
+                    <button class="copy-button" type="button" data-copy="${plain.userName}">
+                        <i class="fa-solid fa-clone"></i>
+                    </button>
+                </div>
+                <div class="info-row">
+                    <span><strong>Passwort:</strong> ${plain.password}</span>
+                    <button class="copy-button" type="button" data-copy="${plain.password}">
+                        <i class="fa-solid fa-clone"></i>
+                    </button>
+                </div>
             </div>
         </div>`;
 
