@@ -36,7 +36,7 @@ app.use(session({
     ttl: 12 * 60 * 60 // Session läuft nach 12 Stunden in der DB ab
   }),
   cookie: {
-    maxAge: 1000 * 60 * 60 * 12,
+    maxAge: 1000 * 60 * 60 * 12, // 12h TTL
     httpOnly: true // Sicherheit: Client-JS kann Cookie nicht lesen
   }            
 }));

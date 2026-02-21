@@ -2,9 +2,9 @@
  * 
  */
 
-function hexToBuffer(hexString){
+function hexToBuffer(hexString) {
     return new Uint8Array(
-      hexString.match(/.{1,2}/).map(byte => parseInt(16))  
+        hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16))
     );
 }
 
@@ -12,9 +12,9 @@ export async function decryptEntrys(masterKey, encryptedEntry, iv) {
     
     try{
         const ivBytes= hexToBuffer(iv);
-        const encryptedEntryBytes= (encryptedEntry);
+        const encryptedEntryBytes= hexToBuffer(encryptedEntry);
 
-        const decryptedBuffer = window.crypto.subtle.decrypt(
+        const decryptedBuffer = await window.crypto.subtle.decrypt(
             {
                 name: "AES-GCM",
                 iv: ivBytes

@@ -37,54 +37,58 @@ function bufferToHex(buffer){
  * 
  */
 
-export async function deriveMasterKey(password, saltHex) {
-
-    // Übergebense password(String) in Bytes wandeln
+export async function deriveAllKeys(password, saltHex) {
     const passwordBuffer = stringToBuffer(password);
-
-
-    // Salt von Hex in Bytes
-    // 2 Hex Ziffern ergeben 1 Byte welches zur basis 16 gewandelt wird
+    
     const saltBuffer = new Uint8Array(
-        saltHex.match(/.{1,2}/g).map(byte => parseInt(byte,16))
+        saltHex.match(/.{1,2}/g).map(byte => parseInt(byte, 16))
     );
     
-    // Erstellung eienss krypto Key Objekt welches benötigt wird für die Ableitung
+    // Basismaterial aus dem Passwort erstellen
     const keyMaterial = await window.crypto.subtle.importKey(
         "raw",
         passwordBuffer,
-        {name: CONFIG.name},
+        { name: "PBKDF2" },
         false,
-        ["deriveKey"]
+        ["deriveKey", "deriveBits"]
     );
 
-    const deriveKey = await window.crypto.subtle.deriveKey(
+    // --- 1. DER MASTER-KEY (Verschlüsselung) ---
+    // Wir setzen extractable auf FALSE. Er kann nicht ausgelesen werden.
+    const masterKey = await window.crypto.subtle.deriveKey(
         {
-            name: CONFIG.name,
+            name: "PBKDF2",
             salt: saltBuffer,
             iterations: CONFIG.iterations,
             hash: CONFIG.hash
         },
         keyMaterial,
-        { name: "AES-GCM", length:256},
-        true,
+        { name: "AES-GCM", length: 256 },
+        true, // <--- SICHERHEIT: Key ist nicht exportierbar
         ["encrypt", "decrypt"]
     );
 
-    return deriveKey;
+    // --- 2. DER AUTH-HASH (Backend-Login) ---
+    // Wir leiten rohe Bits ab, die wir in einen Hex-String wandeln können.
+    // Wichtig: Wir nutzen eine leicht andere Ableitung oder einfach deriveBits,
+    // um den "raw" Key-Export zu umgehen.
+    const authBits = await window.crypto.subtle.deriveBits(
+        {
+            name: "PBKDF2",
+            salt: saltBuffer,
+            iterations: CONFIG.iterations,
+            hash: CONFIG.hash
+        },
+        keyMaterial,
+        256 // Wir wollen 256 Bits (32 Bytes)
+    );
 
+    const authHash = bufferToHex(authBits);
+
+    return { masterKey, authHash };
 }
 
 export function generateSalt(){
     const randomBuffer = window.crypto.getRandomValues(new Uint8Array(16));
     return bufferToHex(randomBuffer);
-}
-
-export async function createAuthHash(masterKey){
-
-    const rawKey = await window.crypto.subtle.exportKey("raw", masterKey);
-    
-    const hashBuffer = await window.crypto.subtle.digest("SHA-256", rawKey);
-    
-    return bufferToHex(hashBuffer);
 }
