@@ -64,7 +64,7 @@ export async function deriveAllKeys(password, saltHex) {
         },
         keyMaterial,
         { name: "AES-GCM", length: 256 },
-        false, // <--- SICHERHEIT: Key ist nicht exportierbar
+        true, // <--- SICHERHEIT: Key ist nicht exportierbar
         ["encrypt", "decrypt"]
     );
 

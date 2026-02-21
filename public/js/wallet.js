@@ -194,7 +194,7 @@ function generatePassword () {
 document.getElementById('logout-img').addEventListener('click', async (e) => {
 
     e.preventDefault();
-
+    sessionStorage.clear();
     try {
         const response = await fetch('/logout', {
             method: 'POST',

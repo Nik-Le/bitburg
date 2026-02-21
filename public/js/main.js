@@ -1,6 +1,6 @@
 import { deriveAllKeys, generateSalt} from './crypto.js';
 import {encryptEntry} from './encrypt.js';
-import { setMasterKey,getMasterKey, clearMasterKey} from './keyStore.js';
+import { decryptEntrys} from './decrypt.js';
 
 /**
  * Bindet einen Submit-Handler an ein Formular und sendet die Daten per fetch an den Server.
@@ -48,27 +48,31 @@ async function setupFormSubmit(formId, url, redirectUrl) {
                     // Master Key und Auth Hash aus Passwort + Salt ableiten
                     const { masterKey, authHash } = await deriveAllKeys(data.password, salt);
 
-                    setMasterKey(masterKey);
+                    const raw = await crypto.subtle.exportKey('raw', masterKey);
+                    sessionStorage.setItem('masterKey', JSON.stringify(Array.from(new Uint8Array(raw))));
                     
-
                     data.authHash = authHash;
                     delete data.password;
                     break;
                 }
 
                 case 'frmPopup':
-                    getMasterKey();
-                    console.log(getMasterKey());                        // Should log: CryptoKey {type: 'secret', ...}
-                    console.log(getMasterKey() instanceof CryptoKey);
-                    const{iv, cipher} =  await encryptEntry(getMasterKey(),data);
+                    const raw = new Uint8Array(JSON.parse(sessionStorage.getItem('masterKey')));
+                    const masterKey = await crypto.subtle.importKey(
+                        'raw', raw,
+                        { name: 'AES-GCM', length: 256 },
+                        false,
+                        ['encrypt', 'decrypt']
+                    );
+
+                    const { iv, cipher } = await encryptEntry(masterKey, data);
+
                     for (const key in data) {
-                         delete data[key]; 
+                        delete data[key];
                     }
 
                     data.iv = iv;
-                    data.cipherEntry = cipher;
-                    
-
+                    data.entry = cipher;
                     break;
 
                 default:
@@ -116,4 +120,56 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFormSubmit('frmRegister', '/register', '/login');
     setupFormSubmit('frmLogin',    '/login',    '/wallet');
     setupFormSubmit('frmPopup',    '/wallet',   '/wallet');
+
+    if (document.getElementById('password-container')) {
+        loadAndRenderEntries();
+    }
 });
+
+
+
+async function loadAndRenderEntries() {
+    const entries = JSON.parse(document.getElementById('encrypted-data').textContent);
+    
+    const keyRaw = new Uint8Array(JSON.parse(sessionStorage.getItem('masterKey')));
+    const masterKey = await crypto.subtle.importKey(
+        'raw', keyRaw,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+    );
+
+    const list = document.getElementById('password-container');
+    list.innerHTML = ''; // Leert die Liste
+
+    for (const entry of entries) {
+        console.log(entry);
+        const plain = await decryptEntrys(masterKey, entry.entry, entry.iv, );
+        
+        const li = document.createElement('li');
+        li.className = 'password-card';
+        li.innerHTML = `
+        <div class="inner-card">
+            <div class="card-front">
+                <strong>${plain.siteName}</strong>
+                <button class="setting-btn fa-solid fa-edit" type="button"></button>
+                <div class="dropdown is-hidden">
+                    <button class="delete-entry-btn" type="button" data-id="${entry._id}">Löschen</button>
+                </div>
+            </div>
+            <div class="card-back">
+                <p><strong>Eintrags-name:</strong> ${plain.siteName}</p>
+                <p><strong>Benutzername/E-Mail:</strong> ${plain.userName}</p>
+                <p><strong>Passwort:</strong> ${plain.password}</p>
+            </div>
+        </div>`;
+
+    list.appendChild(li);
+}
+
+if (entries.length === 0) {
+    list.innerHTML = '<li class="password-card">Keine Einträge vorhanden!</li>';
+} 
+    
+    
+}

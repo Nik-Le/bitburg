@@ -49,6 +49,9 @@ exports.loginUser = async (req, res) => {
         const isValid = await bcrypt.compare(authHash, user.authHash);
 
         if (isValid) {
+            req.session.userId   = user._id;
+            req.session.username = user.username;
+            req.session.isLoggedIn = true;
             return res.status(200).json({ message: 'Login erfolgreich.' });
         } else {
             return res.status(401).json({ message: 'Ungültiges Passwort.' });
@@ -90,4 +93,15 @@ exports.logoutUser = (req, res) => {
         res.clearCookie('connect.sid');
         return res.status(200).json({ success: true });
     });
+};
+
+
+//──────────────────── requiere Loged in ────────────────────
+
+exports.requireLogin = function requiereLogin (req, res, next) {
+    if (req.session && req.session.isLoggedIn) {
+        next(); // eingeloggt → weiter
+    } else {
+        res.redirect('/login'); // nicht eingeloggt → zurück
+    }
 };
