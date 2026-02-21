@@ -2,10 +2,10 @@
 :root {
     --primary-color: #175DDC; /* Bitwarden-ähnliches Blau */
     --primary-hover: #1046a8;
-    --text-color: white;
+    --text-color: #ffffff;
     --bg-color: #ffffff;
     --light-bg: #f8f9fa;
-    --border-radius: 4px;
+    --border-radius: 6px;
     --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
@@ -17,15 +17,12 @@
     color: white;
 }
 body {
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
-    background-color: #08012b;
+    background-color: rgb(30, 30, 30);
     flex-direction: column;
 }
 #walletBody {
-    display: flex;
-    flex-direction: column;
-    height: 100vh; 
     overflow: hidden; 
 }
 #walletMain {
@@ -36,9 +33,10 @@ body {
     width: 100%;
 }
 header { 
-    height: 70px;
+    width: 90%;
     font-size: 1.5rem;
-    margin: 10px;
+    margin-top: 2%;
+    margin-left: 5%;
     background-color: var(--primary-color);
     display: flex;
     align-items: center;
@@ -59,13 +57,13 @@ header {
 #password-container {
     overflow-y: auto;
     list-style: none;
+    padding-top: 10px;
     padding-right: 10px;
     scrollbar-width: thin; 
     scrollbar-color: var(--primary-color) transparent;
 }
 #logo-section {
     display: flex;
-    margin-left: 10px;
     align-items: center;
 }
 @keyframes fadeInUp {
@@ -98,12 +96,11 @@ header {
     width: 20%;
     height: 40%;
 }
-.delete-entry-btn, .edit-entry-btn{
+.delete-entry-btn{
     cursor: pointer;
-    border-radius: 7%;
-}
-.edit-entry-btn:hover{
-    background-color: grey;
+    background: none;
+    border: none;
+    padding: 5%;
 }
 .delete-entry-btn:hover{
     background-color: red;
@@ -112,13 +109,12 @@ header {
     animation: fadeInUp 0.6s ease-out forwards;
     opacity: 0;
     width: 500px;
-    height: 130px;
+    height: 18%;
     padding: 5px;
     margin-bottom: 15px;
     font-size: large;
     perspective: 1000px;
     cursor: pointer;
-
 }
 .inner-card {
     display: flex;
@@ -132,6 +128,13 @@ header {
     border: 1px solid rgba(0, 122, 255, 0.4); 
     border-radius: 10px;
     box-shadow: 0 5px 10px rgba(0, 80, 200, 0.3);
+
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.inner-card:hover{
+    transform: translateY(-7px) scale(1.02); 
+    box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.12);
+    border-color:  rgba(0, 122, 255, 0.4);
 }
 
 .password-card.is-flipped .inner-card {
@@ -152,6 +155,58 @@ header {
 }
 .card-back {
     transform: rotateX(180deg);
+}
+/* --- Styling für die Info-Row --- */
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    min-height: 32px; /* Feste Mindesthöhe, damit Zeilen mit und ohne Button gleich groß sind */
+    width: 100%;
+}
+
+.info-row span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 10px;
+    line-height: 1.2; /* Hält den Text kompakt auf einer Linie */
+}
+
+/* --- Styling für den Kopier-Knopf --- */
+.copy-button {
+    border: none;
+    color: #555;
+    border-radius: 6px; /* Etwas dezentere Ecken */
+
+    /* HIER IST DIE LÖSUNG: Feste Höhe statt dickem Padding */
+    height: 32px;
+    padding: 0 12px;
+
+    font-size: 0.9rem; /* Icon minimal kleiner, passend zur Zeile */
+    cursor: pointer;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: auto;
+    transition: all 0.2s ease-in-out;
+}
+
+/* --- Hover-Effekte bleiben bestehen --- */
+.copy-button:hover {
+    background-color: #e4e6eb;
+    color: #222;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.copy-button:active {
+    background-color: #d8dadf;
+    transform: translateY(0);
+    box-shadow: none;
 }
 .spacer {
     margin-left: 10px;
@@ -181,6 +236,13 @@ button {
     margin-bottom: 10px;
     border-radius: 100%; 
 }
+
+.hacker-effect {
+    min-height: 1.5em; 
+    display: inline-block;
+}
+
+
 #frmPopup{
     display: flex;
     flex-direction: column;
@@ -335,6 +397,7 @@ button {
     height: 30px;
     border-radius: 4px;
 }
+
 #password-generator:hover {
     background-color: grey;
     border-color: grey;
@@ -345,7 +408,7 @@ button {
 }
 /* Hilfsklasse für Breite und Zentrierung */
 .container {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -363,8 +426,8 @@ a {
 /* --- Buttons --- */
 .cta-btn {
     background-color: var(--primary-color);
-    padding: 10px 20px;
-    border-radius: var(--border-radius);
+    padding: 0.8rem; 
+    border-radius: 10px;
     transition: background 0.3s;
 }
 
@@ -390,9 +453,10 @@ a {
 .navbar {
     background: var(--bg-color);
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    height: 70px;
-    display: flex;
-    align-items: center;
+    background: rgba(0, 122, 255, 0.45); 
+    border: 1px solid rgba(0, 122, 255, 0.4); 
+    border-radius: 20px;
+    box-shadow: 0 5px 10px rgba(0, 80, 200, 0.3);
 }
 
 .navbar .container {
@@ -405,31 +469,20 @@ a {
 /* In style.css */
 
 .logo {
-    display: flex;           /* Macht Bild und Text nebeneinander */
-    align-items: center;     /* Zentriert sie vertikal */
-    gap: 10px;               /* Abstand zwischen Logo und Text */
-    text-decoration: none;   /* Unterstreichung entfernen */
+    display: flex;          
+    align-items: center;    
+    text-decoration: none;  
 }
 
 .logo img {
-    height: 70px;            /* Fixe Höhe, damit die Navbar nicht springt */
-    width: auto;             /* Breite passt sich automatisch an */
-    display: block;          /* Entfernt störende Abstände unter Bildern */
+    height: 80px;           
+    width: auto;            
+    display: block;         
 }
 
 .logo-text {
     font-size: 1.5rem;
     font-weight: bold;
-    padding-bottom: 10px;
-    color: var(--primary-color);
-}
-
-.logout img {
-    display: block;          /* Entfernt störende Abstände unter Bildern */
-    border-radius: 45%;      /* Macht das Bild rund */
-    height: 50px;            /* Fixe Höhe für Profilbild */
-    width: auto;             /* Fixe Breite für Profilbild */
-    object-fit: cover; 
 }
 
 .profil {
@@ -459,20 +512,19 @@ a {
 
 .auth-buttons {
     display: flex;
-    gap: 20px;
-    margin-right: 20px;
+    gap: 1.5rem;
     align-items: center;
 }
 
 /* --- Hero Section --- */
 .hero {
-    padding: 100px 0;
+    padding: 10% 0;
     text-align: center;
 }
 
 .hero h1 {
     font-size: 3rem;
-    margin-bottom: 20px;
+    margin-bottom: 3rem;
 }
 
 .hero-subtext {
@@ -484,7 +536,7 @@ a {
 
 .large {
     padding: 15px 30px;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
 }
 
 /* --- Features Section (Grid) --- */

@@ -13,40 +13,16 @@ function setupFormSubmit(formId, url, redirectedUrl){
     const form = document.getElementById(formId); // Form über erhalten Id ziehen
     const errorMsgDiv = document.getElementById('error-message');
     if(errorMsgDiv){
-        //console.log("errorMsgDiv erstellt");
+        console.log("errorMsgDiv erstellt");
     }
     if (!form) return;
 
     form.addEventListener('submit', async(e) =>{
         
         e.preventDefault();                         // verhindert neuladen der Wesbite
-        const data = Object.fromEntries(new FormData(form));
 
-        switch(formId){
-            case 'frmRegister':
-                const salt = generateSalt();
-                const masterKey = await deriveMasterKey(data.password, salt);
-                const authHash = await createAuthHash(masterKey)
-                data.salt = salt;
-                data.authHash = authHash;
-                delete data.password;
-                console.log(data);
-                break;
-            case 'frmLogin':
-                const responseSalt = await fetch("/login/fetchSalt",{
-                    method: 'GET',
-                    headers: {'Content-Type': 'application/json'},
-                });
-                break;
-            case 'frmPopup':
-                pass;
-                break;
-            default:
-        }
-
-
-
-        try {          
+        try {
+            const data = Object.fromEntries(new FormData(form));
             const response = await fetch(url, {
                method: 'POST',
                headers: { 'Content-Type': 'application/json'},
@@ -70,7 +46,6 @@ function setupFormSubmit(formId, url, redirectedUrl){
             alert('Netzwerkfehler')
             if (errorMsgDiv) {
                 errorMsgDiv.innerText = 'Netzwerkfehler: Server nicht erreichbar.';
-                errorMsgDiv.style.display = 'block';
             }
         }
     });

@@ -11,7 +11,11 @@ exports.registerUser = async (req, res) => {
         if (existingUser) {
              // Wichtig: return nutzen, damit der Code hier stoppt
             console.log("User already exist");
-            return res.status(400).json({error: 'User existiert bereits'})
+            return res.status(400).json({
+                error: 'User already in database',
+                message: "Benutzername existiert bereits",
+                success: false
+            });
         }
 
         const newUser = new User({ username, email, premiumuser: premiumuser === 'on', salt, authHash });
@@ -20,11 +24,16 @@ exports.registerUser = async (req, res) => {
         
         return res.status(200).json({
             message: 'Erfolgreich',
+            success: true,
             redirectUrl: '/login'
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({error: 'Server Fehler beim Registrieren'});
+         return res.status(500).json({
+            message: "Server Fehler beim Registrieren",
+            success: false,
+            error: error
+        });
     }
 };
 
@@ -33,12 +42,12 @@ exports.loginUser = async (req, res) => {
     try {
         const { username, password} = req.body;
         const user = await User.findOne({ username: username }); // Email oft optional beim Login
-        
 
         if (user && user.password === password) {
             req.session.userId = user._id;
             console.log("Login erfolgreich");
             res.status(200).json({
+                success: true,
                 message: 'Erfolgreich',
                 redirectUrl: '/wallet'
             });
@@ -46,11 +55,17 @@ exports.loginUser = async (req, res) => {
             const allEntrys = await passwordEntry.find({owner: user._id});
 
         } else {
-            res.status(400).json({error: 'Falsches Passwort'})
+            return res.status(401).json({
+                error: 'user with password not found in database',
+                success: false,
+                message: 'Login Fehlgeschlagen, Passwort oder Benutzername falsch'})
         }
     } catch (error) {
         console.error(error);
-        res.status(500).send("Login Fehler.");
+        res.status(500).json({
+            message:"Login Fehler.",
+            success: false,
+            error: error});
     }           
 };
 
@@ -58,11 +73,16 @@ exports.loginUser = async (req, res) => {
 exports.logoutUser = (req, res) => {
     req.session.destroy((err) => {
         if(err){
-            return res.status(500).json({error: "Logout fehlgeschlagen"})
+            return res.status(500).json({
+                error: "Logout failed",
+                success: false,
+                message: 'Logout fehlgeschlagen'})
         }
         
         res.clearCookie('connect.sid');
-        res.status(200).json({success: true});
+        res.status(200).json({
+            message: "Erfolgreich",
+            success: true});
 
     });
     

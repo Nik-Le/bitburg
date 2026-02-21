@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
         addNewEntryBtn: document.getElementById("add-button"), //Opens up the Entryform
         submitEntryBtn: document.getElementById("submit-entry-button"), //Submits new Entry
         cancelEntryBtn: document.getElementById("cancel-button"),
-        editEntryBtn: document.querySelectorAll(".setting-btn"),
         deleteEntryBtn: document.querySelectorAll(".delete-entry-btn"),
 
         openGeneratorBtn: document.getElementById("password-generator"),
@@ -14,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         cards: document.querySelectorAll('.password-card'),
         copyPassword: document.getElementById("copy-password"),
+        copyButtons: document.querySelectorAll(".copy-button"),
 
         lengthInput: document.getElementById("pw-length"),
         numbersInput: document.getElementById("numbers"),
@@ -22,18 +22,20 @@ document.addEventListener("DOMContentLoaded", () => {
         symbolsInput: document.getElementById("symbols"),
 
         logoutBtn: document.getElementById("logout-btn"),
+
+        errorMessage: document.getElementById('error-message')
     };
     elements.addNewEntryBtn.addEventListener("click", () => toggleForm("frmPopup"));
     elements.cancelEntryBtn.addEventListener("click", () => toggleForm("frmPopup"));
     elements.openGeneratorBtn.addEventListener("click", () => toggleForm("generator"));
     elements.cancleGenerationBtn.addEventListener("click", () => toggleForm("generator"));
     elements.generatePasswordBtn.addEventListener("click", () => {
-        if(isPremiumUser){
-        document.getElementById("generated-password").value = generatePassword()}
-        else
-    {
-        elements.feedBackElement.textContent = "Premium wird für diese Funktion benötigt";
-    }
+        if (typeof isPremiumUser !== 'undefined' && isPremiumUser) {
+            let pw = generatePassword();
+            if(pw) document.getElementById("generated-password").value = pw;
+        } else {
+            if (elements.feedBackElement) elements.feedBackElement.textContent = "Premium wird für diese Funktion benötigt";
+        }
     });
     elements.applyGeneratedPwBtn.addEventListener("click", function () {
         let password = document.getElementById("generated-password").value;
@@ -48,16 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         card.addEventListener("click", () => {
             card.classList.toggle("is-flipped");
         });
-
-    elements.editEntryBtn.forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            e.stopPropagation(); //Prevents card flip
-            const dropDown = btn.nextElementSibling;
-            dropDown.classList.toggle("is-hidden");
-        });
     });
-
-
     elements.deleteEntryBtn.forEach(btn => {
         btn.addEventListener("click", async (e) => {
             e.stopPropagation();
@@ -73,66 +66,46 @@ document.addEventListener("DOMContentLoaded", () => {
                     console.error("Löschen fehlgeschlagen");
                 }
 
-            } catch(error) {
+            } catch (error) {
                 console.log("ror")
             }
         });
     });
+    elements.copyButtons.forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            // Den Text aus dem data-copy Attribut holen
+            const textToCopy = btn.getAttribute("data-copy");
+
+            if (!textToCopy) return;
+
+            try {
+                // Text in die Zwischenablage schreiben
+                await navigator.clipboard.writeText(textToCopy);
+
+                // Visuelles Feedback für den Nutzer (Optional, aber empfohlen)
+                const originalText = btn.innerHTML;
+                btn.innerHTML = "✅ Kopiert!";
+
+                // Nach 2 Sekunden den Text wieder zurücksetzen
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+
+            } catch (err) {
+                alert("Kopieren fehlgeschlagen!");
+            }
+        });
     });
 
-    //console.log("Starte Activity Tracker für Wallet...");
-    
-    const ActivityTracker = detectActivity( 
-        () => console.log("User ist aktiv"), 
-        () => {
-             console.log("User ist inaktiv -> Logout wird eingeleitet");
-             // Hier den Logout-Prozess starten:
-             fetch('/logout', { method: 'POST' })
-                .then(() => window.location.href = '/login');
-        }, 
-        70000 // 5 Minuten (300.000 ms)
-    );
-
-    setInterval(() =>{
-        const restZeitMs = ActivityTracker.remainingTimeToLogout();
-        const restZeitsek = Math.ceil(restZeitMs /1000)%60;
-        const restZeitMin = Math.floor(restZeitMs /60000);
-
-
-        document.getElementById("logoutCountdown").innerText = `Auto-Logout in ${restZeitMin}:${restZeitsek} s`
-    }, 1000);
-
-});
-
-function showForm(form) {
-    document.getElementById(form).style.visibility = "visible";
-    formVisible = true;
-}
-function removeForm(form) {
-    document.getElementById(form).style.visibility = "hidden";
-    formVisible = false;
-}
-
-function getPremiumUserValue(){
-    user._id = req.session.userId;
-    const user = User.findOne({id: user._id});
-    if (user && user.premiumuser) {
-        return true;
+    function toggleForm(form) {
+        let element = document.getElementById(form);
+        element.classList.toggle("is-hidden");
     }
-    else{
-        alert("Requires premium version")
-        return false;
-    }
-}
-
-function generatePassword () {
-    let length = document.getElementById("pw-length").value;
-    let numbers = document.getElementById("numbers").checked;
-    let upCase = document.getElementById("up-case").checked;
-    let lowCase = document.getElementById("low-case").checked;
-    let selection = []; 
-    let password = "";
-
+    function generatePassword() {
+        let selection = [];
+        let password = "";
+        let length = elements.lengthInput.value
 
         if (length <= 7) {
             console.log("Passwort länge mind 8");
@@ -175,10 +148,8 @@ function generatePassword () {
         return String.fromCharCode(Math.floor(Math.random() * 26 + 97));
     }
 
-
-// Logout Btn Event Listener 
-document.getElementById('logout-img').addEventListener('click', async (e) => {
-
+});
+// Logout Btn Event Listener
 
 
     e.preventDefault();

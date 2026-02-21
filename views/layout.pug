@@ -24,16 +24,13 @@ html(lang="de")
         nav
           ul.nav-links
             li: a(href="/wallet") Wallet
-            li: a(href="#") Passwort-Generator
 
-            
-        if showLogNav
-          div.auth-buttons
-            a.login-btn(href="#") Über Uns
-            a.cta-btn(href="/register") Konto erstellen
-            a.profil(href="/login")
-              i#user-icon.fas.fa-user.user-icon
-              span.profile-text Profil
+        div.auth-buttons
+          a.login-btn(href="#") Über Uns
+          a.cta-btn(href="/register") Konto erstellen
+          a.profil(href="/login")
+            i#user-icon.fas.fa-user.user-icon
+            span.profile-text Profil
 
         // Platzhaler wird individuell in den Seiten gefüllt 
         block nav-actions
