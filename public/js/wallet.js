@@ -1,3 +1,7 @@
+import { detectActivity } from './utils.js';
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
     const elements = {
         addNewEntryBtn: document.getElementById("add-button"), //Opens up the Entryform
@@ -98,14 +102,73 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    function toggleForm(form) {
+    //console.log("Starte Activity Tracker für Wallet...");
+    
+    const ActivityTracker = detectActivity( 
+        () => console.log("User ist aktiv"), 
+        () => {
+             console.log("User ist inaktiv -> Logout wird eingeleitet");
+             // Hier den Logout-Prozess starten:
+             fetch('/logout', { method: 'POST' })
+                .then(() => window.location.href = '/login');
+        }, 
+        70000 // 5 Minuten (300.000 ms)
+    );
+
+    setInterval(() =>{
+        const restZeitMs = ActivityTracker.remainingTimeToLogout();
+        const gesamtSek   = Math.ceil(restZeitMs / 1000)
+        const restZeitsek = gesamtSek %60;
+        const restZeitMin = Math.floor(gesamtSek /60);
+
+        const minFormatted = String(restZeitMin).padStart(2, '0');
+        const sekFormatted = String(restZeitsek).padStart(2, '0');
+
+
+        document.getElementById("logoutCountdown").innerText = `Auto-Logout in ${minFormatted}:${sekFormatted} s`
+    }, 1000);
+
+});
+
+
+function toggleForm(form) {
         let element = document.getElementById(form);
         element.classList.toggle("is-hidden");
+}
+
+
+function showForm(form) {
+    document.getElementById(form).style.visibility = "visible";
+    formVisible = true;
+}
+
+
+function removeForm(form) {
+    document.getElementById(form).style.visibility = "hidden";
+    formVisible = false;
+}
+
+
+function getPremiumUserValue(){
+    user._id = req.session.userId;
+    const user = User.findOne({id: user._id});
+    if (user && user.premiumuser) {
+        return true;
     }
-    function generatePassword() {
-        let selection = [];
-        let password = "";
-        let length = elements.lengthInput.value
+    else{
+        alert("Requires premium version")
+        return false;
+    }
+}
+
+function generatePassword () {
+    let length = document.getElementById("pw-length").value;
+    let numbers = document.getElementById("numbers").checked;
+    let upCase = document.getElementById("up-case").checked;
+    let lowCase = document.getElementById("low-case").checked;
+    let selection = []; 
+    let password = "";
+
 
         if (length <= 7) {
             console.log("Passwort länge mind 8");
@@ -148,13 +211,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return String.fromCharCode(Math.floor(Math.random() * 26 + 97));
     }
 
-});
-// Logout Btn Event Listener
 
-document.getElementById('logout-btn').addEventListener('click', async (e) => {
+// Logout Btn Event Listener 
+document.getElementById('logout-img').addEventListener('click', async (e) => {
 
     e.preventDefault();
-
+    sessionStorage.clear();
     try {
         const response = await fetch('/logout', {
             method: 'POST',

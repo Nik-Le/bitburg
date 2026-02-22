@@ -1,23 +1,21 @@
 const mongoose = require('mongoose');
 
 const passwordVorlage = new mongoose.Schema({
-    userName: {
+    
+     iv: {
         type: String,
-        required: true,
+        required: true 
     },
-    siteName:{
+    entry:{
         type: String,
-        required: true,
-    },
-    password: {
-        type: String,
-        required: true
+        requiered: true
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     }
+    
 });
 
 module.exports = mongoose.model('passwordEntry', passwordVorlage);

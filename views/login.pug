@@ -1,7 +1,6 @@
 extends layout
-block scripts
-  script.
-    script(src="/js/login.js" defer)
+
+   
 block content
   .container#loginRegistercont
     form#frmLogin.authDesign
@@ -11,4 +10,6 @@ block content
       label(for="password") Passwort
       input#password(type="password" name="password" required placeholder="Passwort")
       #error-message.alert.alert-danger(style="display: none; color: red; padding: 10px; margin-bottom: 15px;")
+      #error-message.alert.alert-danger(style="display: none; color: red; padding: 10px; margin-bottom: 15px;")
       button(type="submit") Einloggen
+

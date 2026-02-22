@@ -1,24 +1,29 @@
-const  User = require('../models/User');
-const  passwordEntry = require('../models/Passwords');
+const User          = require('../models/User');
+const passwordEntry = require('../models/Passwords');
+const bcrypt        = require('bcrypt');
 
-// POST Logic für Registrierung
+// ─── Registrierung ───────────────────────────────────────────────────────────
+
 exports.registerUser = async (req, res) => {
     try {
-        const { username, email, password, premiumuser } = req.body;
-        
-        // Prüfen ob User existiert
-        const existingUser = await User.findOne({ username: username });
+        const { username, email, premiumuser, salt, authHash } = req.body;
+
+        const existingUser = await User.findOne({ username });
         if (existingUser) {
-             // Wichtig: return nutzen, damit der Code hier stoppt
-            console.log("User already exist");
-            return res.status(400).json({
-                error: 'User already in database',
-                message: "Benutzername existiert bereits",
-                success: false
-            });
+            return res.status(400).json({ message: 'Benutzername ist bereits vergeben.' });
         }
 
-        const newUser = new User({ username, email, password, premiumuser: premiumuser === 'on' });
+        // authHash aus dem Frontend nochmals hashen (Defense in Depth)
+        const doubleHash = await bcrypt.hash(authHash, 10);
+
+        const newUser = new User({
+            username,
+            email,
+            premiumuser: premiumuser === 'on',
+            salt,
+            authHash: doubleHash,
+        });
+
         await newUser.save();
         
         return res.status(200).json({
@@ -36,29 +41,48 @@ exports.registerUser = async (req, res) => {
     }
 };
 
-// POST Logic für Login
+// ─── Login ────────────────────────────────────────────────────────────────────
+
 exports.loginUser = async (req, res) => {
     try {
-        const { username, password} = req.body;
-        const user = await User.findOne({ username: username }); // Email oft optional beim Login
+        const { authHash } = req.body;
 
-        if (user && user.password === password) {
-            req.session.userId = user._id;
-            console.log("Login erfolgreich");
-            res.status(200).json({
-                success: true,
-                message: 'Erfolgreich',
-                redirectUrl: '/wallet'
-            });
-
-            const allEntrys = await passwordEntry.find({owner: user._id});
-
-        } else {
-            return res.status(401).json({
-                error: 'user with password not found in database',
-                success: false,
-                message: 'Login Fehlgeschlagen, Passwort oder Benutzername falsch'})
+        // Username muss in der Session oder im Body vorhanden sein
+        const user = await User.findOne({ username: req.body.username });
+        if (!user) {
+            return res.status(400).json({ message: 'Benutzer nicht gefunden.' });
         }
+
+        const isValid = await bcrypt.compare(authHash, user.authHash);
+
+        if (isValid) {
+            req.session.userId   = user._id;
+            req.session.username = user.username;
+            req.session.isLoggedIn = true;
+            return res.status(200).json({ message: 'Login erfolgreich.' });
+        } else {
+            return res.status(401).json({ message: 'Ungültiges Passwort.' });
+        }
+
+    } catch (error) {
+        console.error('Fehler beim Login:', error);
+        return res.status(500).json({ message: 'Serverfehler beim Login.' });
+    }
+};
+
+// ─── Salt abrufen ─────────────────────────────────────────────────────────────
+
+exports.getUserSalt = async (req, res) => {
+    try {
+        const { username } = req.body;
+
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: 'Benutzer nicht gefunden.' });
+        }
+
+        return res.status(200).json({ salt: user.salt });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({
@@ -68,7 +92,8 @@ exports.loginUser = async (req, res) => {
     }           
 };
 
-// Logout
+// ─── Logout ───────────────────────────────────────────────────────────────────
+
 exports.logoutUser = (req, res) => {
     req.session.destroy((err) => {
         if(err){
@@ -77,12 +102,22 @@ exports.logoutUser = (req, res) => {
                 success: false,
                 message: 'Logout fehlgeschlagen'})
         }
-        
+
         res.clearCookie('connect.sid');
         res.status(200).json({
             message: "Erfolgreich",
             success: true});
 
     });
-    
+};
+
+
+//──────────────────── requiere Loged in ────────────────────
+
+exports.requireLogin = function requiereLogin (req, res, next) {
+    if (req.session && req.session.isLoggedIn) {
+        next(); // eingeloggt → weiter
+    } else {
+        res.redirect('/login'); // nicht eingeloggt → zurück
+    }
 };
