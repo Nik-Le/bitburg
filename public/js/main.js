@@ -130,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadAndRenderEntries() {
     const entries = JSON.parse(document.getElementById('encrypted-data').textContent);
-    
     const keyRaw = new Uint8Array(JSON.parse(sessionStorage.getItem('masterKey')));
     const masterKey = await crypto.subtle.importKey(
         'raw', keyRaw,
@@ -140,48 +139,87 @@ async function loadAndRenderEntries() {
     );
 
     const list = document.getElementById('password-container');
-    list.innerHTML = ''; // Leert die Liste
+    list.innerHTML = ''; 
+
+    if (entries.length === 0) {
+        const emptyLi = document.createElement('li');
+        emptyLi.className = 'password-card';
+        emptyLi.textContent = 'Keine Einträge vorhanden!';
+        list.appendChild(emptyLi);
+        return;
+    }
 
     for (const entry of entries) {
-        console.log(entry);
-        const plain = await decryptEntrys(masterKey, entry.entry, entry.iv, );
+        const plain = await decryptEntrys(masterKey, entry.entry, entry.iv);
         
+        // 1. Haupt-Elemente erstellen
         const li = document.createElement('li');
         li.className = 'password-card';
-        li.innerHTML = `
-        <div class="inner-card">
-            <div class="card-front">
-                <strong>${plain.siteName}</strong>
-                <button class="setting-btn fa-solid fa-edit" type="button"></button>
-                <div class="dropdown is-hidden">
-                    <button class="delete-entry-btn" type="button" data-id="${entry._id}">Löschen</button>
-                </div>
-            </div>
-            <div class="card-back">
-                <div class="info-row">
-                    <span><strong>Eintrags-name:</strong> ${plain.siteName}</span>
-                </div>
-                <div class="info-row">
-                    <span><strong>Benutzername/E-Mail:</strong> ${plain.userName}</span>
-                    <button class="copy-button" type="button" data-copy="${plain.userName}">
-                        <i class="fa-solid fa-clone"></i>
-                    </button>
-                </div>
-                <div class="info-row">
-                    <span><strong>Passwort:</strong> ${plain.password}</span>
-                    <button class="copy-button" type="button" data-copy="${plain.password}">
-                        <i class="fa-solid fa-clone"></i>
-                    </button>
-                </div>
-            </div>
-        </div>`;
 
-    list.appendChild(li);
-}
+        const innerCard = document.createElement('div');
+        innerCard.className = 'inner-card';
 
-if (entries.length === 0) {
-    list.innerHTML = '<li class="password-card">Keine Einträge vorhanden!</li>';
-} 
-    
-    
+        // --- FRONT SIDE ---
+        const cardFront = document.createElement('div');
+        cardFront.className = 'card-front';
+
+        const title = document.createElement('strong');
+        title.textContent = plain.siteName;
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'setting-btn fa-solid fa-edit';
+        editBtn.type = 'button';
+
+        const dropdown = document.createElement('div');
+        dropdown.className = 'dropdown is-hidden';
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-entry-btn';
+        deleteBtn.type = 'button';
+        deleteBtn.textContent = 'Löschen';
+        deleteBtn.dataset.id = entry._id;
+
+        dropdown.appendChild(deleteBtn);
+        cardFront.append(title, editBtn, dropdown);
+
+        // --- BACK SIDE ---
+        const cardBack = document.createElement('div');
+        cardBack.className = 'card-back';
+
+        // Hilfsfunktion um Info-Zeilen zu bauen (weniger Schreibarbeit)
+        const createInfoRow = (label, value) => {
+            const row = document.createElement('div');
+            row.className = 'info-row';
+            
+            const span = document.createElement('span');
+            const strong = document.createElement('strong');
+            strong.textContent = `${label}: `;
+            span.appendChild(strong);
+            span.append(document.createTextNode(value)); // Sicherer Textknoten
+
+            row.appendChild(span);
+
+            if (label !== 'Eintrags-name') { // Buttons nur für User/Passwort
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-button';
+                copyBtn.type = 'button';
+                copyBtn.dataset.copy = value;
+                
+                const icon = document.createElement('i');
+                icon.className = 'fa-solid fa-clone';
+                copyBtn.appendChild(icon);
+                row.appendChild(copyBtn);
+            }
+            return row;
+        };
+
+        cardBack.appendChild(createInfoRow('Eintrags-name', plain.siteName));
+        cardBack.appendChild(createInfoRow('Benutzername/E-Mail', plain.userName));
+        cardBack.appendChild(createInfoRow('Passwort', plain.password));
+
+        // Alles zusammenbauen
+        innerCard.append(cardFront, cardBack);
+        li.appendChild(innerCard);
+        list.appendChild(li);
+    }
 }

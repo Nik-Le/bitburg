@@ -10,13 +10,14 @@ block scripts
   script(src="/js/wallet.js" defer type="module")
 
 block append nav-actions 
-  a#logout-img.logout(href="/#")
-    img(src="/images/logout.jpg" alt="logout")
-  label#logoutCountdown.logoutCntdwnLbl Logout in
+  .logout-group
+    a#logout.logout-Btn(href="/#") Logout
+    span#logoutCountdown
+ 
+
   
 
-    
-
+  
 block content
   #wallet-container
     .spacer

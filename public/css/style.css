@@ -413,10 +413,6 @@ button {
     padding: 0 20px;
 }
 
-.logoutCntdwnLbl{
-    color:black;
-}
-
 a {
     text-decoration: none;
     color: var(--text-color);
@@ -444,10 +440,7 @@ a {
 }
 
 
-.logout-btn{
-    background-color: #08012b;
-    color:red; 
-}
+
 
 /* --- Navigation --- */
 .navbar {
@@ -516,6 +509,41 @@ a {
     align-items: center;
 }
 
+.logout-group {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.25); /* Dunklerer Hintergrund für die Einheit */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 4px; /* Kleiner Innenabstand */
+    gap: 8px; /* Der Abstand zwischen Button und Text */
+}
+
+/* Der Logout-Button innerhalb der Gruppe */
+.logout-Btn {
+    text-decoration: none;
+    font-weight: bold;
+    color: #fff;
+    background: rgba(255, 59, 48, 0.6); /* Signalfarbe Rot, leicht transparent */
+    padding: 6px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.logout-Btn:hover {
+    background: rgba(255, 59, 48, 0.8);
+    transform: scale(1.02);
+}
+
+/* Der Countdown-Text */
+#logoutCountdown {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: #ccc;
+    padding-right: 10px; /* Abstand zum rechten Rand der Gruppe */
+    white-space: nowrap;
+}
 /* --- Hero Section --- */
 .hero {
     padding: 10% 0;

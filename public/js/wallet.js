@@ -117,11 +117,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setInterval(() =>{
         const restZeitMs = ActivityTracker.remainingTimeToLogout();
-        const restZeitsek = Math.ceil(restZeitMs /1000)%60;
-        const restZeitMin = Math.floor(restZeitMs /60000);
+        const gesamtSek   = Math.ceil(restZeitMs / 1000)
+        const restZeitsek = gesamtSek %60;
+        const restZeitMin = Math.floor(gesamtSek /60);
+
+        const minFormatted = String(restZeitMin).padStart(2, '0');
+        const sekFormatted = String(restZeitsek).padStart(2, '0');
 
 
-        document.getElementById("logoutCountdown").innerText = `Auto-Logout in ${restZeitMin}:${restZeitsek} s`
+        document.getElementById("logoutCountdown").innerText = `Auto-Logout in ${minFormatted}:${sekFormatted} s`
     }, 1000);
 
 });
