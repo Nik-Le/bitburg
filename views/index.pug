@@ -2,6 +2,7 @@ extends layout
 
 block scripts
   script(src="/js/hacker-effect.js" defer)
+  script(src="/js/carousel.js" defer)
 
 block content
   section.hero
@@ -12,14 +13,51 @@ block content
         | Open Source, Ende-zu-Ende verschlüsselt und überall verfügbar.
       div.hero-actions
         a.cta-btn.large(href="/register") Kostenlos starten
+  // Neue Bewertungs-Sektion (ersetzt die Hero-Sektion)
+  section.reviews-section
+    h1 Was unsere Nutzer sagen
 
-  section.hero
-    div.container.hero-content
-      h1 Das sagen unsere Kunden
-      p.hero-subtext Hier sollen Bewertungen von Kunden rein.
-      div.hero-actions
-        a.cta-btn.large(href="#") Weitere Bewertungen
-        a.secondary-btn(href="#") BitBurg bewerten
+    // Container für das horizontale Scrollen
+    .reviews-container
+      .review-card
+        .stars ★★★★★
+        p.review-text "BitBurg ist der beste Passwortmanager, den ich je benutzt habe. Super sicher und extrem einfach zu bedienen!"
+        p.review-author - Max Mustermann
+
+      .review-card
+        .stars ★★★★★
+        p.review-text "Endlich muss ich mir nicht mehr hunderte Passwörter merken. Absolut empfehlenswert und das Design ist top."
+        p.review-author - Laura Schmidt
+
+      .review-card
+        .stars ★★★★★
+        p.review-text "Endlich muss ich mir nicht mehr hunderte Passwörter merken. Absolut empfehlenswert und das Design ist top."
+        p.review-author - Laura Schmidt
+
+      .review-card
+        .stars ★★★★★
+        p.review-text "Endlich muss ich mir nicht mehr hunderte Passwörter merken. Absolut empfehlenswert und das Design ist top."
+        p.review-author - Laura Schmidt
+
+      .review-card
+        .stars ★★★★★
+        p.review-text "Endlich muss ich mir nicht mehr hunderte Passwörter merken. Absolut empfehlenswert und das Design ist top."
+        p.review-author - Laura Schmidt
+
+      .review-card
+        .stars ★★★★☆
+        p.review-text "Sehr gutes Tool. Die Wallet-Funktion ist super praktisch und die Verschlüsselung gibt mir ein sicheres Gefühl."
+        p.review-author - Jonas Müller
+
+      .review-card
+        .stars ★★★★★
+        p.review-text "Ich liebe die Effekte auf der Seite! Abgesehen davon ein sehr zuverlässiger und sicherer Manager für meine Daten."
+        p.review-author - Sarah K.
+
+      .review-card
+        .stars ★★★★★
+        p.review-text "Der Wechsel zu BitBurg ging super schnell. Kann es jedem nur ans Herz legen, der seine Daten schützen will."
+        p.review-author - Thomas B.
 
   section.features
     div.container
