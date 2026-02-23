@@ -1,7 +1,6 @@
 import { detectActivity } from './utils.js';
 
 
-
 document.addEventListener("DOMContentLoaded", () => {
     const elements = {
         addNewEntryBtn: document.getElementById("add-button"), //Opens up the Entryform
@@ -14,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
         feedBackElement: document.getElementById("premium-feedback"),
         cancleGenerationBtn: document.getElementById("cancel-generation-btn"),
         applyGeneratedPwBtn: document.getElementById("apply-btn"),
+        passwordContainer: document.getElementById('password-container'),
 
         cards: document.querySelectorAll('.password-card'),
         copyPassword: document.getElementById("copy-password"),
@@ -34,12 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.openGeneratorBtn.addEventListener("click", () => toggleForm("generator"));
     elements.cancleGenerationBtn.addEventListener("click", () => toggleForm("generator"));
     elements.generatePasswordBtn.addEventListener("click", () => {
-        if (typeof isPremiumUser !== 'undefined' && isPremiumUser) {
             let pw = generatePassword();
-            if(pw) document.getElementById("generated-password").value = pw;
-        } else {
-            if (elements.feedBackElement) elements.feedBackElement.textContent = "Premium wird für diese Funktion benötigt";
-        }
+            if (pw) document.getElementById("generated-password").value = pw;
     });
     elements.applyGeneratedPwBtn.addEventListener("click", function () {
         let password = document.getElementById("generated-password").value;
@@ -50,11 +46,46 @@ document.addEventListener("DOMContentLoaded", () => {
         let password = document.getElementById("generated-password");
         navigator.clipboard.writeText(password.value);
     });
-    elements.cards.forEach(card => {
+    /*elements.cards.forEach(card => {
         card.addEventListener("click", () => {
             card.classList.toggle("is-flipped");
         });
-    });
+    });*/
+    // Wir suchen uns den Container, der die Karten hält (der ist von Anfang an im HTML)
+
+    if (elements.passwordContainer) {
+        elements.passwordContainer.addEventListener('click', async (event) => {
+
+            // 1. Haben wir auf einen Button geklickt (Mülleimer oder Kopieren)?
+            // Wenn ja -> Abbruch, die Karte soll beim Kopieren nicht flippen!
+            const delteBtn = event.target.closest('.delete-entry-btn');
+            if (delteBtn) {
+                event.stopPropagation();
+                const btnId = delteBtn.getAttribute("data-id");
+
+                try {
+                    const response = await fetch(`/wallet/delete/${btnId}`, {
+                        method: 'POST',
+                    });
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        console.error("Löschen fehlgeschlagen");
+                    }
+
+                } catch (error) {
+                    console.error("Löschen fehlgeschlagen");
+                }
+                return;
+                }
+
+            const clickedCard = event.target.closest('.password-card');
+
+            if (!clickedCard) return; //Falls die Karte nicht gefunden wird, soll nichts passieren
+
+            clickedCard.classList.toggle('is-flipped');
+        });
+    }
     elements.deleteEntryBtn.forEach(btn => {
         btn.addEventListener("click", async (e) => {
             e.stopPropagation();
@@ -103,23 +134,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     //console.log("Starte Activity Tracker für Wallet...");
-    
-    const ActivityTracker = detectActivity( 
-        () => console.log("User ist aktiv"), 
+
+    const ActivityTracker = detectActivity(
+        () => console.log("User ist aktiv"),
         () => {
-             console.log("User ist inaktiv -> Logout wird eingeleitet");
-             // Hier den Logout-Prozess starten:
-             fetch('/logout', { method: 'POST' })
+            console.log("User ist inaktiv -> Logout wird eingeleitet");
+            // Hier den Logout-Prozess starten:
+            fetch('/logout', { method: 'POST' })
                 .then(() => window.location.href = '/login');
-        }, 
+        },
         70000 // 5 Minuten (300.000 ms)
     );
 
-    setInterval(() =>{
+    setInterval(() => {
         const restZeitMs = ActivityTracker.remainingTimeToLogout();
-        const gesamtSek   = Math.ceil(restZeitMs / 1000)
-        const restZeitsek = gesamtSek %60;
-        const restZeitMin = Math.floor(gesamtSek /60);
+        const gesamtSek = Math.ceil(restZeitMs / 1000)
+        const restZeitsek = gesamtSek % 60;
+        const restZeitMin = Math.floor(gesamtSek / 60);
 
         const minFormatted = String(restZeitMin).padStart(2, '0');
         const sekFormatted = String(restZeitsek).padStart(2, '0');
@@ -133,34 +164,20 @@ document.addEventListener("DOMContentLoaded", () => {
         let password = "";
 
 
-        if (length <= 7) {
-            console.log("Passwort länge mind 8");
-            document.getElementById("length-error").classList.remove("is-hidden");
-            return null;
+    for (let i = 0; i < length; i++) {
+        let index = Math.floor(Math.random() * selection.length);
+        let rndm;
+        if (selection.at(index) == "number") {
+            rndm = randomNumber();
+        } else if (selection.at(index) == "upCase") {
+            rndm = randomUpCase();
+        } else if (selection.at(index) == "lowCase") {
+            rndm = randomLowCase();
         } else {
-            document.getElementById("length-error").classList.add("is-hidden");
+            console.log("Nothing selected");
         }
-
-        elements.numbersInput.checked ? selection.push("number") : null;
-        elements.upCaseInput.checked ? selection.push("upCase") : null;
-        elements.lowCaseInput.checked ? selection.push("lowCase") : null;
-
-
-        for (let i = 0; i < length; i++) {
-            let index = Math.floor(Math.random() * selection.length);
-            let rndm;
-            if (selection.at(index) == "number") {
-                rndm = randomNumber();
-            } else if (selection.at(index) == "upCase") {
-                rndm = randomUpCase();
-            } else if (selection.at(index) == "lowCase") {
-                rndm = randomLowCase();
-            } else {
-                console.log("Nothing selected");
-            }
-            if (rndm != null) {
-                password = password + rndm;
-            }
+        if (rndm != null) {
+            password = password + rndm;
         }
         return password;
     }
@@ -205,10 +222,22 @@ function getPremiumUserValue(){
     function randomLowCase() {
         return String.fromCharCode(Math.floor(Math.random() * 26 + 97));
     }
+    return password;
+}
+function randomNumber() {
+    return String.fromCharCode(Math.floor(Math.random() * 10 + 48));
+}
+function randomUpCase() {
+    return String.fromCharCode(Math.floor(Math.random() * 26 + 65));
+}
+
+function randomLowCase() {
+    return String.fromCharCode(Math.floor(Math.random() * 26 + 97));
+}
 
 
 // Logout Btn Event Listener 
-document.getElementById('logout-img').addEventListener('click', async (e) => {
+document.getElementById('logout').addEventListener('click', async (e) => {
 
     e.preventDefault();
     sessionStorage.clear();

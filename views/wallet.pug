@@ -7,6 +7,7 @@ block vars
 block scripts
   script.
     const isPremiumUser = !{user && user.premiumuser ? 'true' : 'false'};
+  script(src="/js/main.js" defer type="module")
   script(src="/js/wallet.js" defer type="module")
 
 block append nav-actions 

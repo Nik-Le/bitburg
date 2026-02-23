@@ -15,10 +15,12 @@ exports.registerUser = async (req, res) => {
 
         // authHash aus dem Frontend nochmals hashen (Defense in Depth)
         const doubleHash = await bcrypt.hash(authHash, 10);
+        const hashedUser = await bcrypt.hash(username, 10);
+        const hasedEmail = await bcrypt.hash(email, 10);
 
         const newUser = new User({
-            username,
-            email,
+            username: hashedUser,
+            email: hasedEmail,
             premiumuser: premiumuser === 'on',
             salt,
             authHash: doubleHash,
@@ -104,6 +106,7 @@ exports.logoutUser = (req, res) => {
         }
 
         res.clearCookie('connect.sid');
+        res.clearCookie('sessionId');
         res.status(200).json({
             message: "Erfolgreich",
             success: true});
