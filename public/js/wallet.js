@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("length-error").classList.add("is-hidden");
         }
 
-        elements.upCaseInput.checked ? selection.push("number") : null;
+        elements.numbersInput.checked ? selection.push("number") : null;
         elements.upCaseInput.checked ? selection.push("upCase") : null;
         elements.lowCaseInput.checked ? selection.push("lowCase") : null;
 
