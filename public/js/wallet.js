@@ -137,29 +137,6 @@ function toggleForm(form) {
 }
 
 
-function showForm(form) {
-    document.getElementById(form).style.visibility = "visible";
-    formVisible = true;
-}
-
-
-function removeForm(form) {
-    document.getElementById(form).style.visibility = "hidden";
-    formVisible = false;
-}
-
-
-function getPremiumUserValue(){
-    user._id = req.session.userId;
-    const user = User.findOne({id: user._id});
-    if (user && user.premiumuser) {
-        return true;
-    }
-    else{
-        alert("Requires premium version")
-        return false;
-    }
-}
 
 function generatePassword () {
     let length = document.getElementById("pw-length").value;
@@ -207,13 +184,14 @@ function generatePassword () {
     function randomUpCase() {
         return String.fromCharCode(Math.floor(Math.random() * 26 + 65));
     }
+
     function randomLowCase() {
         return String.fromCharCode(Math.floor(Math.random() * 26 + 97));
     }
 
 
 // Logout Btn Event Listener 
-document.getElementById('logout-img').addEventListener('click', async (e) => {
+document.getElementById('logout').addEventListener('click', async (e) => {
 
     e.preventDefault();
     sessionStorage.clear();
