@@ -8,7 +8,7 @@ const passwordVorlage = new mongoose.Schema({
     },
     entry:{
         type: String,
-        requiered: true
+        required: true
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,

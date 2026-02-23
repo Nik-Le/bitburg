@@ -809,19 +809,20 @@ footer {
 
 
 .about-us {
-    background-color: #08012b; /* Sehr dunkler Hintergrund für Kontrast */
-    color: #fff;
-    padding: 4rem 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .about-grid {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     gap: 4rem; /* Abstand zwischen Text und Bild */
 }
 
 .about-content {
+    margin-top: 5%;
+    margin-left: 25%;
+    width: 50%;
     flex: 1; /* Nimmt 50% Platz */
 }
 

@@ -20,17 +20,18 @@ html(lang="de")
           a.logo(href="/")
             img(src="/images/BitBurg_logo.png" alt="BitBurg Logo")
             span.logo-text BitBurg
-        
-        nav
-          ul.nav-links
-            li: a(href="/wallet") Wallet
+        block main-nav 
+          nav
+            ul.nav-links
+              li: a(href="/wallet") Wallet
 
-        div.auth-buttons
-          a.login-btn(href="/aboutUs") Über Uns
-          a.cta-btn(href="/register") Konto erstellen
-          a.profil(href="/login")
-            i#user-icon.fas.fa-user.user-icon
-            span.profile-text Profil
+        block authsection
+          div.auth-buttons
+            a.login-btn(href="/aboutUs") Über Uns
+            a.cta-btn(href="/register") Konto erstellen
+            a.profil(href="/login")
+              i#user-icon.fas.fa-user.user-icon
+              span.profile-text Profil
 
         // Platzhaler wird individuell in den Seiten gefüllt 
         block nav-actions

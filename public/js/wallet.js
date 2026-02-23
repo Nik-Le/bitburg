@@ -34,8 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.openGeneratorBtn.addEventListener("click", () => toggleForm("generator"));
     elements.cancleGenerationBtn.addEventListener("click", () => toggleForm("generator"));
     elements.generatePasswordBtn.addEventListener("click", () => {
+        if (typeof isPremiumUser !== 'undefined' && isPremiumUser) {
             let pw = generatePassword();
             if (pw) document.getElementById("generated-password").value = pw;
+        } else {
+            if (elements.feedBackElement) elements.feedBackElement.textContent = "Premium wird für diese Funktion benötigt";
+        }
     });
     elements.applyGeneratedPwBtn.addEventListener("click", function () {
         let password = document.getElementById("generated-password").value;
@@ -46,18 +50,10 @@ document.addEventListener("DOMContentLoaded", () => {
         let password = document.getElementById("generated-password");
         navigator.clipboard.writeText(password.value);
     });
-    /*elements.cards.forEach(card => {
-        card.addEventListener("click", () => {
-            card.classList.toggle("is-flipped");
-        });
-    });*/
-    // Wir suchen uns den Container, der die Karten hält (der ist von Anfang an im HTML)
-
     if (elements.passwordContainer) {
         elements.passwordContainer.addEventListener('click', async (event) => {
 
-            // 1. Haben wir auf einen Button geklickt (Mülleimer oder Kopieren)?
-            // Wenn ja -> Abbruch, die Karte soll beim Kopieren nicht flippen!
+            // 1. Haben wir auf den Mülleimer geklickt?
             const delteBtn = event.target.closest('.delete-entry-btn');
             if (delteBtn) {
                 event.stopPropagation();
@@ -72,40 +68,44 @@ document.addEventListener("DOMContentLoaded", () => {
                     } else {
                         console.error("Löschen fehlgeschlagen");
                     }
-
                 } catch (error) {
                     console.error("Löschen fehlgeschlagen");
                 }
-                return;
+                return; // Abbruch, damit die Karte nicht flippt
+            }
+
+            // 2. NEU: Haben wir auf den Copy-Button geklickt?
+            const copyBtn = event.target.closest('.copy-button');
+            if (copyBtn) {
+                event.stopPropagation(); // Verhindert, dass der Klick an die Karte weitergegeben wird
+
+                const textToCopy = copyBtn.getAttribute("data-copy");
+                if (!textToCopy) return;
+
+                try {
+                    await navigator.clipboard.writeText(textToCopy);
+
+                    // Visuelles Feedback
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = "✅ Kopiert!";
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                    }, 2000);
+                } catch (err) {
+                    alert("Kopieren fehlgeschlagen!");
                 }
 
-            const clickedCard = event.target.closest('.password-card');
+                return; // WICHTIG: Abbruch hier, damit der Code nicht zum Flip-Befehl weiterläuft!
+            }
 
-            if (!clickedCard) return; //Falls die Karte nicht gefunden wird, soll nichts passieren
+            // 3. Weder Mülleimer noch Copy geklickt? Dann wurde die Karte selbst geklickt -> Flippen!
+            const clickedCard = event.target.closest('.password-card');
+            if (!clickedCard) return; // Falls ins Leere geklickt wurde, nichts tun
 
             clickedCard.classList.toggle('is-flipped');
         });
     }
-    elements.deleteEntryBtn.forEach(btn => {
-        btn.addEventListener("click", async (e) => {
-            e.stopPropagation();
-            const btnId = btn.getAttribute("data-id");
 
-            try {
-                const response = await fetch(`/wallet/delete/${btnId}`, {
-                    method: 'POST',
-                });
-                if (response.ok) {
-                    window.location.reload();
-                } else {
-                    console.error("Löschen fehlgeschlagen");
-                }
-
-            } catch (error) {
-                console.log("ror")
-            }
-        });
-    });
     elements.copyButtons.forEach(btn => {
         btn.addEventListener("click", async (e) => {
             e.stopPropagation();
@@ -159,6 +159,44 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("logoutCountdown").innerText = `Auto-Logout in ${minFormatted}:${sekFormatted} s`
     }, 1000);
 
+    function generatePassword() {
+        let length = document.getElementById("pw-length").value;
+        let selection = [];
+        let password = "";
+
+
+        if (length <= 7) {
+            console.log("Passwort länge mind 8");
+            document.getElementById("length-error").classList.remove("is-hidden");
+            return null;
+        } else {
+            document.getElementById("length-error").classList.add("is-hidden");
+        }
+
+        elements.numbersInput.checked ? selection.push("number") : null;
+        elements.upCaseInput.checked ? selection.push("upCase") : null;
+        elements.lowCaseInput.checked ? selection.push("lowCase") : null;
+
+
+        for (let i = 0; i < length; i++) {
+            let index = Math.floor(Math.random() * selection.length);
+            let rndm;
+            if (selection.at(index) == "number") {
+                rndm = randomNumber();
+            } else if (selection.at(index) == "upCase") {
+                rndm = randomUpCase();
+            } else if (selection.at(index) == "lowCase") {
+                rndm = randomLowCase();
+            } else {
+                console.log("Nothing selected");
+            }
+            if (rndm != null) {
+                password = password + rndm;
+            }
+        }
+        return password;
+    }
+
 });
 
 
@@ -168,44 +206,6 @@ function toggleForm(form) {
 }
 
 
-
-function generatePassword() {
-    let length = document.getElementById("pw-length").value;
-    let selection = [];
-    let password = "";
-
-
-    if (length <= 7) {
-        console.log("Passwort länge mind 8");
-        document.getElementById("length-error").classList.remove("is-hidden");
-        return null;
-    } else {
-        document.getElementById("length-error").classList.add("is-hidden");
-    }
-
-    elements.numbersInput.checked ? selection.push("number") : null;
-    elements.upCaseInput.checked ? selection.push("upCase") : null;
-    elements.lowCaseInput.checked ? selection.push("lowCase") : null;
-
-
-    for (let i = 0; i < length; i++) {
-        let index = Math.floor(Math.random() * selection.length);
-        let rndm;
-        if (selection.at(index) == "number") {
-            rndm = randomNumber();
-        } else if (selection.at(index) == "upCase") {
-            rndm = randomUpCase();
-        } else if (selection.at(index) == "lowCase") {
-            rndm = randomLowCase();
-        } else {
-            console.log("Nothing selected");
-        }
-        if (rndm != null) {
-            password = password + rndm;
-        }
-    }
-    return password;
-}
 function randomNumber() {
     return String.fromCharCode(Math.floor(Math.random() * 10 + 48));
 }

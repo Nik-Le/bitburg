@@ -40,7 +40,8 @@ async function setupFormSubmit(formId, url, redirectUrl) {
                     });
 
                     if (!saltResponse.ok) {
-                        throw new Error('Salt konnte nicht abgerufen werden.');
+                        showError(errorMsgDiv, 'Benutzername existiert nicht.');
+                        return;
                     }
 
                     const { salt } = await saltResponse.json();
