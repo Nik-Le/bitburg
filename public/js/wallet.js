@@ -129,9 +129,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1000);
     function generatePassword () {
         let length = elements.lengthInput.value;
-        let numbers = elements.numbersInput.checked;
-        let upCase = elements.upCaseInput.checked;
-        let lowCase = elements.lowCaseInput.checked;
         let selection = [];
         let password = "";
 
@@ -144,9 +141,9 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("length-error").classList.add("is-hidden");
         }
 
-        numbers ? selection.push("number") : null;
-        upCase ? selection.push("upCase") : null;
-        lowCase ? selection.push("lowCase") : null;
+        elements.upCaseInput.checked ? selection.push("number") : null;
+        elements.upCaseInput.checked ? selection.push("upCase") : null;
+        elements.lowCaseInput.checked ? selection.push("lowCase") : null;
 
 
         for (let i = 0; i < length; i++) {
