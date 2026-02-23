@@ -127,7 +127,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.getElementById("logoutCountdown").innerText = `Auto-Logout in ${minFormatted}:${sekFormatted} s`
     }, 1000);
+    function generatePassword () {
+        let length = elements.lengthInput.value;
+        let numbers = elements.numbersInput.checked;
+        let upCase = elements.upCaseInput.checked;
+        let lowCase = elements.lowCaseInput.checked;
+        let selection = [];
+        let password = "";
 
+
+        if (length <= 7) {
+            console.log("Passwort länge mind 8");
+            document.getElementById("length-error").classList.remove("is-hidden");
+            return null;
+        } else {
+            document.getElementById("length-error").classList.add("is-hidden");
+        }
+
+        numbers ? selection.push("number") : null;
+        upCase ? selection.push("upCase") : null;
+        lowCase ? selection.push("lowCase") : null;
+
+
+        for (let i = 0; i < length; i++) {
+            let index = Math.floor(Math.random() * selection.length);
+            let rndm;
+            if (selection.at(index) == "number") {
+                rndm = randomNumber();
+            } else if (selection.at(index) == "upCase") {
+                rndm = randomUpCase();
+            } else if (selection.at(index) == "lowCase") {
+                rndm = randomLowCase();
+            } else {
+                console.log("Nothing selected");
+            }
+            if (rndm != null) {
+                password = password + rndm;
+            }
+        }
+        return password;
+    }
 });
 
 
@@ -160,47 +199,6 @@ function getPremiumUserValue(){
         return false;
     }
 }
-
-function generatePassword () {
-    let length = document.getElementById("pw-length").value;
-    let numbers = document.getElementById("numbers").checked;
-    let upCase = document.getElementById("up-case").checked;
-    let lowCase = document.getElementById("low-case").checked;
-    let selection = []; 
-    let password = "";
-
-
-        if (length <= 7) {
-            console.log("Passwort länge mind 8");
-            document.getElementById("length-error").classList.remove("is-hidden");
-            return null;
-        } else {
-            document.getElementById("length-error").classList.add("is-hidden");
-        }
-
-        elements.numbersInput.checked ? selection.push("number") : null;
-        elements.upCaseInput.checked ? selection.push("upCase") : null;
-        elements.lowCaseInput.checked ? selection.push("lowCase") : null;
-
-
-        for (let i = 0; i < length; i++) {
-            let index = Math.floor(Math.random() * selection.length);
-            let rndm;
-            if (selection.at(index) == "number") {
-                rndm = randomNumber();
-            } else if (selection.at(index) == "upCase") {
-                rndm = randomUpCase();
-            } else if (selection.at(index) == "lowCase") {
-                rndm = randomLowCase();
-            } else {
-                console.log("Nothing selected");
-            }
-            if (rndm != null) {
-                password = password + rndm;
-            }
-        }
-        return password;
-    }
     function randomNumber() {
         return String.fromCharCode(Math.floor(Math.random() * 10 + 48));
     }
