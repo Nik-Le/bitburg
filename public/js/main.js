@@ -151,8 +151,7 @@ async function loadAndRenderEntries() {
 
     for (const entry of entries) {
         const plain = await decryptEntrys(masterKey, entry.entry, entry.iv);
-        
-        // 1. Haupt-Elemente erstellen
+
         const li = document.createElement('li');
         li.className = 'password-card';
 
@@ -166,58 +165,47 @@ async function loadAndRenderEntries() {
         const title = document.createElement('strong');
         title.textContent = plain.siteName;
 
-        const editBtn = document.createElement('button');
-        editBtn.className = 'setting-btn fa-solid fa-edit';
-        editBtn.type = 'button';
-
-        const dropdown = document.createElement('div');
-        dropdown.className = 'dropdown is-hidden';
-
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'delete-entry-btn';
         deleteBtn.type = 'button';
-        deleteBtn.textContent = 'Löschen';
         deleteBtn.dataset.id = entry._id;
 
-        dropdown.appendChild(deleteBtn);
-        cardFront.append(title, editBtn, dropdown);
+        const trashIcon = document.createElement('i');
+        trashIcon.className = 'fa-solid fa-trash';
+        deleteBtn.appendChild(trashIcon);
+
+        cardFront.append(title, deleteBtn);
 
         // --- BACK SIDE ---
         const cardBack = document.createElement('div');
         cardBack.className = 'card-back';
 
-        // Hilfsfunktion um Info-Zeilen zu bauen (weniger Schreibarbeit)
-        const createInfoRow = (label, value) => {
-            const row = document.createElement('div');
-            row.className = 'info-row';
-            
-            const span = document.createElement('span');
+        const createInfoRow = (label, value, withCopy = false) => {
+            const p = document.createElement('p');
             const strong = document.createElement('strong');
             strong.textContent = `${label}: `;
-            span.appendChild(strong);
-            span.append(document.createTextNode(value)); // Sicherer Textknoten
+            p.appendChild(strong);
+            p.append(document.createTextNode(value));
 
-            row.appendChild(span);
-
-            if (label !== 'Eintrags-name') { // Buttons nur für User/Passwort
+            if (withCopy) {
                 const copyBtn = document.createElement('button');
                 copyBtn.className = 'copy-button';
                 copyBtn.type = 'button';
                 copyBtn.dataset.copy = value;
-                
+
                 const icon = document.createElement('i');
                 icon.className = 'fa-solid fa-clone';
                 copyBtn.appendChild(icon);
-                row.appendChild(copyBtn);
+                p.appendChild(copyBtn);
             }
-            return row;
+
+            return p;
         };
 
         cardBack.appendChild(createInfoRow('Eintrags-name', plain.siteName));
-        cardBack.appendChild(createInfoRow('Benutzername/E-Mail', plain.userName));
-        cardBack.appendChild(createInfoRow('Passwort', plain.password));
+        cardBack.appendChild(createInfoRow('Benutzername/E-Mail', plain.userName, true));
+        cardBack.appendChild(createInfoRow('Passwort', plain.password, true));
 
-        // Alles zusammenbauen
         innerCard.append(cardFront, cardBack);
         li.appendChild(innerCard);
         list.appendChild(li);

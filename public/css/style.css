@@ -57,10 +57,14 @@ header {
 #password-container {
     overflow-y: auto;
     list-style: none;
-    padding-top: 10px;
-    padding-right: 10px;
-    scrollbar-width: thin; 
+    padding: 10px 10px 0 0;
+    scrollbar-width: thin;
     scrollbar-color: var(--primary-color) transparent;
+    max-height: 100%;  
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 710px;
+    margin: 0 auto;
 }
 #logo-section {
     display: flex;
@@ -101,40 +105,39 @@ header {
     background: none;
     border: none;
     padding: 5%;
+    border-radius: 7%;
 }
 .delete-entry-btn:hover{
-    background-color: red;
+    background-color: #e61919;
 }
 .password-card {
     animation: fadeInUp 0.6s ease-out forwards;
     opacity: 0;
-    width: 500px;
-    height: 18%;
+    width: 100%;        
+     
     padding: 5px;
     margin-bottom: 15px;
     font-size: large;
     perspective: 1000px;
     cursor: pointer;
+    max-width: 700px;
 }
 .inner-card {
-    display: flex;
+    display: grid;
     width: 100%;
-    height: 100%;
     position: relative;
-    transition: transform 0.6s;
     transform-style: preserve-3d;
+    transition: transform 0.6s ease, box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
-    background: rgba(0, 122, 255, 0.45); 
-    border: 1px solid rgba(0, 122, 255, 0.4); 
+    background: rgba(0, 122, 255, 0.45);
+    border: 1px solid rgba(0, 122, 255, 0.4);
     border-radius: 10px;
     box-shadow: 0 5px 10px rgba(0, 80, 200, 0.3);
-
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
-.inner-card:hover{
-    transform: translateY(-7px) scale(1.02); 
+
+.password-card:not(.is-flipped) .inner-card:hover {
+    transform: translateY(-7px) scale(1.02);
     box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.12);
-    border-color:  rgba(0, 122, 255, 0.4);
 }
 
 .password-card.is-flipped .inner-card {
@@ -142,20 +145,28 @@ header {
 }
 
 .card-front, .card-back {
-    position: absolute;
+    /* Beide im selben Grid-Cell übereinander */
+    grid-area: 1 / 1;
     width: 100%;
-    height: 100%;
-    padding: 5px;
+    padding: 12px;
     backface-visibility: hidden;
+    box-sizing: border-box;
 }
+
 .card-front {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     transform: rotateX(0deg);
 }
+
 .card-back {
     transform: rotateX(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
+
 /* --- Styling für die Info-Row --- */
 .info-row {
     display: flex;
