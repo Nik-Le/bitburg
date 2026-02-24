@@ -1,7 +1,7 @@
 /**
- * 
+ * @module routes/index
+ * @description Main application router that aggregates all sub-routers.
  */
-
 const express = require('express');
 const router = express.Router();
 

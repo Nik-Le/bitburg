@@ -1,10 +1,11 @@
 /**
- * Deriveriate the Master Key from the User Login-Password 
+ * crypto.js
+ * Derives the Master Key and Auth Hash from the user's login password.
  */
 
-
 /**
- * Config-Struct for security parameters
+ * Configuration object for PBKDF2 security parameters.
+ * @constant {Object}
  */
 const CONFIG = {
     name: "PBKDF2",
@@ -12,31 +13,34 @@ const CONFIG = {
     iterations: 100000
 };
 
-
 /**
- * String to ArrayBuffer
- * cryptography works in Bytes
+ * Converts a string to a Uint8Array.
+ * Cryptography operations in the Web Crypto API require byte arrays.
+ * * @param {string} str - The string to encode.
+ * @returns {Uint8Array} The encoded byte array.
  */
-function stringToBuffer(str){
+function stringToBuffer(str) {
     const encoder = new TextEncoder();
     return encoder.encode(str);
 }
 
 /**
- * Convertion from BufferArray to Hex for Database Storage
+ * Converts an ArrayBuffer to a hexadecimal string for database storage.
+ * * @param {ArrayBuffer} buffer - The buffer to convert.
+ * @returns {string} The resulting hexadecimal string.
  */
-function bufferToHex(buffer){
+function bufferToHex(buffer) {
     return [...new Uint8Array(buffer)]
         .map(b => b.toString(16).padStart(2, "0"))
-        .join("")
+        .join("");
 }
 
-
-/** 
- * Derive MasterKey
- * 
+/** * Derives a secure master key (for local encryption) and an auth hash (for backend login)
+ * from the user's plaintext password and a provided salt.
+ * * @param {string} password - The user's plaintext password.
+ * @param {string} saltHex - The hexadecimal salt string.
+ * @returns {Promise<{masterKey: CryptoKey, authHash: string}>} An object containing the non-extractable master key and the auth hash.
  */
-
 export async function deriveAllKeys(password, saltHex) {
     const passwordBuffer = stringToBuffer(password);
     
@@ -44,7 +48,7 @@ export async function deriveAllKeys(password, saltHex) {
         saltHex.match(/.{1,2}/g).map(byte => parseInt(byte, 16))
     );
     
-    // Basismaterial aus dem Passwort erstellen
+    // Create base key material from the password
     const keyMaterial = await window.crypto.subtle.importKey(
         "raw",
         passwordBuffer,
@@ -53,8 +57,8 @@ export async function deriveAllKeys(password, saltHex) {
         ["deriveKey", "deriveBits"]
     );
 
-    // --- 1. DER MASTER-KEY (Verschlüsselung) ---
-    // Wir setzen extractable auf FALSE. Er kann nicht ausgelesen werden.
+    // MASTER KEY
+    // set extractable to FALSE. It cannot be exported or read out of memory! 
     const masterKey = await window.crypto.subtle.deriveKey(
         {
             name: "PBKDF2",
@@ -64,14 +68,11 @@ export async function deriveAllKeys(password, saltHex) {
         },
         keyMaterial,
         { name: "AES-GCM", length: 256 },
-        true, // <--- SICHERHEIT: Key ist nicht exportierbar
+        false,
         ["encrypt", "decrypt"]
     );
 
-    // --- 2. DER AUTH-HASH (Backend-Login) ---
-    // Wir leiten rohe Bits ab, die wir in einen Hex-String wandeln können.
-    // Wichtig: Wir nutzen eine leicht andere Ableitung oder einfach deriveBits,
-    // um den "raw" Key-Export zu umgehen.
+    //THE AUTH HASH (used in Backend Login)
     const authBits = await window.crypto.subtle.deriveBits(
         {
             name: "PBKDF2",
@@ -80,7 +81,7 @@ export async function deriveAllKeys(password, saltHex) {
             hash: CONFIG.hash
         },
         keyMaterial,
-        256 // Wir wollen 256 Bits (32 Bytes)
+        256 // We want 256 bits (32 bytes)
     );
 
     const authHash = bufferToHex(authBits);
@@ -88,7 +89,11 @@ export async function deriveAllKeys(password, saltHex) {
     return { masterKey, authHash };
 }
 
-export function generateSalt(){
+/**
+ * Generates a cryptographically secure random 16-byte salt.
+ * * @returns {string} The newly generated salt as a hexadecimal string.
+ */
+export function generateSalt() {
     const randomBuffer = window.crypto.getRandomValues(new Uint8Array(16));
     return bufferToHex(randomBuffer);
 }

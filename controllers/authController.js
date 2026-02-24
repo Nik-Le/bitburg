@@ -2,8 +2,13 @@ const User          = require('../models/User');
 const passwordEntry = require('../models/Passwords');
 const bcrypt        = require('bcrypt');
 
-// ─── Registrierung ───────────────────────────────────────────────────────────
 
+
+/**
+ * Registers a new user, hashes sensitive data (authHash and email), and saves the user to the database.
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object.
+ */
 exports.registerUser = async (req, res) => {
     try {
         const { username, email, premiumuser, salt, authHash } = req.body;
@@ -13,7 +18,7 @@ exports.registerUser = async (req, res) => {
             return res.status(400).json({ message: 'Benutzername ist bereits vergeben.' });
         }
 
-        // authHash aus dem Frontend nochmals hashen (Defense in Depth)
+        // Hash the authHash from the frontend again (Defense in Depth)
         const doubleHash = await bcrypt.hash(authHash, 10);
         const hasedEmail = await bcrypt.hash(email, 10);
 
@@ -42,13 +47,17 @@ exports.registerUser = async (req, res) => {
     }
 };
 
-// ─── Login ────────────────────────────────────────────────────────────────────
 
+/**
+ * Authenticates a user by verifying the provided auth hash and initializes a session.
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object.
+ */
 exports.loginUser = async (req, res) => {
     try {
         const { authHash } = req.body;
 
-        // Username muss in der Session oder im Body vorhanden sein
+        // Username must be present in the body
         const user = await User.findOne({ username: req.body.username });
         if (!user) {
             return res.status(400).json({ message: 'Benutzer nicht gefunden.' });
@@ -71,8 +80,12 @@ exports.loginUser = async (req, res) => {
     }
 };
 
-// ─── Salt abrufen ─────────────────────────────────────────────────────────────
 
+/**
+ * Retrieves the cryptographic salt for a given username to allow client-side key derivation.
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object.
+ */
 exports.getUserSalt = async (req, res) => {
     try {
         const { username } = req.body;
@@ -93,8 +106,12 @@ exports.getUserSalt = async (req, res) => {
     }           
 };
 
-// ─── Logout ───────────────────────────────────────────────────────────────────
 
+/**
+ * Destroys the current user session and clears authentication cookies.
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object.
+ */
 exports.logoutUser = (req, res) => {
     req.session.destroy((err) => {
         if(err){
@@ -113,13 +130,16 @@ exports.logoutUser = (req, res) => {
     });
 };
 
-
-//──────────────────── requiere Loged in ────────────────────
-
-exports.requireLogin = function requiereLogin (req, res, next) {
+/**
+ * Middleware that restricts access to authenticated users, redirecting others to the login page.
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object.
+ * @param {Function} next - The next middleware function in the stack.
+ */
+exports.requireLogin = function requireLogin (req, res, next) {
     if (req.session && req.session.isLoggedIn) {
-        next(); // eingeloggt → weiter
+        next(); // Logged in → proceed
     } else {
-        res.redirect('/login'); // nicht eingeloggt → zurück
+        res.redirect('/login'); // Not logged in → redirect to login
     }
 };

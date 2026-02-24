@@ -1,10 +1,14 @@
-import { detectActivity } from './utils.js';
+import { detectActivity, toggleForm, copyTextWithFeedback } from './utils.js';
+import { generatePassword } from './passwordGenerator.js';
+import { clearMasterKey } from './indexedDB.js'
 
-
+/**
+ * Initializes all event listeners and UI logic once the DOM is fully loaded.
+ */
 document.addEventListener("DOMContentLoaded", () => {
     const elements = {
-        addNewEntryBtn: document.getElementById("add-button"), //Opens up the Entryform
-        submitEntryBtn: document.getElementById("submit-entry-button"), //Submits new Entry
+        addNewEntryBtn: document.getElementById("add-button"), 
+        submitEntryBtn: document.getElementById("submit-entry-button"), 
         cancelEntryBtn: document.getElementById("cancel-button"),
         deleteEntryBtn: document.querySelectorAll(".delete-entry-btn"),
 
@@ -17,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         cards: document.querySelectorAll('.password-card'),
         copyPassword: document.getElementById("copy-password"),
-        copyButtons: document.querySelectorAll(".copy-button"),
 
         lengthInput: document.getElementById("pw-length"),
         numbersInput: document.getElementById("numbers"),
@@ -29,31 +32,70 @@ document.addEventListener("DOMContentLoaded", () => {
 
         errorMessage: document.getElementById('error-message')
     };
+
+    // --- Form Toggles ---
     elements.addNewEntryBtn.addEventListener("click", () => toggleForm("frmPopup"));
     elements.cancelEntryBtn.addEventListener("click", () => toggleForm("frmPopup"));
     elements.openGeneratorBtn.addEventListener("click", () => toggleForm("generator"));
     elements.cancleGenerationBtn.addEventListener("click", () => toggleForm("generator"));
+
+    /**
+     * Handles the generation of a new password based on user settings.
+     * Validates password length and checks for premium user status.
+     */
     elements.generatePasswordBtn.addEventListener("click", () => {
         if (typeof isPremiumUser !== 'undefined' && isPremiumUser) {
-            let pw = generatePassword();
+            
+            let length = parseInt(elements.lengthInput.value);
+            
+            // Length validation
+            if (length <= 7) {
+                console.log("Passwort länge mind 8");
+                document.getElementById("length-error").classList.remove("is-hidden");
+                return; 
+            } else {
+                document.getElementById("length-error").classList.add("is-hidden");
+            }
+
+            let pw = generatePassword(
+                length, 
+                elements.numbersInput.checked, 
+                elements.upCaseInput.checked, 
+                elements.lowCaseInput.checked
+            );
+
             if (pw) document.getElementById("generated-password").value = pw;
+
         } else {
             if (elements.feedBackElement) elements.feedBackElement.textContent = "Premium wird für diese Funktion benötigt";
         }
     });
+
+    /**
+     * Applies the generated password to the main input field and closes the generator.
+     */
     elements.applyGeneratedPwBtn.addEventListener("click", function () {
         let password = document.getElementById("generated-password").value;
         document.getElementById("password-input").value = password;
         toggleForm("generator");
     });
+
+    /**
+     * Copies the newly generated password to the clipboard.
+     */
     elements.copyPassword.addEventListener("click", function () {
-        let password = document.getElementById("generated-password");
-        navigator.clipboard.writeText(password.value);
+        copyTextWithFeedback(document.getElementById("generated-password").value, elements.copyPassword);
     });
+
+    /**
+     * Event delegation for password cards.
+     * Handles deleting entries, copying passwords, and flipping the card UI.
+     * @param {Event} event - The triggered click event.
+     */
     if (elements.passwordContainer) {
         elements.passwordContainer.addEventListener('click', async (event) => {
 
-            // 1. Haben wir auf den Mülleimer geklickt?
+            // 1. Delete button clicked?
             const delteBtn = event.target.closest('.delete-entry-btn');
             if (delteBtn) {
                 event.stopPropagation();
@@ -71,158 +113,54 @@ document.addEventListener("DOMContentLoaded", () => {
                 } catch (error) {
                     console.error("Löschen fehlgeschlagen");
                 }
-                return; // Abbruch, damit die Karte nicht flippt
+                return; 
             }
 
-            // 2. NEU: Haben wir auf den Copy-Button geklickt?
+            // 2. Copy button clicked?
             const copyBtn = event.target.closest('.copy-button');
             if (copyBtn) {
-                event.stopPropagation(); // Verhindert, dass der Klick an die Karte weitergegeben wird
-
-                const textToCopy = copyBtn.getAttribute("data-copy");
-                if (!textToCopy) return;
-
-                try {
-                    await navigator.clipboard.writeText(textToCopy);
-
-                    // Visuelles Feedback
-                    const originalText = copyBtn.innerHTML;
-                    copyBtn.innerHTML = "✅ Kopiert!";
-                    setTimeout(() => {
-                        copyBtn.innerHTML = originalText;
-                    }, 2000);
-                } catch (err) {
-                    alert("Kopieren fehlgeschlagen!");
-                }
-
-                return; // WICHTIG: Abbruch hier, damit der Code nicht zum Flip-Befehl weiterläuft!
+                event.stopPropagation(); 
+                copyTextWithFeedback(copyBtn.getAttribute("data-copy"), copyBtn);
+                return; 
             }
 
-            // 3. Weder Mülleimer noch Copy geklickt? Dann wurde die Karte selbst geklickt -> Flippen!
+            // 3. Card clicked (flip)?
             const clickedCard = event.target.closest('.password-card');
-            if (!clickedCard) return; // Falls ins Leere geklickt wurde, nichts tun
+            if (!clickedCard) return; 
 
             clickedCard.classList.toggle('is-flipped');
         });
     }
 
-    elements.copyButtons.forEach(btn => {
-        btn.addEventListener("click", async (e) => {
-            e.stopPropagation();
-            // Den Text aus dem data-copy Attribut holen
-            const textToCopy = btn.getAttribute("data-copy");
-
-            if (!textToCopy) return;
-
-            try {
-                // Text in die Zwischenablage schreiben
-                await navigator.clipboard.writeText(textToCopy);
-
-                // Visuelles Feedback für den Nutzer (Optional, aber empfohlen)
-                const originalText = btn.innerHTML;
-                btn.innerHTML = "✅ Kopiert!";
-
-                // Nach 2 Sekunden den Text wieder zurücksetzen
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                }, 2000);
-
-            } catch (err) {
-                alert("Kopieren fehlgeschlagen!");
-            }
-        });
-    });
-
-    //console.log("Starte Activity Tracker für Wallet...");
-
+    /**
+     * Initializes the activity tracker to auto-logout the user after 5 minutes of inactivity.
+     * Updates the UI countdown timer every second.
+     */
     const ActivityTracker = detectActivity(
-        () => console.log("User ist aktiv"),
         () => {
-            console.log("User ist inaktiv -> Logout wird eingeleitet");
-            // Hier den Logout-Prozess starten:
             fetch('/logout', { method: 'POST' })
                 .then(() => window.location.href = '/login');
+            clearMasterKey();
         },
-        70000 // 5 Minuten (300.000 ms)
+        300000 // 5 minutes
     );
 
     setInterval(() => {
-        const restZeitMs = ActivityTracker.remainingTimeToLogout();
-        const gesamtSek = Math.ceil(restZeitMs / 1000)
-        const restZeitsek = gesamtSek % 60;
-        const restZeitMin = Math.floor(gesamtSek / 60);
-
-        const minFormatted = String(restZeitMin).padStart(2, '0');
-        const sekFormatted = String(restZeitsek).padStart(2, '0');
-
-
+        const{minFormatted, sekFormatted} = ActivityTracker.remainingTimeToLogout();
         document.getElementById("logoutCountdown").innerText = `Auto-Logout in ${minFormatted}:${sekFormatted} s`
     }, 1000);
 
-    function generatePassword() {
-        let length = document.getElementById("pw-length").value;
-        let selection = [];
-        let password = "";
-
-
-        if (length <= 7) {
-            console.log("Passwort länge mind 8");
-            document.getElementById("length-error").classList.remove("is-hidden");
-            return null;
-        } else {
-            document.getElementById("length-error").classList.add("is-hidden");
-        }
-
-        elements.numbersInput.checked ? selection.push("number") : null;
-        elements.upCaseInput.checked ? selection.push("upCase") : null;
-        elements.lowCaseInput.checked ? selection.push("lowCase") : null;
-
-
-        for (let i = 0; i < length; i++) {
-            let index = Math.floor(Math.random() * selection.length);
-            let rndm;
-            if (selection.at(index) == "number") {
-                rndm = randomNumber();
-            } else if (selection.at(index) == "upCase") {
-                rndm = randomUpCase();
-            } else if (selection.at(index) == "lowCase") {
-                rndm = randomLowCase();
-            } else {
-                console.log("Nothing selected");
-            }
-            if (rndm != null) {
-                password = password + rndm;
-            }
-        }
-        return password;
-    }
-
 });
 
-
-function toggleForm(form) {
-    let element = document.getElementById(form);
-    element.classList.toggle("is-hidden");
-}
-
-
-function randomNumber() {
-    return String.fromCharCode(Math.floor(Math.random() * 10 + 48));
-}
-function randomUpCase() {
-    return String.fromCharCode(Math.floor(Math.random() * 26 + 65));
-}
-
-function randomLowCase() {
-    return String.fromCharCode(Math.floor(Math.random() * 26 + 97));
-}
-
-
-// Logout Btn Event Listener 
+/**
+ * Handles the manual logout process.
+ * Clears session storage and sends a logout request to the server.
+ * @param {Event} e - The triggered click event.
+ */
 document.getElementById('logout').addEventListener('click', async (e) => {
-
     e.preventDefault();
     sessionStorage.clear();
+    
     try {
         const response = await fetch('/logout', {
             method: 'POST',
@@ -234,6 +172,7 @@ document.getElementById('logout').addEventListener('click', async (e) => {
         const result = await response.json();
 
         if (response.ok) {
+            clearMasterKey(); 
             console.log("erfolgreich ausgellogt");
             window.location.href = "/";
         }
@@ -241,5 +180,4 @@ document.getElementById('logout').addEventListener('click', async (e) => {
     } catch (error) {
         console.log("Fehler beim auslogen", error);
     }
-
 });

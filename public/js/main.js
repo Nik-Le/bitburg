@@ -1,12 +1,14 @@
-import { deriveAllKeys, generateSalt} from './crypto.js';
-import {encryptEntry} from './encrypt.js';
-import { decryptEntrys} from './decrypt.js';
+import { deriveAllKeys, generateSalt } from './crypto.js';
+import { encryptEntry } from './encrypt.js';
+import { loadAndRenderEntries } from './renderEntrys.js';
+import { saveMasterKey, getMasterKey } from './indexedDB.js';
 
 /**
- * Bindet einen Submit-Handler an ein Formular und sendet die Daten per fetch an den Server.
- * @param {string} formId       - HTML-ID des Formulars
- * @param {string} url          - Ziel-URL für den POST-Request
- * @param {string} redirectUrl  - URL für die Weiterleitung nach Erfolg
+ * Binds a submit event listener to a form, handles cryptographic operations 
+ * based on the form ID, and sends the payload to the server via POST.
+ * * @param {string} formId - The HTML ID of the form.
+ * @param {string} url - The target endpoint for the POST request.
+ * @param {string} redirectUrl - The URL to redirect to upon successful submission.
  */
 async function setupFormSubmit(formId, url, redirectUrl) {
     const form = document.getElementById(formId);
@@ -22,17 +24,17 @@ async function setupFormSubmit(formId, url, redirectUrl) {
         try {
             switch (formId) {
                 case 'frmRegister': {
-                    const salt      = generateSalt();
+                    const salt = generateSalt();
                     const { masterKey, authHash } = await deriveAllKeys(data.password, salt);
 
-                    data.salt     = salt;
+                    data.salt = salt;
                     data.authHash = authHash;
                     delete data.password;
                     break;
                 }
 
                 case 'frmLogin': {
-                    // Salt des Nutzers vom Server abrufen
+                    // Fetch user's salt from the server
                     const saltResponse = await fetch('/fetchSalt', {
                         method:  'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -46,25 +48,23 @@ async function setupFormSubmit(formId, url, redirectUrl) {
 
                     const { salt } = await saltResponse.json();
 
-                    // Master Key und Auth Hash aus Passwort + Salt ableiten
+                    // Derive master key and auth hash from password + salt
                     const { masterKey, authHash } = await deriveAllKeys(data.password, salt);
 
-                    const raw = await crypto.subtle.exportKey('raw', masterKey);
-                    sessionStorage.setItem('masterKey', JSON.stringify(Array.from(new Uint8Array(raw))));
+                    // Save the raw CryptoKey directly to IndexedDB
+                    await saveMasterKey(masterKey);
                     
                     data.authHash = authHash;
                     delete data.password;
                     break;
                 }
 
-                case 'frmPopup':
-                    const raw = new Uint8Array(JSON.parse(sessionStorage.getItem('masterKey')));
-                    const masterKey = await crypto.subtle.importKey(
-                        'raw', raw,
-                        { name: 'AES-GCM', length: 256 },
-                        false,
-                        ['encrypt', 'decrypt']
-                    );
+                case 'frmPopup': {
+                    // Retrieve key from IndexedDB
+                    const masterKey = await getMasterKey();
+                    if (!masterKey) {
+                        throw new Error("Master-Key fehlt! Bitte neu einloggen.");
+                    }
 
                     const { iv, cipher } = await encryptEntry(masterKey, data);
 
@@ -75,12 +75,13 @@ async function setupFormSubmit(formId, url, redirectUrl) {
                     data.iv = iv;
                     data.entry = cipher;
                     break;
+                }
 
                 default:
                     break;
             }
             
-            // Haupt-Request absenden
+            // Send main request
             const response = await fetch(url, {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -97,15 +98,15 @@ async function setupFormSubmit(formId, url, redirectUrl) {
 
         } catch (error) {
             console.error(error);
-            showError(errorMsgDiv, 'Netzwerkfehler: Server nicht erreichbar.');
+            showError(errorMsgDiv, error.message || 'Netzwerkfehler: Server nicht erreichbar.');
         }
     });
 }
 
 /**
- * Zeigt eine Fehlermeldung an – im Error-Div oder als Alert-Fallback.
- * @param {HTMLElement|null} div
- * @param {string} message
+ * Displays an error message either in a specified HTML container or via a browser alert.
+ * * @param {HTMLElement | null} div - The DOM element to display the error in.
+ * @param {string} message - The error message to display.
  */
 function showError(div, message) {
     if (div) {
@@ -116,7 +117,7 @@ function showError(div, message) {
     }
 }
 
-// Formulare registrieren, sobald das DOM bereit ist
+// Initialize forms and render entries once the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     setupFormSubmit('frmRegister', '/register', '/login');
     setupFormSubmit('frmLogin',    '/login',    '/wallet');
@@ -126,89 +127,3 @@ document.addEventListener('DOMContentLoaded', () => {
         loadAndRenderEntries();
     }
 });
-
-
-
-async function loadAndRenderEntries() {
-    const entries = JSON.parse(document.getElementById('encrypted-data').textContent);
-    const keyRaw = new Uint8Array(JSON.parse(sessionStorage.getItem('masterKey')));
-    const masterKey = await crypto.subtle.importKey(
-        'raw', keyRaw,
-        { name: 'AES-GCM', length: 256 },
-        false,
-        ['encrypt', 'decrypt']
-    );
-
-    const list = document.getElementById('password-container');
-    list.innerHTML = ''; 
-
-    if (entries.length === 0) {
-        const emptyLi = document.createElement('li');
-        emptyLi.className = 'password-card';
-        emptyLi.textContent = 'Keine Einträge vorhanden!';
-        list.appendChild(emptyLi);
-        return;
-    }
-
-    for (const entry of entries) {
-        const plain = await decryptEntrys(masterKey, entry.entry, entry.iv);
-
-        const li = document.createElement('li');
-        li.className = 'password-card';
-
-        const innerCard = document.createElement('div');
-        innerCard.className = 'inner-card';
-
-        // --- FRONT SIDE ---
-        const cardFront = document.createElement('div');
-        cardFront.className = 'card-front';
-
-        const title = document.createElement('strong');
-        title.textContent = plain.siteName;
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'delete-entry-btn';
-        deleteBtn.type = 'button';
-        deleteBtn.dataset.id = entry._id;
-
-        const trashIcon = document.createElement('i');
-        trashIcon.className = 'fa-solid fa-trash';
-        deleteBtn.appendChild(trashIcon);
-
-        cardFront.append(title, deleteBtn);
-
-        // --- BACK SIDE ---
-        const cardBack = document.createElement('div');
-        cardBack.className = 'card-back';
-
-        const createInfoRow = (label, value, withCopy = false) => {
-            const p = document.createElement('p');
-            const strong = document.createElement('strong');
-            strong.textContent = `${label}: `;
-            p.appendChild(strong);
-            p.append(document.createTextNode(value));
-
-            if (withCopy) {
-                const copyBtn = document.createElement('button');
-                copyBtn.className = 'copy-button';
-                copyBtn.type = 'button';
-                copyBtn.dataset.copy = value;
-
-                const icon = document.createElement('i');
-                icon.className = 'fa-solid fa-clone';
-                copyBtn.appendChild(icon);
-                p.appendChild(copyBtn);
-            }
-
-            return p;
-        };
-
-        cardBack.appendChild(createInfoRow('Eintrags-name', plain.siteName));
-        cardBack.appendChild(createInfoRow('Benutzername/E-Mail', plain.userName, true));
-        cardBack.appendChild(createInfoRow('Passwort', plain.password, true));
-
-        innerCard.append(cardFront, cardBack);
-        li.appendChild(innerCard);
-        list.appendChild(li);
-    }
-}
