@@ -25,15 +25,15 @@ export function openDB() {
 
 /**
  * Securely saves the master key in the IndexedDB.
- * * @param {CryptoKey | Uint8Array} rawBytes - The key to be saved (ideally directly the CryptoKey object after the security upgrade).
+ * * @param {CryptoKey } cryptoKey - Non extractable Crypto-Object
  * @returns {Promise<void>} A Promise that resolves once the saving process is successfully completed.
  */
-export async function saveMasterKey(rawBytes) {
+export async function saveMasterKey(cryptoKey) {
     const db = await openDB();
     return new Promise((resolve, reject) => {
         const tx = db.transaction(STORE_NAME, "readwrite");
         const store = tx.objectStore(STORE_NAME);
-        const request = store.put(rawBytes, "masterKey"); // Natively saves the CryptoKey object (or Uint8Array)
+        const request = store.put(cryptoKey, "masterKey"); // Natively saves the CryptoKey object
         request.onsuccess = () => resolve();
         request.onerror = () => reject(request.error);
     });
@@ -41,7 +41,7 @@ export async function saveMasterKey(rawBytes) {
 
 /**
  * Retrieves the stored master key from the IndexedDB.
- * * @returns {Promise<CryptoKey | Uint8Array | undefined>} A Promise that resolves with the retrieved master key. Returns `undefined` if no key was found (e.g., user is not logged in).
+ * * @returns {Promise<CryptoKey | undefined>} A Promise that resolves with the retrieved master key. Returns `undefined` if no key was found (e.g., user is not logged in).
  */
 export async function getMasterKey() {
     const db = await openDB();
