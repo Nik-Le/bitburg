@@ -1,12 +1,13 @@
 // passwordGenerator.js
 
-export function generatePassword(length, useNumbers, useUpCase, useLowCase) {
+export function generatePassword(length, useNumbers, useUpCase, useLowCase, symbols) {
     let selection = [];
     let password = "";
 
     if (useNumbers) selection.push("number");
     if (useUpCase) selection.push("upCase");
     if (useLowCase) selection.push("lowCase");
+    if (symbols) selection.push("symbols");
 
     // Falls gar nichts ausgewählt wurde, brechen wir ab
     if (selection.length === 0) return null; 
@@ -21,6 +22,8 @@ export function generatePassword(length, useNumbers, useUpCase, useLowCase) {
             password += randomUpCase();
         } else if (type === "lowCase") {
             password += randomLowCase();
+        }else if (type === "symbols") {
+            password += randomSymbol();
         }
     }
     return password;
@@ -38,4 +41,8 @@ function randomUpCase() {
 
 function randomLowCase() {
     return String.fromCharCode(Math.floor(Math.random() * 26 + 97));
+}
+function randomSymbol() {
+    const symbols = "!@#$%&.";
+    return symbols.charAt(Math.floor(Math.random() * symbols.length));
 }

@@ -61,7 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 length, 
                 elements.numbersInput.checked, 
                 elements.upCaseInput.checked, 
-                elements.lowCaseInput.checked
+                elements.lowCaseInput.checked,
+                elements.symbolsInput.checked
             );
 
             if (pw) document.getElementById("generated-password").value = pw;
