@@ -7,7 +7,7 @@ const STORE_NAME = "keys";
  *
  * @returns {Promise<IDBDatabase>} A Promise that resolves with the opened database instance.
  */
-export function openDB() {
+function openDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(DB_NAME, 1);
         
@@ -25,7 +25,7 @@ export function openDB() {
 
 /**
  * Securely saves the master key in the IndexedDB.
- * * @param {CryptoKey } cryptoKey - Non extractable Crypto-Object
+ * @param {CryptoKey } cryptoKey - Non extractable Crypto-Object
  * @returns {Promise<void>} A Promise that resolves once the saving process is successfully completed.
  */
 export async function saveMasterKey(cryptoKey) {

@@ -5,6 +5,7 @@ const MongoStore = require('connect-mongo').default;
 const path = require('path');
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 const dbUrl = 'mongodb://localhost:27017/bitburgDB';
 
@@ -39,7 +40,8 @@ app.use(session({
     }),
     cookie: {
         maxAge: 1000 * 60 * 60 * 12, // 12 hours
-        httpOnly: true // Prevents client-side JS from reading the cookie
+        httpOnly: true, // Prevents client-side JS from reading the cookie
+        secure: true
     }            
 }));
 

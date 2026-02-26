@@ -57,7 +57,7 @@ exports.wallet = async (req, res) => {
         res.status(500).send("Ein Fehler ist aufgetreten");
     }
 };
-
+ 
 /**
  * Renders the 'About Us' page.
  */

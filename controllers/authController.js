@@ -69,11 +69,16 @@ exports.loginUser = async (req, res) => {
             req.session.userId   = user._id;
             req.session.username = user.username;
             req.session.isLoggedIn = true;
+            req.session.save((err) => {
+            if (err) {
+                console.error('Fehler beim Speichern der Session:', err);
+                return res.status(500).json({ message: 'Serverfehler beim Erstellen der Session.' });
+            }
             return res.status(200).json({ message: 'Login erfolgreich.' });
-        } else {
-            return res.status(401).json({ message: 'Ungültiges Passwort.' });
-        }
-
+                });
+            } else {
+                return res.status(401).json({ message: 'Ungültiges Passwort.' });
+            }
     } catch (error) {
         console.error('Fehler beim Login:', error);
         return res.status(500).json({ message: 'Serverfehler beim Login.' });
