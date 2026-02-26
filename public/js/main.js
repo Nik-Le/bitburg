@@ -82,11 +82,20 @@ async function setupFormSubmit(formId, url, redirectUrl) {
             }
             
             // Send main request
-            const response = await fetch(url, {
-                method:  'POST',
+            // Set standart 
+            const fetchOptions = {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify(data),
-            });
+                body: JSON.stringify(data)
+            };
+
+            //  
+            if (url === '/login') {
+                fetchOptions.credentials = 'include';
+            }
+
+            //execute Fetch
+            const response = await fetch(url, fetchOptions);
 
             const result = await response.json();
 

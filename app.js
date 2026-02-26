@@ -5,7 +5,6 @@ const MongoStore = require('connect-mongo').default;
 const path = require('path');
 
 const app = express();
-app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 const dbUrl = 'mongodb://localhost:27017/bitburgDB';
 
