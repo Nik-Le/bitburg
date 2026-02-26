@@ -100,7 +100,12 @@ async function setupFormSubmit(formId, url, redirectUrl) {
             const result = await response.json();
 
             if (response.ok) {
-                window.location.href = redirectUrl;
+                if (url === '/login') {
+                    // Zwingt den Browser, das Wallet aufzurufen!
+                    window.location.href = '/wallet';
+                } else{
+                    window.location.href = url;
+                }
             } else {
                 showError(errorMsgDiv, result.message || 'Ein Fehler ist aufgetreten.');
             }

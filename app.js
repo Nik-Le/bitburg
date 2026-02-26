@@ -24,6 +24,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+app.set('trust proxy', 1);
 /**
  * Session configuration.
  * Stores session data in MongoDB to persist across server restarts.
@@ -41,6 +43,9 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 12, // 12 hours
         httpOnly: true, // Prevents client-side JS from reading the cookie
         secure: true
+
+
+
     }            
 }));
 
