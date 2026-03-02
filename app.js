@@ -42,10 +42,7 @@ app.use(session({
     cookie: {
         maxAge: 1000 * 60 * 60 * 12, // 12 hours
         httpOnly: true, // Prevents client-side JS from reading the cookie
-        secure: true
-
-
-
+        secure: false
     }            
 }));
 

@@ -8,7 +8,7 @@ const passwordEntry = require('../models/Passwords');
 exports.addPassword = async (req, res) => {
     try {
         const { iv, entry } = req.body;
-        const owner = req.session.userId;
+        const owner =  await req.session.userId;
 
         const newPasswort = new passwordEntry({ iv, entry, owner });
         const savedEntry = await newPasswort.save();

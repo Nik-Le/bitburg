@@ -86,7 +86,8 @@ async function setupFormSubmit(formId, url, redirectUrl) {
             const fetchOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
+                credentials: 'include'
             };
 
             //  
@@ -104,7 +105,7 @@ async function setupFormSubmit(formId, url, redirectUrl) {
                     // Zwingt den Browser, das Wallet aufzurufen!
                     window.location.href = '/wallet';
                 } else{
-                    window.location.href = url;
+                    window.location.href = redirectUrl;
                 }
             } else {
                 showError(errorMsgDiv, result.message || 'Ein Fehler ist aufgetreten.');
