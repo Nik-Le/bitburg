@@ -170,11 +170,9 @@ header {
 /* --- Styling für die Info-Row --- */
 .info-row {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-    min-height: 32px; /* Feste Mindesthöhe, damit Zeilen mit und ohne Button gleich groß sind */
+    align-items: center; 
     width: 100%;
+    margin-bottom: 8px; 
 }
 
 .info-row span {

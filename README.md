@@ -5,7 +5,7 @@ This project was developed as part of the **Web Engineering** course at the DHBW
 
 BitBurg is a fully functional, locally hosted web application that serves as a secure password manager. It features robust database encryption to ensure the safe storage of your sensitive data and credentials.
 
----
+---I
 
 ## Installation Guide
 

@@ -65,10 +65,13 @@ export async function loadAndRenderEntries() {
 
             const createInfoRow = (label, value, withCopy = false) => {
                 const p = document.createElement('p');
+                p.className = 'info-row'; 
                 const strong = document.createElement('strong');
                 strong.textContent = `${label}: `;
                 p.appendChild(strong);
-                p.append(document.createTextNode(value));
+                const textSpan = document.createElement('span');
+                textSpan.appendChild(document.createTextNode(value));
+                p.appendChild(textSpan);
 
                 if (withCopy) {
                     const copyBtn = document.createElement('button');
